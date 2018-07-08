@@ -1,0 +1,67 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+<#
+var lg = "logo";
+if (Params[lg] != lg)
+{
+#>
+                <a class="navbar-brand" href="<#= Params.Root #>index.html"><span><img src="<#= Params.Root #><#= Params[lg] #>" height="24" />  <#= Params["projectname"] #></span></a>
+<#
+}
+else
+{
+#>
+                <a class="navbar-brand" href="<#= Params.Root #>index.html"><#= Params["projectname"] #></a>
+<#
+}
+#>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="<#= Params.Root #>index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+<#
+var gh = "github";
+if (Params[gh] != gh)
+{
+#>
+					<li><a href="<#= Params[gh] #>"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+<#
+}
+var dl = "download";
+if (Params[dl] != dl)
+{
+#>
+                    <li><a href="<#= Params[dl] #>"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+<#
+}
+var ng = "nuget";
+if (Params[ng] != ng)
+{
+#>
+                    <li><a href="<#= Params[ng] #>"><i class="fa fa-cloud-download" aria-hidden="true"></i> NuGet</a></li>
+<#
+}
+var lc = "license";
+if (Params[lc] != lc)
+{
+#>
+                    <li><a href="<#= Params.Root #><#= Params[lc] #>">License</a></li>
+<#
+}
+#>
+                </ul>
+            </div>
+        </div>
+    </nav>

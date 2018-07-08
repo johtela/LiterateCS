@@ -1,0 +1,10 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<link rel="stylesheet" href="<#= Params.Root #>bootstrap/css/<#= Params["bootstrapstyle", "default"] #>/bootstrap.min.css" />
+<link rel="stylesheet" href="<#= Params.Root #>font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="<#= Params.Root #>sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="<#= Params.Root #>css/<#= Params["markdownstyle", "book"] #>.min.css" />
+<link rel="stylesheet" href="<#= Params.Root #>syntax-highlight/<#= Params["syntaxhighlight", "monokai"] #>.min.css" />
+<link rel="stylesheet" href="<#= Params.Root #>mermaid/<#= Params["diagramstyle", "mermaid"] #>.css" />

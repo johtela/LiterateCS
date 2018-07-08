@@ -1,0 +1,14 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><#= Params.Filename + " - " + Params["projectname"] #></title>
+
+	<link rel="icon" type="image/x-icon" href="<#= Params.Root #>images/favicon.ico">
+    <#@ include file="styles.tt" #>
+</head>

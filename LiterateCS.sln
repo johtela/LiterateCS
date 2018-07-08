@@ -3,7 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiterateCS.Theme", "LiterateCS.Theme\LiterateCS.Theme.csproj", "{9FD7E951-AAEE-4F36-A09B-395D19D32861}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiterateCS.Theme", "LiterateCS.Theme\LiterateCS.Theme.csproj", "{9FD7E951-AAEE-4F36-A09B-395D19D32861}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E18EDBB-7E93-4F46-894F-E77C852F09E3}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiterateCS", "LiterateCS\LiterateCS.csproj", "{E164D885-0B71-45B9-A119-A9D9092CB5EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Themes", "Themes", "{D123B53B-28EC-437C-BABD-4771B01DAAA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultTheme", "Themes\DefaultTheme\DefaultTheme.csproj", "{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +26,20 @@ Global
 		{9FD7E951-AAEE-4F36-A09B-395D19D32861}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD7E951-AAEE-4F36-A09B-395D19D32861}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD7E951-AAEE-4F36-A09B-395D19D32861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E164D885-0B71-45B9-A119-A9D9092CB5EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E164D885-0B71-45B9-A119-A9D9092CB5EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E164D885-0B71-45B9-A119-A9D9092CB5EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E164D885-0B71-45B9-A119-A9D9092CB5EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C} = {D123B53B-28EC-437C-BABD-4771B01DAAA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BCDA963-6159-43CD-BCFF-FF24FDA22064}
