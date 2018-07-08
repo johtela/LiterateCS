@@ -1,0 +1,26 @@
+﻿.main-menu ul {
+  list-style-type: none;
+  padding: 0px;
+}
+.main-menu ul ul {
+  font-size: 0.98em;
+  padding-left: 10px;
+}
+.main-menu li a {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  display: block;
+  color: #456;
+  text-decoration: none;
+}
+.main-menu li a:hover,
+.main-menu li a.selected {
+  padding-left: 5px;
+  background-color: #456;
+  color: #fff;
+}
+.main-menu li a:active {
+  padding-left: 5px;
+  background-color: #000;
+  color: #fff;
+}

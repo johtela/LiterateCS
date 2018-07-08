@@ -1,0 +1,35 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".html" #>
+<#@ include file="_include/Toc.tt" #>
+<#@ include file="_include/Pager.tt" #>
+<!DOCTYPE html>
+<html lang="en">
+
+<#@ include file="_include/Head.tt" #>
+
+<body>
+    <#@ include file="_include/navbar.tt" #>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                <#@ include file="_include/SideBar.tt" #>
+            </div>
+			<div class="col-md-9">
+				<# OutputPager (); #>
+				<div id="static-content" class="markdown">
+					<#= Params.Contents #>
+				</div>
+				<# OutputPager (); #>
+			</div>
+        </div>
+    </div>
+    <#@ include file="_include/Footer.tt" #>
+
+    <#@ include file="_include/Scripts.tt" #>
+</body>
+</html>

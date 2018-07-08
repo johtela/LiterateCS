@@ -1,0 +1,44 @@
+﻿@import "syntax-base.less";
+
+pre.csharp, 
+code.csharp {
+	color: #f8f8f2;
+	background: #272822;
+    .code-block ();
+
+    .punctuation {
+	    color: #d0d0c8;
+    }
+    .keyword {
+	    color: #66d9ef;
+    }
+    .comment {
+	    color: #a6e22e;
+    }
+    .preprocessor {
+	    color: slategray;
+    }
+    .string {
+	    color: #f92672;
+    }
+    .number {
+	    color: #ae81ff;
+    }
+    .typename {
+	    color: #e6db74;
+    }
+    a { 
+        color: inherit;
+        &:visited { 
+            color: inherit;
+        }
+        &:hover {
+            color: deepskyblue;
+            text-decoration: underline;
+        }
+        &:active {
+            color: blueviolet;
+            text-decoration: underline;
+        }
+    }
+}

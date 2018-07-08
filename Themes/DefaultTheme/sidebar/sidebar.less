@@ -1,0 +1,31 @@
+@text-color: #456;
+@highlight-bg-color: #000;
+@highlight-color: #fff;
+
+.main-menu {
+    ul {
+        list-style-type: none;
+	    padding: 0px;
+        ul {
+            font-size: 0.98em;
+	        padding-left: 10px;
+        }
+    }
+    li a {
+        padding-bottom: 3px;
+        padding-top: 3px;
+        display: block;
+        color: @text-color;
+        text-decoration: none;
+        &:hover, &.selected {
+        	padding-left: 5px;
+            background-color: @text-color;
+            color: @highlight-color;
+        }
+        &:active {
+        	padding-left: 5px;
+            background-color: @highlight-bg-color;
+            color: @highlight-color;
+        }
+    }
+}

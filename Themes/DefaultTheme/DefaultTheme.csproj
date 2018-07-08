@@ -5,7 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DefaultPage.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DefaultPage.cs</LastGenOutput>
+      <CustomToolNamespace>DefaultTheme</CustomToolNamespace>
+    </None>
+    <None Update="LandingPage.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LandingPage.cs</LastGenOutput>
+      <CustomToolNamespace>DefaultTheme</CustomToolNamespace>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -13,7 +30,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bootstrap\css\" />
+    <Compile Update="DefaultPage.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DefaultPage.tt</DependentUpon>
+    </Compile>
+    <Compile Update="LandingPage.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LandingPage.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

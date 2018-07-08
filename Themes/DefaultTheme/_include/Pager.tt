@@ -2,7 +2,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.IO" #>
-<#@ import namespace="CSWeave.Theme" #>
+<#@ import namespace="LiterateCS.Theme" #>
 <#+ public void OutputPager ()
 {
 	var current = Params.CurrentSection;

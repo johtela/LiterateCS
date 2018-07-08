@@ -1,0 +1,31 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".html" #>
+<!DOCTYPE html>
+<html lang="en">
+
+<#@ include file="_include/LandingHead.tt" #>
+
+<body>
+    <#@ include file="_include/navbar.tt" #>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <#= Params["_jumbotron"] #>
+        <p><a class="btn btn-primary btn-lg" href="<#= Params.SectionPath (Params.Toc.NextSection (Params.CurrentSection)) #>" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+		<#= Params.Contents #>
+	</div>
+
+    <#@ include file="_include/Footer.tt" #>
+
+    <#@ include file="_include/LandingScripts.tt" #>
+</body>
+</html>
