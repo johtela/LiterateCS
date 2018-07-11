@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Macro - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="macros">Macros</h1>
+<p>Macros are sequences of blocks that can be inserted inside markdown files. They
+correspond to C# <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region">regions</a>.
+To create a macro, a block of code should be surrounded with the <code>#region</code>
+directive. The name of the region is used as the macro name. Since macro names
+should be unique, it is disallowed to have two regions with the same name.</p>
+<p>The Macro class defines the data structure that is used to store macros. It
+implements the <code>IEnumerable&lt;BlockList&gt;</code> interface to allow iterating though
+the blocks belonging to a macro.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateProgramming.Macro">public</span> <span class="keyword">class</span> <span class="typename">Macro</span> <span class="punctuation">:</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateProgramming.BlockList>">IEnumerable</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span><span class="punctuation">&gt;</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<h2 id="fields-of-a-macro">Fields of a Macro</h2>
+<p>Macros are stored in a linked list in the same way as <a href="BlockList.html">BlockList</a>
+data structures. The only pieces of data we need to store for a macro are
+its name, the first block belonging to it <code>Start</code>, and the end marker block
+<code>End</code>. The end marker is the first block that does <em>not</em> belong to the macro.
+If the end marker is <code>null</code>, then the macro includes all the blocks until
+the end of a file.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Macro.Name">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Name <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Name.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.Name.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Name.set">private</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Name.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.Name.set">;</span> <span class="punctuation">}</span>
+		<span class="keyword" id="LiterateProgramming.Macro.Start">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> Start <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Start.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.Start.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Start.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.Start.set">;</span> <span class="punctuation">}</span>
+		<span class="keyword" id="LiterateProgramming.Macro.End">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> End <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.End.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.End.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.End.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Macro.End.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>Macros are stored in a static dictionary, whose keys are macro names.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="keyword">static</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Macro"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro">Macro</a></span><span class="punctuation">&gt;</span> <span id="LiterateProgramming.Macro._macros">_macros</span> <span class="punctuation">=</span>
+			<span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>">new</span> <span class="typename">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Macro"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro">Macro</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>The constructor is private. Macros should be created with the static
+<code>Add</code> method.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Macro.Macro(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)" data-toggle="tooltip" title="LiterateProgramming.Macro.Macro(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)">private</span> <span data-toggle="tooltip" title="LiterateProgramming.Macro.Macro(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)">Macro</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> start<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> end<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.Name">Name</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.Start">Start</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">start</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.End">End</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">end</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="ienumerable-implementation">IEnumerable Implementation</h2>
+<p>Iterator is used to implement <code>IEnumerable&lt;BlockList&gt;</code> interface.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Macro.GetEnumerator()" data-toggle="tooltip" title="LiterateProgramming.Macro.GetEnumerator()">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.IEnumerator<LiterateProgramming.BlockList>">IEnumerator</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span><span class="punctuation">&gt;</span> <span data-toggle="tooltip" title="LiterateProgramming.Macro.GetEnumerator()">GetEnumerator</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">var</span> <span id="block">block</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.Start">Start</a></span><span class="punctuation">;</span> 
+				<span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="bool">&amp;</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.End">End</a></span><span class="punctuation">;</span> 
+				<span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Next">Next</a></span><span class="punctuation">)</span>
+				<span class="keyword">yield</span> <span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="typename" data-toggle="tooltip" title="System.Collections.IEnumerator">IEnumerator</span> <span class="typename" data-toggle="tooltip" title="System.Collections.IEnumerable">IEnumerable</span><span class="punctuation">.</span><span data-toggle="tooltip" title="LiterateProgramming.Macro.System.Collections.IEnumerable.GetEnumerator()">GetEnumerator</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateProgramming.Macro.GetEnumerator()"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro.GetEnumerator()">GetEnumerator</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="creating-a-macro">Creating a Macro</h2>
+<p>The <code>Add</code> method is used to create a new macro. The method throws an
+exception if a macro with the given name is already registered.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Macro.Add(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)" data-toggle="tooltip" title="LiterateProgramming.Macro.Add(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Add(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)">static</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Macro"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro">Macro</a></span> <span data-toggle="tooltip" title="LiterateProgramming.Macro.Add(string, LiterateProgramming.BlockList, LiterateProgramming.BlockList)">Add</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> start<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> end<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="string">name</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation" data-toggle="tooltip" title="string.Trim()">.</span><span data-toggle="tooltip" title="string.Trim()">Trim</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro._macros">_macros</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.ContainsKey(string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.ContainsKey(string)">ContainsKey</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.ArgumentException">new</span> <span class="typename">ArgumentException</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation" data-toggle="tooltip" title="string.Format(string, object)">.</span><span data-toggle="tooltip" title="string.Format(string, object)">Format</span> <span class="punctuation">(</span>
+					<span class="string" data-toggle="tooltip" title="string">&quot;Macro &#39;{0}&#39; already exists.&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro">var</span> <span id="result">result</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro">new</span> <span class="typename"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro">Macro</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">start</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">end</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro._macros">_macros</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.Add(string, LiterateProgramming.Macro)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.Add(string, LiterateProgramming.Macro)">Add</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.Macro">result</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateProgramming.Macro">result</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="retrieving-a-macro">Retrieving a Macro</h2>
+<p>The <code>Get</code> method is used to find and return a macro. It throws
+an exception, if a macro with the given name is not found.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Macro.Get(string)" data-toggle="tooltip" title="LiterateProgramming.Macro.Get(string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Macro.Get(string)">static</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Macro"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro">Macro</a></span> <span data-toggle="tooltip" title="LiterateProgramming.Macro.Get(string)">Get</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="string">name</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation" data-toggle="tooltip" title="string.Trim()">.</span><span data-toggle="tooltip" title="string.Trim()">Trim</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="bool">!</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro._macros">_macros</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.ContainsKey(string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>.ContainsKey(string)">ContainsKey</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.ArgumentException">new</span> <span class="typename">ArgumentException</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation" data-toggle="tooltip" title="string.Format(string, object)">.</span><span data-toggle="tooltip" title="string.Format(string, object)">Format</span> <span class="punctuation">(</span>
+					<span class="string" data-toggle="tooltip" title="string">&quot;Macro &#39;{0}&#39; not found.&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, LiterateProgramming.Macro>"><a href="../LiterateCS/Macro.html#LiterateProgramming.Macro._macros">_macros</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">]</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

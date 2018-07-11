@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Options - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="command-line-options-usage">Command Line Options &amp; Usage</h1>
+<p><code>csweave</code> is a console tool and it is controlled primarily through command line options.
+<a href="https://github.com/commandlineparser/commandline">Command Line Parser Library</a> is used to parse
+the options. It simplifies the process and allows us to define new parameters just by adding
+properties to the Option class.</p>
+<h2 id="dependencies">Dependencies</h2>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Reflection<span class="punctuation">;</span>
+	<span class="keyword">using</span> CommandLine<span class="punctuation">;</span>
+</code></pre>
+<h2 id="output-format">Output Format</h2>
+<p>The output format is either HTML or Markdown. The following enumeration is used to define
+the possible options.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateProgramming.OutputFormat">public</span> <span class="keyword">enum</span> <span class="typename">OutputFormat</span> <span class="punctuation">{</span> <span id="LiterateProgramming.OutputFormat.md">md</span><span class="punctuation">,</span> <span id="LiterateProgramming.OutputFormat.html">html</span> <span class="punctuation">}</span>
+</code></pre>
+<h2 id="available-options">Available Options</h2>
+<p>The Option class defines the available command line options as properties. These properties
+are decorated by attributes that specify the short and long format of the option, whether
+the option is mandatory or not, its default value, and the associated help text. The type
+of the option (boolean, string, enumeration, etc.) is inferred from the type of the property.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateProgramming.Options">public</span> <span class="keyword">class</span> <span class="typename">Options</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<h3 id="filters-for-source-files">Filters for Source Files</h3>
+<p>The arguments given without an option specifiers <code>-</code> or <code>--</code> are assumed to be filters
+that specify what files are processed by the tool. You can give multiple filters or file
+names to be searched for. The filters may contain literal text and three kinds of
+wildcards that conform to the <em>glob</em> convention:</p>
+<ul>
+<li><code>?</code> matches a single character.</li>
+<li><code>*</code> matches zero or more occurrences of any character except <code>\</code>. So, this wild card
+basically matches a part of a file or a directory name.</li>
+<li><code>**</code> matches zero or more occurrences of any character including the backslash. This
+wildcard can be used to select files that reside in subdirectories.</li>
+</ul>
+<p>The file names that are matched against the filters are given relative either to the
+input folder or to the solution folder.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.ValueAttribute">Value</span> <span class="punctuation">(</span><span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="int">Min</span> <span class="punctuation">=</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="int">Max</span> <span class="punctuation">=</span> <span class="number" data-toggle="tooltip" title="int">100</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">MetaName</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;&lt;filters&gt;&quot;</span><span class="punctuation">,</span> 
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Filters for source files&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Filters">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<string>">IEnumerable</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">&gt;</span> Filters <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Filters.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Filters.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Filters.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Filters.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="solution-file">Solution File</h3>
+<p>Instead of using the input folder get the files to be processed from a MSBuild
+solution.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;s&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;solution&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="bool">Required</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Process the all the C# and markdown files residing under a msbuild &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;solution&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Solution">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Solution <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Solution.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Solution.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Solution.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Solution.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="input-folder">Input Folder</h3>
+<p>Input folder specifies the root of your source files. Typically you want to process
+all the C# and markdown files in the source folder, so you define it with the <code>-i</code>
+option and give <code>*.cs</code> and <code>*.md</code> as filters. If this option is omitted, the current
+directory is assumed to be the input directory.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;i&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;input&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="bool">Required</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;The root folder for the files to be processed. Files under this directory &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;are checked against the filters. If input folder is not specified, the current &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> 
+		<span class="string" data-toggle="tooltip" title="string">&quot;directory is used.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.InputFolder">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> InputFolder <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.InputFolder.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.InputFolder.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.InputFolder.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.InputFolder.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="output-folder">Output Folder</h3>
+<p>The output folder specifies where the tool stores the generated files. The output
+folder will contain the markdown and HTML files, as well as all the auxiliary files
+(CSS, Javascript, etc.)	needed by the documents.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;o&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;output&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="bool">Required</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Output folder where the documentation will be generated to.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.OutputFolder">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> OutputFolder <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.OutputFolder.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.OutputFolder.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.OutputFolder.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.OutputFolder.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="source-file-extension">Source File Extension</h3>
+<p><code>csweave</code> needs to recognize which of the input files are source (C#) files, and
+which ones are markdown files. Typically source files have the <code>.cs</code> extension. If
+you are using a different file extension, you can specify it with the <code>-e</code> option.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;e&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;csext&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;.cs&quot;</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;File extension for the C# source files. Used to identify source files &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;in the input folder.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.SourceExt">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> SourceExt <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.SourceExt.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.SourceExt.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.SourceExt.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.SourceExt.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="markdown-file-extension">Markdown File Extension</h3>
+<p>Similarly to C# files, markdown files are recognized by the file extension. If not
+specified, <code>.md</code> is assumed to be the extension.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;d&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;mdext&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;.md&quot;</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;File extension for the markdown files. Used to identify markdown files &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;in the input folder.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.MarkdownExt">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> MarkdownExt <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.MarkdownExt.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.MarkdownExt.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.MarkdownExt.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.MarkdownExt.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="include-subfolders">Include Subfolders</h3>
+<p>If you want the tool to scan also the subfolder of the input folder, you can give
+the <code>-r</code> option. When given, <code>csweave</code> will traverse the input folder recursively
+and process all the files matching the filters, regardless of how deep in the folder
+hierarchy they reside.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;r&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;recursive&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Searches also the subfolders of the input folder for the files to &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> 
+		<span class="string" data-toggle="tooltip" title="string">&quot;be processed.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Recursive">public</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> Recursive <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Recursive.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Recursive.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Recursive.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Recursive.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="output-format">Output Format</h3>
+<p>Output format is specified by the <code>-f</code> option. Only valid values are <code>md</code> for markdown
+and <code>html</code> for HTML documents.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;f&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;format&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat.md">md</a></span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Format of the outputted documentation; either &#39;md&#39; or &#39;html&#39;.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Format">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span> Format <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Format.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Format.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Format.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Format.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="comment-trimming">Comment Trimming</h3>
+<p>The <code>--trim</code> argument indicates whether comments extracted from the source files will be
+left-trimmed. Visual Studio likes to indent the comment blocks automatically to the same
+level as the code. When these comment lines are extracted they will contain the leading
+spaces or tabs that appear in the source file. If not trimmed, these lines will be
+interpreted as code blocks in the markdown, which is not what we usually want. So, if you
+have indented comments that you want to be considered as normal text in markdown, include
+this option in your arguments.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;t&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;trim&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Left-trim the comments before processing them to avoid interpreting them &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;as code blocks.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Trim">public</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> Trim <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Trim.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Trim.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Trim.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Trim.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="update-toc">Update TOC</h3>
+<p>If you want <code>csweave</code> to automatically add the files it processes to the table of
+contents file (<code>TOC.yml</code>), enable this option. This makes maintaining the TOC file
+easier and reminds you to update it after new files have been added.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;u&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;updatetoc&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Adds processed files that are not already in the TOC file to it.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.UpdateToc">public</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> UpdateToc <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.UpdateToc.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.UpdateToc.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.UpdateToc.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.UpdateToc.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="theme">Theme</h3>
+<p>Themes are DLLs which transform parsed data into HTML documents based on templates. Along
+with the template there are auxiliary CSS, JS, and font files that need to be deployed to
+the target folder. Theme DLLs manage those files and copy them when needed. The default theme
+is provided by <code>csweave</code>, but if you want, you can copy it and customize it to your liking.
+The <code>--theme</code> option should be given, if you want to use a custom theme.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;m&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;theme&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="object">Default</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;DefaultTheme.dll&quot;</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;The theme DLL which generates HTML documents according to page templates. &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+		<span class="string" data-toggle="tooltip" title="string">&quot;If not specified, the default theme is used.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Theme">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Theme <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="verbose-mode">Verbose Mode</h3>
+<p>If you want the tool to output information as it processes files, you can use the
+verbose option.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;v&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;verbose&quot;</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Outputs information about processed files to the standard output.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.Verbose">public</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> Verbose <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Verbose.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Verbose.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Verbose.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Verbose.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h2 id="split-file-paths">Split File Paths</h2>
+<p>In order to make reading and parsing of the file and directory paths simpler, we will	
+define few helper properties that present them as <a href="SplitPath.html">SplitPath</a>
+structures. The idea behind this data type is explained on its own documentation page,
+but in a nutshell its main purpose is to separate the two parts of a file path: the
+absolute base path and the relative file path. Doing this makes the code that needs
+these paths more succinct and readable. It also makes mapping the paths to hyperlinks
+easier.</p>
+<p>The files produced by <code>csweave</code> are stored in a similar directory hierarchy as the
+input files. The base directory for the input files is defined by the <code>-i</code> option, or
+if a solution file is provided (with the <code>-s</code> option), the base input directory will
+be the one where the solution file resides. If neither is given, the current directory
+is used as the base input path.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Options.InputPath">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> InputPath <span class="punctuation">=&gt;</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Solution">Solution</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">?</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.Base(string)">Base</a></span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">GetDirectoryName</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Solution">Solution</a></span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">:</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.InputFolder">InputFolder</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">?</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.Base(string)">Base</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.InputFolder">InputFolder</a></span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">:</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.Base(string)">Base</a></span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.IO.Directory">Directory</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Directory.GetCurrentDirectory()">.</span><span data-toggle="tooltip" title="System.IO.Directory.GetCurrentDirectory()">GetCurrentDirectory</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>The output base path is given with the mandatory <code>-o</code> option. The <code>OutputPath</code> property
+just wraps it inside the <code>SplitPath</code> structure.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Options.OutputPath">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> OutputPath <span class="punctuation">=&gt;</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath.Base(string)"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.Base(string)">Base</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.OutputFolder">OutputFolder</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>Lastly, the theme path is constructed. The base path of the theme is the directory
+where the theme DLL resides. If the theme path given as an option is not an absolute
+one, it is assumed that the path points to a folder under the application directory
+(where the executables reside).	By default, these files reside under the directory	
+'<em>applicationDirectory</em>\Themes', each theme in its own subdirectory.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Options.ThemePath">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> ThemePath
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.ThemePath.get">get</span>
+			<span class="punctuation">{</span>
+				<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="fullPath">fullPath</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.IsPathRooted(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.IsPathRooted(string)">IsPathRooted</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Theme">Theme</a></span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="string">?</span> <span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Theme">Theme</a></span> <span class="punctuation" data-toggle="tooltip" title="string">:</span>
+					<span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">.</span><span data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">Combine</span> <span class="punctuation">(</span>
+						<span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">GetDirectoryName</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.Reflection.Assembly">Assembly</span><span class="punctuation" data-toggle="tooltip" title="System.Reflection.Assembly.GetEntryAssembly()">.</span><span data-toggle="tooltip" title="System.Reflection.Assembly.GetEntryAssembly()">GetEntryAssembly</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Location</span><span class="punctuation">)</span><span class="punctuation">,</span> 
+						<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Theme">Theme</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">return</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath">new</span> <span class="typename"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetDirectoryName(string)">GetDirectoryName</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">fullPath</span><span class="punctuation">)</span><span class="punctuation">,</span>
+					<span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetFileName(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetFileName(string)">GetFileName</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">fullPath</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+<h2 id="usage-examples">Usage Examples</h2>
+<p>Below are some example command lines for the most common usage scenarios.</p>
+<h3 id="create-markdown-output">Create Markdown Output</h3>
+<p>The following command line processes all C# and markdown files in a solution
+(including all projects and subfolders), and generates markdown output to a
+directory called &quot;docs&quot;. It also includes the <code>-t</code> switch to strip the indentation
+from the comments. This setting is usually on.</p>
+<pre><code>csweave **.cs **.md -s &lt;solution&gt;.sln -o docs -f md -t
+</code></pre>
+<h3 id="create-html-output-from-files-in-a-directory">Create HTML Output from Files in a Directory</h3>
+<p>The example below scans the subfolder &quot;src&quot; for C# files, and the root folder
+for markdown files. It produces HTML and outputs information to console for
+each processed file (verbose option).</p>
+<p><strong>Note 1:</strong> If you use the <code>-i</code> switch to specify the input folder, and you want
+to process any subfolders under it, you must include the <code>-r</code> option to recursively
+scan them. Specifying the subfolder in the filters is not enough.</p>
+<p><strong>Note 2:</strong> Since we are just reading individual files C# files inside a directory
+and do not provide a solution file, <code>csweave</code> cannot use Roslyn to compile the
+code and produce semantic information. So, the syntax highlighting is limited
+to basic tokens, and the links and type information is not available in the
+produced HTML files.</p>
+<pre><code>csweave src\*.cs *.md -i &lt;root&gt; -r -o docs -f html -t -v
+</code></pre>
+<h3 id="create-html-output-for-a-solution">Create HTML Output for a Solution</h3>
+<p>The last example uses all the available functionality. It produces documentation
+for the <code>csweave</code> tool itself. It specifies the solution file, and filters out
+C# files under &quot;src&quot; and &quot;CSWeave.Theme&quot; subdirectories, along with the markdown
+files under the solution directory.</p>
+<p>Table of contents file is updated while the files are processed. This is specified
+with the <code>-u</code> switch.</p>
+<pre><code>csweave src\*.cs CSWeave.Theme\*.cs *.md -s ..\..\LiterateProgramming.sln -o ..\..\docs -f html -t -v -u
+</code></pre>
+<p><strong>Tip:</strong> If you think the command line above is a bit dense, you can also use the
+long format for the options to make them more understandable. The options are
+case-insensitive, so you can write them in any way you like.</p>
+<pre><code>csweave src\*.cs CSWeave.Theme\*.cs *.md --Solution ..\..\LiterateProgramming.sln --Output ..\..\docs --Format html --Trim --Verbose --UpdateTOC
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

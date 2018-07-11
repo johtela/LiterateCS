@@ -1,0 +1,129 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Theme - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="theme-base-class">Theme Base Class</h1>
+<p>Theme assemblies have to include a class which inherits from the Theme class
+and implements a few abstract methods. The Theme base class defines the
+interface through which the HtmlGenerator class can use the theme.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+	<span class="keyword">using</span> ExtensionCord<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateCS.Theme.Theme">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="typename">Theme</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<p>The first method that needs to be implemented returns the list of page
+templates available in the theme. A theme can have as many templates
+as it likes, but it must define at least one: the default template. The
+name of the default template should be &quot;default&quot;.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.AvalailablePageTemplates">public</span> <span class="keyword">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">[</span><span class="punctuation">]</span> AvalailablePageTemplates <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AvalailablePageTemplates.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AvalailablePageTemplates.get">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The second method to implement performs the rendering of the page using
+the template specified. The	default template is used, if <code>pageTemplate</code>
+is <code>null</code>. Page parameters are set by the HtmlGerenator and passed to
+the render method.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">RenderPage</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> pageTemplate<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams">PageParams</a></span> pageParams<span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">;</span>
+</code></pre>
+<p>Theme class provides a default implementation for copying the auxiliary
+files needed by the HTML pages. The default implementation copies all
+files under the theme directory except the ones with extension &quot;.dll&quot; or
+&quot;.pdb&quot;.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)" data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)">virtual</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)">CopyAuxiliaryFiles</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> themeDir<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> outputDir<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers">DirHelpers</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">CopySubDirectories</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">themeDir</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">outputDir</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;*&quot;</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">var</span> file <span class="keyword">in</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers">DirHelpers</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">Dir</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">themeDir</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;*&quot;</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="bool">!</span><span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetExtension(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetExtension(string)">GetExtension</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">file</span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="string.In<string>(params string[])">.</span><span data-toggle="tooltip" title="string.In<string>(params string[])">In</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;.dll&quot;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;.pdb&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span>
+					<span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.Copy(string, string, bool)">.</span><span data-toggle="tooltip" title="System.IO.File.Copy(string, string, bool)">Copy</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">file</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">file</span><span class="punctuation" data-toggle="tooltip" title="string.Replace(string, string)">.</span><span data-toggle="tooltip" title="string.Replace(string, string)">Replace</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">themeDir</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">outputDir</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BlockList - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="source-blocks">Source Blocks</h1>
+<p>In order to extract the documentation from the code, <code>csweave</code> needs to split a source file
+into blocks which represent either text or code. Blocks capture parts of a source file and
+make it easier to process them differently depending on their kind.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Text<span class="punctuation">;</span>
+	<span class="keyword">using</span> ExtensionCord<span class="punctuation">;</span>
+</code></pre>
+<h2 id="block-kinds">Block Kinds</h2>
+<p>A block can capture either documentation written in markdown or C# code. The enumeration
+below indicates which one we are dealing with.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateProgramming.BlockKind">public</span> <span class="keyword">enum</span> <span class="typename">BlockKind</span> <span class="punctuation">{</span> <span id="LiterateProgramming.BlockKind.Markdown">Markdown</span><span class="punctuation">,</span> <span id="LiterateProgramming.BlockKind.Code">Code</span> <span class="punctuation">}</span>
+</code></pre>
+<h2 id="linked-list-of-blocks">Linked List of Blocks</h2>
+<p>The block data structure itself is a simple singly-linked list. It implements
+<code>IEnumerable&lt;T&gt;</code> to make traversing the structure easier.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateProgramming.BlockList">public</span> <span class="keyword">class</span> <span class="typename">BlockList</span> <span class="punctuation">:</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateProgramming.BlockList>">IEnumerable</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span><span class="punctuation">&gt;</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<p>The properties below describe the data associated with a block. <code>Kind</code> tells the
+whether it is a code or text block. <code>Contents</code> is the part of the source file
+that was extracted. Comment delimiters are excluded from the text, so that
+contents is valid markdown. <code>Next</code> points to the following block. Obviously
+code blocks are in the same order as they appear in the source file.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.Kind">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind">BlockKind</a></span> Kind <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Kind.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Kind.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Kind.set">private</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Kind.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Kind.set">;</span> <span class="punctuation">}</span>
+		<span class="keyword" id="LiterateProgramming.BlockList.Contents">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Contents <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Contents.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Contents.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Contents.set">private</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Contents.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Contents.set">;</span> <span class="punctuation">}</span>
+		<span class="keyword" id="LiterateProgramming.BlockList.Next">public</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> Next <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Next.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Next.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Next.set">internal</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList.Next.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList.Next.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The following constants describe how the code blocks are decorated in the outputted
+markdown or HTML. In the case of markdown output, the code blocks are surrounded
+by standard triple backticks followed by the language designator. In HTML output the
+header and footer contain tags which have the required CSS classes in order for the
+syntax highlighting to work.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateProgramming.BlockList._mdCodeHeader">_mdCodeHeader</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">@&quot;``` csharp&quot;</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateProgramming.BlockList._mdCodeFooter">_mdCodeFooter</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">@&quot;```&quot;</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateProgramming.BlockList._htmlCodeHeader">_htmlCodeHeader</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">@&quot;&lt;pre class=&quot;&quot;csharp&quot;&quot;&gt;&lt;code class=&quot;&quot;csharp&quot;&quot;&gt;&quot;</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateProgramming.BlockList._htmlCodeFooter">_htmlCodeFooter</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">@&quot;&lt;/code&gt;&lt;/pre&gt;&quot;</span><span class="punctuation">;</span>
+</code></pre>
+<p>The string builder is used to construct contents of a block. It is discarded after
+its content is extracted.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">internal</span> <span class="typename" data-toggle="tooltip" title="System.Text.StringBuilder">StringBuilder</span> <span id="LiterateProgramming.BlockList._builder">_builder</span><span class="punctuation">;</span>
+</code></pre>
+<h3 id="creating-a-block">Creating a Block</h3>
+<p>Blocks are constructed dynamically as the source file is parsed. When creating a new
+block only the kind of the block and the output format needs to be specified. Based
+on those the constructor initializes a new block and inserts a correct header to it.</p>
+<p>In markdown output whitespace is a bit more important than in HTML. That is why
+we sometimes need to add additional line breaks to the output.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockKind, LiterateProgramming.OutputFormat)" data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockKind, LiterateProgramming.OutputFormat)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockKind, LiterateProgramming.OutputFormat)">BlockList</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind">BlockKind</a></span> kind<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span> format<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockKind">kind</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder">=</span> <span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">new</span> <span class="typename">StringBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Create a new markdown block.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.BlockList(string)" data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(string)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(string)">BlockList</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> contents<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">=</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind">BlockKind</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind.Markdown">Markdown</a></span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">contents</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Cloning a single block.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockList)" data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockList)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.BlockList(LiterateProgramming.BlockList)">BlockList</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> block<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h3 id="closing-a-block">Closing a Block</h3>
+<p>After a block is filled with its content it can be closed. Closing involves
+adding the correct header and footer to the output. Code blocks are trimmed
+before these are added. If they do not contain any text after trimming, then we
+don't add the header and footer at all. After the <code>StringBuilder</code> object has
+converted the contents to string, it can be disposed by assigning <code>null</code> to the
+field.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.Close(LiterateProgramming.OutputFormat)" data-toggle="tooltip" title="LiterateProgramming.BlockList.Close(LiterateProgramming.OutputFormat)">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.Close(LiterateProgramming.OutputFormat)">Close</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span> format<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind">BlockKind</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind.Code">Code</a></span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimStart()"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.TrimStart()">TrimStart</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimEnd()"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.TrimEnd()">TrimEnd</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span> 
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Length</span> <span class="punctuation" data-toggle="tooltip" title="bool">&gt;</span> <span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.Insert(int, string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.Insert(int, string)">Insert</span> <span class="punctuation">(</span><span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.OutputFormat">format</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat.html">html</a></span> <span class="punctuation" data-toggle="tooltip" title="string">?</span>
+						<span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._htmlCodeHeader">_htmlCodeHeader</a></span> <span class="punctuation" data-toggle="tooltip" title="string">:</span>
+						<span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._mdCodeHeader">_mdCodeHeader</a></span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span class="typename" data-toggle="tooltip" title="System.Environment">Environment</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">NewLine</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.Append(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.Append(string)">Append</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.Environment">Environment</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">NewLine</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat">format</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat.html">html</a></span> <span class="punctuation" data-toggle="tooltip" title="string">?</span>
+						 <span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._htmlCodeFooter">_htmlCodeFooter</a></span> <span class="punctuation" data-toggle="tooltip" title="string">:</span>
+						 <span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._mdCodeFooter">_mdCodeFooter</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>
+			<span class="punctuation">}</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder">=</span> <span class="keyword">null</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Code blocks are trimmed to get rid of extra white space at the beginning and
+end of them. This makes the verbatim output more compact and readable. The
+following methods trim all whitespace from the beginning and from the end
+of the block. Note that we don't remove the whitespace before the first
+non-empty line, so indentation is preserved.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.TrimStart()" data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimStart()">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimStart()">TrimStart</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">while</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList.RemoveFirstEmptyLine()"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.RemoveFirstEmptyLine()">RemoveFirstEmptyLine</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateProgramming.BlockList.TrimEnd()" data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimEnd()">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.TrimEnd()">TrimEnd</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> <span id="last">last</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Length</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> <span id="i">i</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="int">last</span><span class="punctuation">;</span>
+			<span class="keyword">while</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&gt;=</span> <span class="number" data-toggle="tooltip" title="int">0</span> <span class="punctuation" data-toggle="tooltip" title="bool">&amp;&amp;</span> <span class="keyword" data-toggle="tooltip" title="char">char</span><span class="punctuation" data-toggle="tooltip" title="char.IsWhiteSpace(char)">.</span><span data-toggle="tooltip" title="char.IsWhiteSpace(char)">IsWhiteSpace</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="int">i</span><span class="punctuation" data-toggle="tooltip" title="int">--</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&lt;</span> <span data-toggle="tooltip" title="int">last</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.Remove(int, int)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.Remove(int, int)">Remove</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="int">+</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="int">last</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span data-toggle="tooltip" title="int">i</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The method below removes the first line of a block, if it contains just
+whitespace. It handles both Windows and Unix style line delimiters. The
+method returns true, if it removed a line, and false if it did not.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.RemoveFirstEmptyLine()" data-toggle="tooltip" title="LiterateProgramming.BlockList.RemoveFirstEmptyLine()">private</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.RemoveFirstEmptyLine()">RemoveFirstEmptyLine</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> i <span class="punctuation">=</span> <span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">;</span>
+			<span class="keyword">while</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&lt;</span> <span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Length</span> <span class="punctuation" data-toggle="tooltip" title="bool">&amp;&amp;</span> <span class="keyword" data-toggle="tooltip" title="char">char</span><span class="punctuation" data-toggle="tooltip" title="char.IsWhiteSpace(char)">.</span><span data-toggle="tooltip" title="char.IsWhiteSpace(char)">IsWhiteSpace</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span><span class="punctuation">]</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">&amp;&amp;</span>
+				<span class="punctuation" data-toggle="tooltip" title="bool">!</span><span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span><span class="punctuation">]</span><span class="punctuation" data-toggle="tooltip" title="char.In<char>(params char[])">.</span><span data-toggle="tooltip" title="char.In<char>(params char[])">In</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;\r&#39;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="char">&#39;\n&#39;</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="int">i</span><span class="punctuation" data-toggle="tooltip" title="int">++</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Length</span> <span class="punctuation" data-toggle="tooltip" title="bool">||</span> <span class="punctuation" data-toggle="tooltip" title="bool">!</span><span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span><span class="punctuation">]</span><span class="punctuation" data-toggle="tooltip" title="char.In<char>(params char[])">.</span><span data-toggle="tooltip" title="char.In<char>(params char[])">In</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;\r&#39;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="char">&#39;\n&#39;</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">return</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList._builder">_builder</a></span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.Remove(int, int)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.Remove(int, int)">Remove</span> <span class="punctuation">(</span><span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="int">+</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h3 id="ienumerable-implementation">IEnumerable Implementation</h3>
+<p>Iterator is used to implement <code>IEnumerable&lt;BlockList&gt;</code> interface.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockList.GetEnumerator()" data-toggle="tooltip" title="LiterateProgramming.BlockList.GetEnumerator()">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.IEnumerator<LiterateProgramming.BlockList>">IEnumerator</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span><span class="punctuation">&gt;</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.GetEnumerator()">GetEnumerator</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">var</span> <span id="block">block</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">this</span><span class="punctuation">;</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">;</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockList">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Next">Next</a></span><span class="punctuation">)</span>
+				<span class="keyword">yield</span> <span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="typename" data-toggle="tooltip" title="System.Collections.IEnumerator">IEnumerator</span> <span class="typename" data-toggle="tooltip" title="System.Collections.IEnumerable">IEnumerable</span><span class="punctuation">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList.System.Collections.IEnumerable.GetEnumerator()">GetEnumerator</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList.GetEnumerator()"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.GetEnumerator()">GetEnumerator</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

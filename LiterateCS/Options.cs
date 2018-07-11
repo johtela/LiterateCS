@@ -2,19 +2,18 @@
 # Command Line Options & Usage
 
 `csweave` is a console tool and it is controlled primarily through command line options. 
-[Command Line Parser Library](https://commandline.codeplex.com/) is used to parse the options. It
-simplifies the process and allows us to define new parameters just by adding properties to the 
-Option class.
+[Command Line Parser Library](https://github.com/commandlineparser/commandline) is used to parse 
+the options. It simplifies the process and allows us to define new parameters just by adding 
+properties to the Option class.
 
 ## Dependencies
 */
 namespace LiterateProgramming
 {
-	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Reflection;
-	using McMaster.Extensions.CommandLineUtils;
+	using CommandLine;
 	/*
 	## Output Format
 	The output format is either HTML or Markdown. The following enumeration is used to define 
@@ -29,8 +28,6 @@ namespace LiterateProgramming
 	the option is mandatory or not, its default value, and the associated help text. The type 
 	of the option (boolean, string, enumeration, etc.) is inferred from the type of the property.
 	*/
-	[Command ("literatecs", Description = "Literate programming tool for C#")]
-	[HelpOption ("-?")]
 	public class Options
 	{
 		/*
@@ -49,18 +46,18 @@ namespace LiterateProgramming
 		The file names that are matched against the filters are given relative either to the 
 		input folder or to the solution folder.
 		*/
-		[Option (CommandOptionType.MultipleValue, 
-			Description = "Filters used to select the source files")]
-		public IList<string> Filters { get; set; }
+		[Value (0, Min = 1, Max = 100, MetaName = "<filters>", 
+		HelpText = "Filters for source files")]
+		public IEnumerable<string> Filters { get; set; }
 
 		/*
 		### Solution File
 		Instead of using the input folder get the files to be processed from a MSBuild 
 		solution.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "s", LongName = "solution", 
-			Description = "Process the all the C# and markdown files residing under a " +
-			"msbuild solution")]
+		[Option ('s', "solution", Required = false,
+		HelpText = "Process the all the C# and markdown files residing under a msbuild " +
+		"solution")]
 		public string Solution { get; set; }
 
 		/*
@@ -70,10 +67,10 @@ namespace LiterateProgramming
 		option and give `*.cs` and `*.md` as filters. If this option is omitted, the current 
 		directory is assumed to be the input directory.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "i", LongName = "input", 
-			Description = "The root folder for the files to be processed. Files under this " +
-			"directory are checked against the filters. If input folder is not specified, " +
-			"the current directory is used.")]
+		[Option ('i', "input", Required = false,
+		HelpText = "The root folder for the files to be processed. Files under this directory " +
+		"are checked against the filters. If input folder is not specified, the current " + 
+		"directory is used.")]
 		public string InputFolder { get; set; }
 
 		/*
@@ -82,8 +79,8 @@ namespace LiterateProgramming
 		folder will contain the markdown and HTML files, as well as all the auxiliary files 
 		(CSS, Javascript, etc.)	needed by the documents.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "o", LongName = "output", 
-			Description = "Output folder where the documentation will be generated to.")]
+		[Option ('o', "output", Required = true,
+		HelpText = "Output folder where the documentation will be generated to.")]
 		public string OutputFolder { get; set; }
 
 		/*
@@ -92,20 +89,20 @@ namespace LiterateProgramming
 		which ones are markdown files. Typically source files have the `.cs` extension. If 
 		you are using a different file extension, you can specify it with the `-e` option.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "e", LongName = "csext",
-			Description = "File extension for the C# source files. Used to identify " +
-			"source files in the input folder.")]
-		public string SourceExt { get; set; } = ".cs";
+		[Option ('e', "csext", Default = ".cs",
+		HelpText = "File extension for the C# source files. Used to identify source files " +
+		"in the input folder.")]
+		public string SourceExt { get; set; }
 
 		/*
 		### Markdown File Extension
 		Similarly to C# files, markdown files are recognized by the file extension. If not 
 		specified, `.md` is assumed to be the extension.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName =	"d", LongName = "mdext",
-			Description = "File extension for the markdown files. Used to identify " +
-			"markdown files in the input folder.")]
-		public string MarkdownExt { get; set; } = ".md";
+		[Option ('d', "mdext", Default = ".md",
+		HelpText = "File extension for the markdown files. Used to identify markdown files " +
+		"in the input folder.")]
+		public string MarkdownExt { get; set; }
 
 		/*
 		### Include Subfolders
@@ -114,9 +111,9 @@ namespace LiterateProgramming
 		and process all the files matching the filters, regardless of how deep in the folder 
 		hierarchy they reside.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "r", LongName = "recursive", 
-			Description = "Searches also the subfolders of the input folder for the files " +
-			"to be processed.")]
+		[Option ('r', "recursive", Default = false,
+		HelpText = "Searches also the subfolders of the input folder for the files to " + 
+		"be processed.")]
 		public bool Recursive { get; set; }
 
 		/*
@@ -124,9 +121,9 @@ namespace LiterateProgramming
 		Output format is specified by the `-f` option. Only valid values are `md` for markdown 
 		and `html` for HTML documents.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "f", LongName = "format", 
-			Description = "Format of the outputted documentation; either 'md' or 'html'.")]
-		public OutputFormat Format { get; set; } = OutputFormat.md;
+		[Option ('f', "format", Default = OutputFormat.md,
+		HelpText = "Format of the outputted documentation; either 'md' or 'html'.")]
+		public OutputFormat Format { get; set; }
 
 		/*
 		### Comment Trimming
@@ -138,9 +135,9 @@ namespace LiterateProgramming
 		have indented comments that you want to be considered as normal text in markdown, include 
 		this option in your arguments.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "t", LongName = "trim", 
-			Description = "Left-trim the comments before processing them to avoid interpreting " +
-			"them as code blocks.")]
+		[Option ('t', "trim", Default = false,
+		HelpText = "Left-trim the comments before processing them to avoid interpreting them " +
+		"as code blocks.")]
 		public bool Trim { get; set; }
 
 		/*
@@ -149,8 +146,8 @@ namespace LiterateProgramming
 		contents file (`TOC.yml`), enable this option. This makes maintaining the TOC file
 		easier and reminds you to update it after new files have been added.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "u", LongName = "updatetoc",
-			Description = "Adds processed files that are not already in the TOC file to it.")]
+		[Option ('u', "updatetoc", Default = false,
+		HelpText = "Adds processed files that are not already in the TOC file to it.")]
 		public bool UpdateToc { get; set; }
 
 		/*
@@ -161,63 +158,20 @@ namespace LiterateProgramming
 		is provided by `csweave`, but if you want, you can copy it and customize it to your liking.
 		The `--theme` option should be given, if you want to use a custom theme.
 		*/
-		[Option (CommandOptionType.SingleValue, ShortName = "m", LongName = "theme", 
-			Description = "The theme DLL which generates HTML documents according to page " +
-			"templates. If not specified, the default theme is used.")]
-		public string Theme { get; set; } = @"Themes\Default\DefaultTheme.dll";
+		[Option ('m', "theme", Default = "DefaultTheme.dll",
+		HelpText = "The theme DLL which generates HTML documents according to page templates. " +
+		"If not specified, the default theme is used.")]
+		public string Theme { get; set; }
 
 		/*
 		### Verbose Mode
 		If you want the tool to output information as it processes files, you can use the 
 		verbose option.
 		*/
-		[Option (CommandOptionType.NoValue, ShortName = "v", LongName = "verbose",
-			Description = "Outputs information about processed files to the standard output.")]
+		[Option ('v', "verbose",
+		HelpText = "Outputs information about processed files to the standard output.")]
 		public bool Verbose { get; set; }
 
-		/*
-		## Generating Documentation
-
-		Finally we create a [Weaver](Weaver.html) object and call its `Generate` 
-		method to generate the documentation according to the options.
-		*/
-		private int OnExecute ()
-		{
-			try
-			{
-				var weaver = Format == OutputFormat.html ?
-					new HtmlWeaver (this) :
-					(Weaver)new MdWeaver (this);
-				weaver.GenerateDocumentation ();
-			}
-			catch (Exception e)
-			{
-				/*
-				If an exception is thrown during the process, its error message is 
-				outputted and the program is terminated with an error code.
-				*/
-				#region Main Error Handler
-
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine ("Fatal error in document generation:");
-				Console.WriteLine (e.Message);
-				Console.ResetColor ();
-				Console.WriteLine (e.StackTrace);
-				if (e.InnerException != null)
-				{
-					Console.WriteLine ("Inner exception:");
-					Console.WriteLine (e.InnerException.Message);
-					Console.WriteLine (e.InnerException.StackTrace);
-				}
-				return 1;
-				/*
-				_This code block is used as an example on how to embed code into
-				markdown files._
-				*/
-				#endregion
-			}
-			return 0;
-		}
 		/*
 		## Split File Paths
 		In order to make reading and parsing of the file and directory paths simpler, we will	
@@ -302,14 +256,14 @@ csweave src\*.cs *.md -i <root> -r -o docs -f html -t -v
 
 The last example uses all the available functionality. It produces documentation
 for the `csweave` tool itself. It specifies the solution file, and filters out
-C# files under "src" and "LiterateCS.Theme" subdirectories, along with the markdown
+C# files under "src" and "CSWeave.Theme" subdirectories, along with the markdown
 files under the solution directory.
 
 Table of contents file is updated while the files are processed. This is specified
 with the `-u` switch.
 
 ```
-csweave src\*.cs LiterateCS.Theme\*.cs *.md -s ..\..\LiterateProgramming.sln -o ..\..\docs -f html -t -v -u
+csweave src\*.cs CSWeave.Theme\*.cs *.md -s ..\..\LiterateProgramming.sln -o ..\..\docs -f html -t -v -u
 ```
 
 **Tip:** If you think the command line above is a bit dense, you can also use the 
@@ -317,6 +271,6 @@ long format for the options to make them more understandable. The options are
 case-insensitive, so you can write them in any way you like.
 
 ```
-csweave src\*.cs LiterateCS.Theme\*.cs *.md --Solution ..\..\LiterateProgramming.sln --Output ..\..\docs --Format html --Trim --Verbose --UpdateTOC
+csweave src\*.cs CSWeave.Theme\*.cs *.md --Solution ..\..\LiterateProgramming.sln --Output ..\..\docs --Format html --Trim --Verbose --UpdateTOC
 ```
 */

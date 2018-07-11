@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MdWeaver - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="markdown-weaver">Markdown Weaver</h1>
+<p>Now we can look at how markdown output is generated. This is the easier of the
+two use cases. We only need to split source files into comments and code and
+<em>weave</em> the generated blocks to the output files. The splitting part is done
+in the <a href="BlockBuilder.html">BlockBuilder</a> class. The markdown weaver takes the
+generated block lists and writes them verbatim to the output files.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> Microsoft<span class="punctuation">.</span>CodeAnalysis<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateProgramming.MdWeaver">public</span> <span class="keyword">class</span> <span class="typename">MdWeaver</span> <span class="punctuation">:</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Weaver"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver">Weaver</a></span>
+	<span class="punctuation">{</span>
+		<span class="keyword" id="LiterateProgramming.MdWeaver.MdWeaver(LiterateProgramming.Options)" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.MdWeaver(LiterateProgramming.Options)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.MdWeaver(LiterateProgramming.Options)">MdWeaver</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Options.html#LiterateProgramming.Options">Options</a></span> options<span class="punctuation">)</span>
+			<span class="punctuation" data-toggle="tooltip" title="void">:</span> <span class="keyword" data-toggle="tooltip" title="void">base</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Options">options</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span> <span class="punctuation">}</span>
+</code></pre>
+<h2 id="generating-output">Generating Output</h2>
+<p>The first method to be implemented is to generate documentation	from
+an input directory. We use the inherited function to enumerate input
+files of a specific type. We transform the files by calling the
+appropriate <code>Weave*</code> function.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.MdWeaver.GenerateFromFiles()" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromFiles()">protected</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromFiles()">override</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromFiles()">GenerateFromFiles</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath">var</span> file <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.SourceFiles()"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.SourceFiles()">SourceFiles</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCode(LiterateProgramming.SplitPath)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.WeaveFromCode(LiterateProgramming.SplitPath)">WeaveFromCode</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">file</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath">var</span> file <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.MarkdownFiles()"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.MarkdownFiles()">MarkdownFiles</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)">WeaveFromMarkdown</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">file</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The second options is to use a solution as an input. Again we iterate
+markdown and C# source files separately and call the correct method to
+transform them to output.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.MdWeaver.GenerateFromSolution()" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromSolution()">protected</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromSolution()">override</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.GenerateFromSolution()">GenerateFromSolution</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span> 
+			<span class="keyword" data-toggle="tooltip" title="Microsoft.Build.Construction.SolutionFile">var</span> <span id="solutionFile">solutionFile</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.MSBuildHelpers"><a href="../LiterateCS/MSBuildHelpers.html#LiterateProgramming.MSBuildHelpers">MSBuildHelpers</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.MSBuildHelpers.OpenSolution(string)">.</span><span data-toggle="tooltip" title="LiterateProgramming.MSBuildHelpers.OpenSolution(string)"><a href="../LiterateCS/MSBuildHelpers.html#LiterateProgramming.MSBuildHelpers.OpenSolution(string)">OpenSolution</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Solution">Solution</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.Tuple<LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document>">var</span> doc <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.CSharpDocumentsInSolution(Microsoft.Build.Construction.SolutionFile)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.CSharpDocumentsInSolution(Microsoft.Build.Construction.SolutionFile)">CSharpDocumentsInSolution</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="Microsoft.Build.Construction.SolutionFile">solutionFile</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCSharpDocument(LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.WeaveFromCSharpDocument(LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document)">WeaveFromCSharpDocument</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Tuple<LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document>">doc</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">Item1</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="System.Tuple<LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document>">doc</span><span class="punctuation" data-toggle="tooltip" title="Microsoft.CodeAnalysis.Document">.</span><span data-toggle="tooltip" title="Microsoft.CodeAnalysis.Document">Item2</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath">var</span> inputFile <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.MarkdownFilesInSolution(Microsoft.Build.Construction.SolutionFile)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.MarkdownFilesInSolution(Microsoft.Build.Construction.SolutionFile)">MarkdownFilesInSolution</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="Microsoft.Build.Construction.SolutionFile">solutionFile</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)">WeaveFromMarkdown</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">inputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h3 id="weaving-the-output">Weaving the Output</h3>
+<p>The rest of the code in this class consist of helper functions which
+split the input files to blocks and compile the output from them.
+Since the blocks already contain valid markdown, no further processing
+is needed to transform them.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromMarkdown(LiterateProgramming.SplitPath)">WeaveFromMarkdown</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> mdFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> <span id="outputFile">outputFile</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)">CreateOutputPath</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">mdFile</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.MarkdownExt">MarkdownExt</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)">OutputBlocks</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Weaver.BlockListFromMarkdown(string)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.BlockListFromMarkdown(string)">BlockListFromMarkdown</a></span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">mdFile</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateProgramming.MdWeaver.WeaveFromCode(LiterateProgramming.SplitPath)" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCode(LiterateProgramming.SplitPath)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCode(LiterateProgramming.SplitPath)">WeaveFromCode</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> codeFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> outputFile <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)">CreateOutputPath</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">codeFile</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.MarkdownExt">MarkdownExt</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)">OutputBlocks</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Weaver.BlockListFromCode(string)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.BlockListFromCode(string)">BlockListFromCode</a></span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">codeFile</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateProgramming.MdWeaver.WeaveFromCSharpDocument(LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document)" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCSharpDocument(LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.WeaveFromCSharpDocument(LiterateProgramming.SplitPath, Microsoft.CodeAnalysis.Document)">WeaveFromCSharpDocument</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> codeFile<span class="punctuation">,</span> 
+			<span class="typename" data-toggle="tooltip" title="Microsoft.CodeAnalysis.Document">Document</span> document<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> outputFile <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.CreateOutputPath(LiterateProgramming.SplitPath, string)">CreateOutputPath</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">codeFile</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.MarkdownExt">MarkdownExt</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)"><a href="../LiterateCS/MdWeaver.html#LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)">OutputBlocks</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Weaver.BlockListFromDocument(Microsoft.CodeAnalysis.Document)"><a href="../LiterateCS/Weaver.html#LiterateProgramming.Weaver.BlockListFromDocument(Microsoft.CodeAnalysis.Document)">BlockListFromDocument</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="Microsoft.CodeAnalysis.Document">document</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)" data-toggle="tooltip" title="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.MdWeaver.OutputBlocks(LiterateProgramming.BlockList, string)">OutputBlocks</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> blocks<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> outputFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamWriter">var</span> <span id="writer">writer</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.CreateText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.CreateText(string)">CreateText</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">outputFile</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">var</span> block <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">blocks</span><span class="punctuation">)</span>
+					<span data-toggle="tooltip" title="System.IO.StreamWriter">writer</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StreamWriter.Write(string)">.</span><span data-toggle="tooltip" title="System.IO.StreamWriter.Write(string)">Write</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

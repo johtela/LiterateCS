@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TocManager - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="toc-manager">TOC Manager</h1>
+<p>Although the TOC data structure is defined in the <a href="../LiterateCS.Theme/Toc.html">LiterateCS.Theme</a>
+assembly, the code that loads and saves TOC can be found here, under the TocManager class.
+Themes only need to read the table of contents; loading and updating it is handled by the
+main application.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>TocManager is a helper class that groups together the functionality related
+to the file format and serialization. It uses <a href="https://github.com/aaubry/YamlDotNet">YamlDotNet</a>
+library to parse and deserialize the TOC file. The format of the file is described
+on a <a href="../TableOfContents.html">separate page</a>.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> LiterateCS<span class="punctuation">.</span>Theme<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Linq<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Text<span class="punctuation">;</span>
+	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>Serialization<span class="punctuation">;</span>
+	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>Serialization<span class="punctuation">.</span>NamingConventions<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateProgramming.TocManager">public</span> <span class="keyword">class</span> <span class="typename">TocManager</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<h2 id="toc-lifespan">TOC Lifespan</h2>
+<p>When a TocManager is created, a filename and the actual Toc object are
+provided. These are kept in private fields for the other methods to access.
+If new sections are added, they are be kept in a separate list to keep the
+Toc	object immutable during the operation of the program.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> <span id="LiterateProgramming.TocManager._toc">_toc</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateProgramming.TocManager._filename">_filename</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span id="LiterateProgramming.TocManager._addedSections">_addedSections</span><span class="punctuation">;</span>
+</code></pre>
+<p>The users of the class naturally need to access the Toc object. This is
+possible through a read-only property.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.Toc">public</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> Toc <span class="punctuation">=&gt;</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._toc">_toc</a></span><span class="punctuation">;</span>
+</code></pre>
+<h2 id="constructing-toc-manager">Constructing TOC Manager</h2>
+<p>There are two ways to create a TocManager. When a TOC file already exist, it
+is loaded and initialized automatically.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.TocManager(LiterateCS.Theme.Toc, string)" data-toggle="tooltip" title="LiterateProgramming.TocManager.TocManager(LiterateCS.Theme.Toc, string)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.TocManager(LiterateCS.Theme.Toc, string)">TocManager</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> toc<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> filename<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Toc">toc</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.ArgumentNullException">new</span> <span class="typename">ArgumentNullException</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="?">nameof</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Toc">toc</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._toc">_toc</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Toc">=</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc">toc</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._filename">_filename</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">filename</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">=</span> <span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">new</span> <span class="typename">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>If there is no file available, a parameterless constructor can be called to
+create an empty TOC. In this case the TOC does not need to be updated, so
+the <code>_addedSections</code> field can be left uninitialized.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.TocManager()" data-toggle="tooltip" title="LiterateProgramming.TocManager.TocManager()">public</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.TocManager()">TocManager</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._toc">_toc</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Toc">=</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Toc">new</span> <span class="typename"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._toc">_toc</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.Contents">Contents</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">=</span> <span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">new</span> <span class="typename">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="loading-toc">Loading TOC</h2>
+<p>TOC file is loaded using the deserialization feature provided by YamlDotNet.
+We configure the deserializer so that it converts the names of the data items
+into camel case and then maps them to the properties of the Toc class. Then
+we just open the file and feed it to the deserializer.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.Load(string)" data-toggle="tooltip" title="LiterateProgramming.TocManager.Load(string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.TocManager.Load(string)">static</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.TocManager"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager">TocManager</a></span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.Load(string)">Load</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> yamlFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">var</span> <span id="deserializer">deserializer</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder">new</span> <span class="typename">DeserializerBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.BuilderSkeleton<YamlDotNet.Serialization.DeserializerBuilder>.WithNamingConvention(YamlDotNet.Serialization.INamingConvention)">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.BuilderSkeleton<YamlDotNet.Serialization.DeserializerBuilder>.WithNamingConvention(YamlDotNet.Serialization.INamingConvention)">WithNamingConvention</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="YamlDotNet.Serialization.NamingConventions.CamelCaseNamingConvention">new</span> <span class="typename">CamelCaseNamingConvention</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder.Build()">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder.Build()">Build</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">try</span>
+			<span class="punctuation">{</span>
+				<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamReader">var</span> <span id="input">input</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.OpenText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.OpenText(string)">OpenText</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">yamlFile</span><span class="punctuation">)</span><span class="punctuation">)</span>
+					<span class="keyword">return</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.TocManager">new</span> <span class="typename"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager">TocManager</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">deserializer</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<LiterateCS.Theme.Toc>(System.IO.TextReader)">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<LiterateCS.Theme.Toc>(System.IO.TextReader)">Deserialize</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.IO.StreamReader">input</span><span class="punctuation">)</span><span class="punctuation">,</span> 
+						<span data-toggle="tooltip" title="string">yamlFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+</code></pre>
+<p>The most complicated part of the loading is the error reporting,
+which tries to give as much information for the error as possible.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.Exception">Exception</span> e<span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">var</span> <span id="errorMsg">errorMsg</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">new</span> <span class="typename">StringBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">errorMsg</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">AppendFormat</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Error while loading TOC file &#39;{0}&#39;\n&quot;</span><span class="punctuation">,</span> 
+					<span data-toggle="tooltip" title="string">yamlFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">errorMsg</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Error detail:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">errorMsg</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+					<span data-toggle="tooltip" title="System.Text.StringBuilder">errorMsg</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.InvalidOperationException">new</span> <span class="typename">InvalidOperationException</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Text.StringBuilder">errorMsg</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="adding-new-sections">Adding New Sections</h2>
+<p>Instead of adding a new entry to TOC while the documentation is being
+generated, we add it to a temporary list. This list is concatenated
+to the TOC before it is saved. If there is no file associated to the
+TOC (in which case the temporary list is null), then we don't need to
+do anything.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.AddToToc(LiterateProgramming.SplitPath)" data-toggle="tooltip" title="LiterateProgramming.TocManager.AddToToc(LiterateProgramming.SplitPath)">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.AddToToc(LiterateProgramming.SplitPath)">AddToToc</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> path<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="keyword">return</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> <span id="section">section</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FindSectionForFile</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">path</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FilePath">FilePath</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager.Toc">Toc</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.Contents">Contents</a></span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">??</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateCS.Theme.Section>.FirstOrDefault<LiterateCS.Theme.Section>(System.Func<LiterateCS.Theme.Section, bool>)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateCS.Theme.Section>.FirstOrDefault<LiterateCS.Theme.Section>(System.Func<LiterateCS.Theme.Section, bool>)">FirstOrDefault</span> <span class="punctuation">(</span>s <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">s</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">path</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FilePath">FilePath</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.Add(LiterateCS.Theme.Section)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.Add(LiterateCS.Theme.Section)">Add</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">new</span> <span class="typename"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Page">Page</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">path</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FileNameWithoutExtension">FileNameWithoutExtension</a></span><span class="punctuation">,</span>
+					<span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">path</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FilePath">FilePath</a></span><span class="punctuation">,</span>
+					<span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Desc">Desc</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;TODO! Add page description.&quot;</span>
+				<span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="saving-toc">Saving TOC</h2>
+<p>We could use the serialization functionality of YamlDotNet to write the TOC
+back to a file, but it is actually simpler just add the new entries as text.
+Serialization has its own quirks which we should work around, if we would
+like to use it. The new entries are always at the end of the file, so we
+can just open the file in the append mode and write the sections into it.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.Save()" data-toggle="tooltip" title="LiterateProgramming.TocManager.Save()">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.Save()">Save</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._filename">_filename</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="bool">||</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="bool">||</span> 
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Count</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">)</span>
+				<span class="keyword">return</span><span class="punctuation">;</span>
+			<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamWriter">var</span> <span id="output">output</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.AppendText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.AppendText(string)">AppendText</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._filename">_filename</a></span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> section <span class="keyword">in</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager._addedSections">_addedSections</a></span><span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span data-toggle="tooltip" title="System.IO.StreamWriter">output</span><span class="punctuation" data-toggle="tooltip" title="System.IO.TextWriter.WriteLine()">.</span><span data-toggle="tooltip" title="System.IO.TextWriter.WriteLine()">WriteLine</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.IO.StreamWriter">output</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;  - page: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Page">Page</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.IO.StreamWriter">output</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;    file: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.IO.StreamWriter">output</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.IO.StreamWriter.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;    desc: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Desc">Desc</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="checking-if-a-section-exists">Checking If a Section Exists</h2>
+<p>To check whether a file is not in TOC already we need to traverse the TOC tree
+recursively. The function below does just that. If a given file is not found
+in the tree, <code>null</code> is returned.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)" data-toggle="tooltip" title="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)">static</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FindSectionForFile</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> file<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> sections<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> section <span class="keyword">in</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">sections</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span data-toggle="tooltip" title="string">file</span><span class="punctuation">)</span>
+					<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation">;</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Subs">Subs</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> <span id="subSection">subSection</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)"><a href="../LiterateCS/TocManager.html#LiterateProgramming.TocManager.FindSectionForFile(string, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FindSectionForFile</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">file</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Subs">Subs</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">subSection</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+						<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section">subSection</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>
+			<span class="punctuation">}</span>
+			<span class="keyword">return</span> <span class="keyword">null</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>HtmlGenerator - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="html-generation">HTML Generation</h1>
+<p>The last piece of the HTML related functionality is the HtmlGenerator class
+which is accountable for the following tasks:</p>
+<ul>
+<li>Loading the theme.</li>
+<li>Parsing the front matter of an input file and passing its parameters to the
+theme.</li>
+<li>Converting documentation blocks and markdown files to HTML.</li>
+<li>Rendering the page using the theme.</li>
+</ul>
+<p>This might seem like lot of work but actually most of the steps outlined above
+are delegated to other libraries. Parsing the front matter is performed using
+the <a href="https://github.com/aaubry/YamlDotNet">YamlDotNet</a> library.
+<a href="https://github.com/lunet-io/markdig">Markdig</a> library takes care of converting
+markdown to HTML. References to the corresponding namespaces can be found below.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> LiterateCS<span class="punctuation">.</span>Theme<span class="punctuation">;</span>
+	<span class="keyword">using</span> Markdig<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Linq<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Reflection<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Text<span class="punctuation">;</span>
+	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>RepresentationModel<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateProgramming.HtmlGenerator">public</span> <span class="keyword">class</span> <span class="typename">HtmlGenerator</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<h2 id="instance-variables">Instance Variables</h2>
+<p>As with most of the utility classes, we need to store a reference to the
+Options object containing the command line parameters.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Options.html#LiterateProgramming.Options">Options</a></span> <span id="LiterateProgramming.HtmlGenerator._options">_options</span><span class="punctuation">;</span>
+</code></pre>
+<p>Markdig configuration is stored in the field below.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="keyword">readonly</span> <span class="typename" data-toggle="tooltip" title="Markdig.MarkdownPipeline">MarkdownPipeline</span> <span id="LiterateProgramming.HtmlGenerator._pipeline">_pipeline</span><span class="punctuation">;</span>
+</code></pre>
+<p>The parameters passed to the theme are stored in the <code>_params</code> field.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams">PageParams</a></span> <span id="LiterateProgramming.HtmlGenerator._params">_params</span><span class="punctuation">;</span>
+</code></pre>
+<p>The <code>_theme</code> field contains the reference to the loaded theme.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme">Theme</a></span> <span id="LiterateProgramming.HtmlGenerator._theme">_theme</span><span class="punctuation">;</span>
+</code></pre>
+<h2 id="constructor">Constructor</h2>
+<p>Options and TOC are passed as parameters to the constructor. The rest of
+the fields are initialized inside it. Theme is loaded from the disk,
+Markdown pipeline is created and configured, and a PageParams object is
+created.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.HtmlGenerator(LiterateProgramming.Options, LiterateCS.Theme.Toc)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.HtmlGenerator(LiterateProgramming.Options, LiterateCS.Theme.Toc)">public</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.HtmlGenerator(LiterateProgramming.Options, LiterateCS.Theme.Toc)">HtmlGenerator</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Options.html#LiterateProgramming.Options">Options</a></span> options<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> toc<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._options">_options</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options">=</span> <span data-toggle="tooltip" title="LiterateProgramming.Options">options</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._theme">_theme</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme">=</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.LoadTheme()"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.LoadTheme()">LoadTheme</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="Markdig.MarkdownPipeline"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._pipeline">_pipeline</a></span> <span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipeline">=</span> <span class="keyword" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder">new</span> <span class="typename">MarkdownPipelineBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseAutoIdentifiers(Markdig.Extensions.AutoIdentifiers.AutoIdentifierOptions)">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseAutoIdentifiers(Markdig.Extensions.AutoIdentifiers.AutoIdentifierOptions)">UseAutoIdentifiers</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseYamlFrontMatter()">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseYamlFrontMatter()">UseYamlFrontMatter</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseMathematics()">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseMathematics()">UseMathematics</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseDiagrams()">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseDiagrams()">UseDiagrams</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UsePipeTables(Markdig.Extensions.Tables.PipeTableOptions)">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UsePipeTables(Markdig.Extensions.Tables.PipeTableOptions)">UsePipeTables</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions)">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.UseEmphasisExtras(Markdig.Extensions.EmphasisExtras.EmphasisExtraOptions)">UseEmphasisExtras</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+				<span class="punctuation" data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.Build()">.</span><span data-toggle="tooltip" title="Markdig.MarkdownPipelineBuilder.Build()">Build</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams">=</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams">new</span> <span class="typename"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams">PageParams</a></span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Toc">Toc</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Toc">=</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc">toc</span>
+			<span class="punctuation">}</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ConvertTocMarkdown()"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.ConvertTocMarkdown()">ConvertTocMarkdown</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="loading-the-theme">Loading the Theme</h2>
+<p>The theme assembly is loaded dynamically using the reflection API
+provided by .NET framework. After the assembly is loaded, we enumerate
+the types defined in it and find the first one which inherits from the
+Theme class. If no such type is found, we throw an exception. Otherwise
+we use the reflection API again to construct an instance of the theme
+class we discovered.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.LoadTheme()" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.LoadTheme()">private</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme">Theme</a></span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.LoadTheme()">LoadTheme</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="themeDll">themeDll</span> <span class="punctuation">=</span> <span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.ThemePath">ThemePath</a></span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="bool">!</span><span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.Exists(string)">.</span><span data-toggle="tooltip" title="System.IO.File.Exists(string)">Exists</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">themeDll</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.ArgumentException">new</span> <span class="typename">ArgumentException</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Could not find theme file in: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="string">themeDll</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="System.Reflection.Assembly">var</span> <span id="assy">assy</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.Reflection.Assembly">Assembly</span><span class="punctuation" data-toggle="tooltip" title="System.Reflection.Assembly.LoadFile(string)">.</span><span data-toggle="tooltip" title="System.Reflection.Assembly.LoadFile(string)">LoadFile</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">themeDll</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="System.Type">var</span> <span id="themeType">themeType</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Reflection.Assembly">assy</span><span class="punctuation" data-toggle="tooltip" title="System.Reflection.Assembly.GetTypes()">.</span><span data-toggle="tooltip" title="System.Reflection.Assembly.GetTypes()">GetTypes</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<System.Type>.FirstOrDefault<System.Type>(System.Func<System.Type, bool>)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<System.Type>.FirstOrDefault<System.Type>(System.Func<System.Type, bool>)">FirstOrDefault</span> <span class="punctuation">(</span>t <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span> 
+				<span data-toggle="tooltip" title="System.Type">t</span><span class="punctuation" data-toggle="tooltip" title="System.Type.IsSubclassOf(System.Type)">.</span><span data-toggle="tooltip" title="System.Type.IsSubclassOf(System.Type)">IsSubclassOf</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.Type">typeof</span> <span class="punctuation" data-toggle="tooltip" title="System.Type">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme">Theme</a></span><span class="punctuation" data-toggle="tooltip" title="System.Type">)</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Type">themeType</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.ArgumentException">new</span> <span class="typename">ArgumentException</span> <span class="punctuation">(</span>
+					<span class="string" data-toggle="tooltip" title="string">&quot;Could not find Theme class from the assembly &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+					<span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Theme">Theme</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme">Theme</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme">)</span><span class="typename" data-toggle="tooltip" title="System.Activator">Activator</span><span class="punctuation" data-toggle="tooltip" title="System.Activator.CreateInstance(System.Type)">.</span><span data-toggle="tooltip" title="System.Activator.CreateInstance(System.Type)">CreateInstance</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Type">themeType</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="converting-toc-entries-to-html">Converting TOC entries to HTML</h2>
+<p>It is possible to use markdown also inside TOC file. The functions below
+converts the TOC entries to HTML.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.ConvertTocMarkdown()" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ConvertTocMarkdown()">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ConvertTocMarkdown()">ConvertTocMarkdown</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> entry <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Toc">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Toc">Toc</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.Contents">Contents</a></span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Page">Page</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)">TocEntryToHtml</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Page">Page</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Desc">Desc</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)">TocEntryToHtml</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Desc">Desc</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>One annoyance with Markdig is that it automatically wraps converted
+markdown snippets inside <code>&lt;p&gt;</code> tag. This is not really desirable when
+outputting TOC entries as it messes up the formatting of list entries.	
+There is no way to disable this behavior, as far as I could find, so
+the only option is to strip the <code>&lt;p&gt;</code> tag after conversion.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)">private</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.TocEntryToHtml(string)">TocEntryToHtml</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> markdown<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">markdown</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="keyword">return</span> <span class="keyword">null</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="result">result</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="Markdig.Markdown">Markdown</span><span class="punctuation" data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">.</span><span data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">ToHtml</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">markdown</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="Markdig.MarkdownPipeline"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._pipeline">_pipeline</a></span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="string.Trim()">.</span><span data-toggle="tooltip" title="string.Trim()">Trim</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> <span id="len">len</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="string">result</span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Length</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">result</span><span class="punctuation" data-toggle="tooltip" title="string.Substring(int, int)">.</span><span data-toggle="tooltip" title="string.Substring(int, int)">Substring</span> <span class="punctuation">(</span><span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">,</span> <span class="number" data-toggle="tooltip" title="int">3</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="string" data-toggle="tooltip" title="string">&quot;&lt;p&gt;&quot;</span> <span class="punctuation" data-toggle="tooltip" title="bool">&amp;&amp;</span> <span data-toggle="tooltip" title="string">result</span><span class="punctuation" data-toggle="tooltip" title="string.Substring(int, int)">.</span><span data-toggle="tooltip" title="string.Substring(int, int)">Substring</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="int">len</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span class="number" data-toggle="tooltip" title="int">4</span><span class="punctuation">,</span> <span class="number" data-toggle="tooltip" title="int">4</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="string" data-toggle="tooltip" title="string">&quot;&lt;/p&gt;&quot;</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="string">result</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">result</span><span class="punctuation" data-toggle="tooltip" title="string.Substring(int, int)">.</span><span data-toggle="tooltip" title="string.Substring(int, int)">Substring</span> <span class="punctuation">(</span><span class="number" data-toggle="tooltip" title="int">3</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="int">len</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span class="number" data-toggle="tooltip" title="int">7</span><span class="punctuation">)</span><span class="punctuation">;</span> 
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="string">result</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="parsing-front-matter">Parsing Front Matter</h2>
+<p>Front matter contains parameters that are used by themes. Front matter
+can appear in both C# files and markdown files. It has to be the first
+piece of text in a file, excluding the comment start token <code>/*</code> when
+used inside a C# file.</p>
+<p>Parsing is done in two steps. First, we extract the lines of text that
+constitute the front matter. Then, we feed these lines to the YamlDotNet
+parser.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.GetFrontMatter(string)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.GetFrontMatter(string)">private</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.GetFrontMatter(string)">GetFrontMatter</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> markdown<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+</code></pre>
+<p>We use the StringReader class to read the input string one line at
+a time. If the first line we read does not contain three hyphens,
+we decide that the front matter is not present and return null.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StringReader">var</span> <span id="reader">reader</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.IO.StringReader">new</span> <span class="typename">StringReader</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">markdown</span><span class="punctuation">)</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="line">line</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.IO.StringReader">reader</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StringReader.ReadLine()">.</span><span data-toggle="tooltip" title="System.IO.StringReader.ReadLine()">ReadLine</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">line</span><span class="punctuation" data-toggle="tooltip" title="string.Trim()">.</span><span data-toggle="tooltip" title="string.Trim()">Trim</span> <span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="string" data-toggle="tooltip" title="string">&quot;---&quot;</span><span class="punctuation">)</span>
+					<span class="keyword">return</span> <span class="keyword">null</span><span class="punctuation">;</span>
+</code></pre>
+<p>Now we know that front matter is defined, so we copy it to a
+new string. We create a StringBuilder to construct it. We append
+lines to the result until we encounter another line with exactly
+three hyphens. The result then contains both starting and ending
+hyphens.</p>
+<pre class="csharp"><code class="csharp">				<span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">var</span> result <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">new</span> <span class="typename">StringBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">result</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">line</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">do</span>
+				<span class="punctuation">{</span>
+					<span data-toggle="tooltip" title="string">line</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="System.IO.StringReader">reader</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StringReader.ReadLine()">.</span><span data-toggle="tooltip" title="System.IO.StringReader.ReadLine()">ReadLine</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="System.Text.StringBuilder">result</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">line</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>
+				<span class="keyword">while</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">line</span><span class="punctuation" data-toggle="tooltip" title="string.Trim()">.</span><span data-toggle="tooltip" title="string.Trim()">Trim</span> <span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="string" data-toggle="tooltip" title="string">&quot;---&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">return</span> <span data-toggle="tooltip" title="System.Text.StringBuilder">result</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Parsing begins with a call to GetFrontMatter function. It isolates the
+front matter from the markdown string given as argument. We also need
+the input file path for reporting possible errors. Nothing is read from
+the file, though.</p>
+<p>ParseFrontMatter returns the value of the special parameter <code>template</code>.
+This parameter controls which page template to use, and it needs to be
+reseted to its default value when it is not present. It works
+differently from other parameters which hold their value until a new
+value is set. If the <code>template</code> parameter is not present or the whole
+front matter is absent, null is returned.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.ParseFrontMatter(string, string)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ParseFrontMatter(string, string)">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ParseFrontMatter(string, string)">ParseFrontMatter</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> frontMatter<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> filePath<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="string">string</span> result <span class="punctuation">=</span> <span class="keyword">null</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">frontMatter</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+</code></pre>
+<p>Now we can create a new YamlStream and load the front matter
+using it. The parameters can be iterated through as simple
+key-value pairs.</p>
+<pre class="csharp"><code class="csharp">				<span class="keyword">try</span>
+				<span class="punctuation">{</span>
+					<span class="keyword" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream">var</span> <span id="yamlStream">yamlStream</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream">new</span> <span class="typename">YamlStream</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream">yamlStream</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream.Load(System.IO.TextReader)">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream.Load(System.IO.TextReader)">Load</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StringReader">new</span> <span class="typename">StringReader</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">frontMatter</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span class="keyword" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlMappingNode">var</span> <span id="mapping">mapping</span> <span class="punctuation">=</span> <span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlMappingNode">(</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlMappingNode">YamlMappingNode</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlMappingNode">)</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlStream">yamlStream</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IList<YamlDotNet.RepresentationModel.YamlDocument>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IList<YamlDotNet.RepresentationModel.YamlDocument>">Documents</span><span class="punctuation">[</span><span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">]</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">RootNode</span><span class="punctuation">;</span>
+					<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.KeyValuePair<YamlDotNet.RepresentationModel.YamlNode, YamlDotNet.RepresentationModel.YamlNode>">var</span> entry <span class="keyword">in</span> <span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlMappingNode">mapping</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IDictionary<YamlDotNet.RepresentationModel.YamlNode, YamlDotNet.RepresentationModel.YamlNode>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IDictionary<YamlDotNet.RepresentationModel.YamlNode, YamlDotNet.RepresentationModel.YamlNode>">Children</span><span class="punctuation">)</span>
+					<span class="punctuation">{</span>
+						<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="key">key</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Collections.Generic.KeyValuePair<YamlDotNet.RepresentationModel.YamlNode, YamlDotNet.RepresentationModel.YamlNode>">entry</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">Key</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode.ToString()">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+						<span class="keyword" data-toggle="tooltip" title="string">var</span> <span id="value">value</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Collections.Generic.KeyValuePair<YamlDotNet.RepresentationModel.YamlNode, YamlDotNet.RepresentationModel.YamlNode>">entry</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode">Value</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode.ToString()">.</span><span data-toggle="tooltip" title="YamlDotNet.RepresentationModel.YamlNode.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>If we encounter the special parameter <code>template</code>, we store
+its value in the result. Special treatment is required also
+for parameters starting with underscore <code>_</code>. Those can
+contain markdown formatting and thus they are automatically
+converted to HTML.</p>
+<pre class="csharp"><code class="csharp">						<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">key</span><span class="punctuation" data-toggle="tooltip" title="string.ToLower()">.</span><span data-toggle="tooltip" title="string.ToLower()">ToLower</span> <span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="string" data-toggle="tooltip" title="string">&quot;template&quot;</span><span class="punctuation">)</span>
+							<span data-toggle="tooltip" title="string">result</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">value</span><span class="punctuation">;</span>
+						<span class="keyword">else</span>
+							<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Add(string, string)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Add(string, string)"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Add(string, string)">Add</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">key</span><span class="punctuation">,</span> 
+								<span data-toggle="tooltip" title="string">key</span><span class="punctuation" data-toggle="tooltip" title="string.StartsWith(string)">.</span><span data-toggle="tooltip" title="string.StartsWith(string)">StartsWith</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;_&quot;</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="string">?</span>
+									<span class="typename" data-toggle="tooltip" title="Markdig.Markdown">Markdown</span><span class="punctuation" data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">.</span><span data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">ToHtml</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">value</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="Markdig.MarkdownPipeline"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._pipeline">_pipeline</a></span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="string">:</span>
+									<span data-toggle="tooltip" title="string">value</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span class="punctuation">}</span>
+				<span class="punctuation">}</span>
+</code></pre>
+<p>Parsing errors are caught, supplemented with information on
+which input file the error occurred, and re-thrown to the
+main program which eventually reports them to the user.</p>
+<pre class="csharp"><code class="csharp">				<span class="keyword">catch</span> <span class="punctuation">(</span>YamlDotNet<span class="punctuation">.</span>Core<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">.</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">SyntaxErrorException</span> e<span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.InvalidOperationException">new</span> <span class="typename">InvalidOperationException</span> <span class="punctuation">(</span>
+						<span class="string" data-toggle="tooltip" title="string">&quot;Error parsing front matter from: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="string">filePath</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">e</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>			
+			<span class="punctuation">}</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="string">result</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="initializing-page-specific-parameters">Initializing Page Specific Parameters</h2>
+<p>There are a few built-in parameters that the theme can use. They are
+updated before processing each document by the method below. Refer to
+the documentation of the <a href="../LiterateCS.Theme/PageParams.html">PageParams</a>
+class for more information about the parameters.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.InitParams(LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.InitParams(LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.InitParams(LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)">InitParams</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> inputFile<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> outputFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Filename">Filename</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FileNameWithoutExtension">FileNameWithoutExtension</a></span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Root">Root</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.RelativeFileRoot">RelativeFileRoot</a></span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.CurrentSection">CurrentSection</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">=</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Toc">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Toc">Toc</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.Flattened">Flattened</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateCS.Theme.Section>.FirstOrDefault<LiterateCS.Theme.Section>(System.Func<LiterateCS.Theme.Section, bool>)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateCS.Theme.Section>.FirstOrDefault<LiterateCS.Theme.Section>(System.Func<LiterateCS.Theme.Section, bool>)">FirstOrDefault</span> <span class="punctuation">(</span>e <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span>
+				 <span data-toggle="tooltip" title="LiterateCS.Theme.Section">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">inputFile</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FilePath">FilePath</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="generating-html-page-from-code-file">Generating HTML Page from Code File</h2>
+<p>Once a source file has been split into blocks, we can give the block
+list and the input and output file paths to the <code>Execute</code> method. This
+is where the HTML page is actually generated.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.Execute(LiterateProgramming.BlockList, LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.Execute(LiterateProgramming.BlockList, LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.Execute(LiterateProgramming.BlockList, LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)">Execute</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> blocks<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> inputFile<span class="punctuation">,</span> 
+			<span class="typename" data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath">SplitPath</a></span> outputFile<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+</code></pre>
+<p>First, we initialize the document-level parameters.</p>
+<pre class="csharp"><code class="csharp">			<span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.InitParams(LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.InitParams(LiterateProgramming.SplitPath, LiterateProgramming.SplitPath)">InitParams</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">inputFile</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>If the first block in the list is a markdown block, then we need to
+check if it contains a front matter. We initialize the used template
+to null, which selects the default template. The setting can be then
+overridden in the front matter.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="template">template</span> <span class="punctuation">=</span> <span class="keyword">null</span><span class="punctuation">;</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">var</span> <span id="firstMdBlock">firstMdBlock</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">blocks</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateProgramming.BlockList>.FirstOrDefault<LiterateProgramming.BlockList>(System.Func<LiterateProgramming.BlockList, bool>)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.IEnumerable<LiterateProgramming.BlockList>.FirstOrDefault<LiterateProgramming.BlockList>(System.Func<LiterateProgramming.BlockList, bool>)">FirstOrDefault</span> <span class="punctuation">(</span>b <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">b</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Kind">Kind</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind">BlockKind</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.BlockKind">.</span><span data-toggle="tooltip" title="LiterateProgramming.BlockKind"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockKind.Markdown">Markdown</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList">firstMdBlock</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="string">template</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.ParseFrontMatter(string, string)"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.ParseFrontMatter(string, string)">ParseFrontMatter</a></span> <span class="punctuation">(</span>
+					<span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.GetFrontMatter(string)"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator.GetFrontMatter(string)">GetFrontMatter</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList">firstMdBlock</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">inputFile</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>Next, we iterate through the blocks, convert them to HTML, and finally
+assign the resulted string into the <code>Contents</code> parameter, so that the
+theme can access it.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StringWriter">var</span> <span id="writer">writer</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.IO.StringWriter">new</span> <span class="typename">StringWriter</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockList">var</span> block <span class="keyword">in</span> <span data-toggle="tooltip" title="LiterateProgramming.BlockList">blocks</span><span class="punctuation">)</span>
+					<span data-toggle="tooltip" title="System.IO.StringWriter">writer</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StringWriter.Write(string)">.</span><span data-toggle="tooltip" title="System.IO.StringWriter.Write(string)">Write</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="Markdig.Markdown">Markdown</span><span class="punctuation" data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">.</span><span data-toggle="tooltip" title="Markdig.Markdown.ToHtml(string, Markdig.MarkdownPipeline)">ToHtml</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.BlockList">block</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList.Contents">Contents</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="Markdig.MarkdownPipeline"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._pipeline">_pipeline</a></span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Contents">Contents</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="System.IO.StringWriter">writer</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StringWriter.ToString()">.</span><span data-toggle="tooltip" title="System.IO.StringWriter.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+</code></pre>
+<p>As the last step, we render the page using the theme, and write the
+resulting HTML page to the output file.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamWriter">var</span> writer <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.CreateText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.CreateText(string)">CreateText</span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="string">!</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath">outputFile</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="System.IO.StreamWriter">writer</span><span class="punctuation" data-toggle="tooltip" title="System.IO.StreamWriter.Write(string)">.</span><span data-toggle="tooltip" title="System.IO.StreamWriter.Write(string)">Write</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._theme">_theme</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">RenderPage</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">template</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._params">_params</a></span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<h2 id="copying-auxiliary-files">Copying Auxiliary Files</h2>
+<p>HTML pages almost never work by themselves. They rely on external
+resources such as style sheets, images, Javascript files, fonts, etc.
+These files need to be copied to the target directory, alongside the
+HTML files. The theme is responsible for copying the files, but since
+HTML generator is controlling the theme, it has to expose the method
+to other classes.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.HtmlGenerator.CopyAuxiliaryFiles()" data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.CopyAuxiliaryFiles()">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateProgramming.HtmlGenerator.CopyAuxiliaryFiles()">CopyAuxiliaryFiles</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Theme"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._theme">_theme</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)"><a href="../LiterateCS.Theme/Theme.html#LiterateCS.Theme.Theme.CopyAuxiliaryFiles(string, string)">CopyAuxiliaryFiles</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.ThemePath">ThemePath</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.BasePath">BasePath</a></span><span class="punctuation">,</span>
+				<span data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/HtmlGenerator.html#LiterateProgramming.HtmlGenerator._options">_options</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.SplitPath">.</span><span data-toggle="tooltip" title="LiterateProgramming.SplitPath"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.OutputPath">OutputPath</a></span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.BasePath">BasePath</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

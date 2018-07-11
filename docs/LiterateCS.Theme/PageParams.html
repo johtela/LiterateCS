@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PageParams - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="page-parameters">Page Parameters</h1>
+<p>All the data <code>csweave</code> will pass to the theme is contained inside a
+PageParams object. This class defines the built-in parameters that are
+always available, and the custom parameters specified in front matter.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateCS.Theme.PageParams">public</span> <span class="keyword">class</span> <span class="typename">PageParams</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<h2 id="custom-parameters">Custom Parameters</h2>
+<p>You can specify any parameters inside front matter. How these will
+be used is up to the theme. The parameters are simple key-value pairs
+with string both as the key and value type. The parameters are stored
+in a dictionary that is initialized when a PageParams object is created.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">&gt;</span> <span id="LiterateCS.Theme.PageParams._parameters">_parameters</span><span class="punctuation">;</span>
+
+		<span class="keyword" id="LiterateCS.Theme.PageParams.PageParams()" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.PageParams()">public</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams.PageParams()">PageParams</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">=</span> <span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">new</span> <span class="typename">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The parameters are converted to lowercase before they are added to the
+dictionary. Parameter names are case-insensitive, so we need to do this
+in all the methods accessing the dictionary. If a parameter with the
+same name already exists in the dictionary, its value is updated.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Add(string, string)" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Add(string, string)">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Add(string, string)">Add</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> value<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="string">name</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation" data-toggle="tooltip" title="string.ToLower()">.</span><span data-toggle="tooltip" title="string.ToLower()">ToLower</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.ContainsKey(string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.ContainsKey(string)">ContainsKey</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">]</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">value</span><span class="punctuation">;</span>
+			<span class="keyword">else</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.Add(string, string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.Add(string, string)">Add</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">value</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Removing a parameter is also possible, although themes should not
+generally do so.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Remove(string)" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Remove(string)">public</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Remove(string)">Remove</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.Remove(string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.Remove(string)">Remove</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation" data-toggle="tooltip" title="string.ToLower()">.</span><span data-toggle="tooltip" title="string.ToLower()">ToLower</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>Two indexer methods can be used to access the custom parameters. The
+first one takes two arguments: name and default value. If a parameter
+with a given name is not found, the default value is returned.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.this[string, string]">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span class="keyword">this</span><span class="punctuation">[</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> defaultValue<span class="punctuation">]</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.this[string, string].get">get</span>
+			<span class="punctuation">{</span>
+				<span class="keyword">return</span> <span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams._parameters">_parameters</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.TryGetValue(string, out string)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>.TryGetValue(string, out string)">TryGetValue</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation" data-toggle="tooltip" title="string.ToLower()">.</span><span data-toggle="tooltip" title="string.ToLower()">ToLower</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="keyword">out</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> result<span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="string">?</span>
+					<span data-toggle="tooltip" title="string">result</span> <span class="punctuation" data-toggle="tooltip" title="string">:</span> <span data-toggle="tooltip" title="string">defaultValue</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The second version takes just name of the parameter, and returns it back,
+if the parameter is not found.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.this[string]">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span class="keyword">this</span><span class="punctuation">[</span><span class="keyword" data-toggle="tooltip" title="string">string</span> name<span class="punctuation">]</span> <span class="punctuation">=&gt;</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams">this</span><span class="punctuation">[</span><span data-toggle="tooltip" title="string">name</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">name</span><span class="punctuation">]</span><span class="punctuation">;</span>
+</code></pre>
+<h2 id="built-in-properties">Built-in Properties</h2>
+<p>The rest of the properties defined in the PageParams class are updated
+for	each generated page. These are page-level parameters which are always
+available.</p>
+<p>The Root property gives the relative path from the page location to the
+root directory of the website. For example, if the page we are generating
+resides under directory <code>source\code\</code>, then Root would contain path
+<code>..\..\</code>. Say you want to add a link to another page which resides under
+directory <code>doc\</code>. Now you can to refer to it by adding the value of	the
+Root property at the beginning of the path. The resulting path would be
+<code>..\..\doc\</code>.</p>
+<p>So, the Root property allows us to create relative links between pages
+that work regardless of where the site resides on disk.	This is
+quite handy since now the links work correctly when pages are viewed
+locally from disk as well as when they are accessed from a web server.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Root">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Root <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Root.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Root.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Root.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Root.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The name of the currently processed file is stored in the property
+below. The name does not include a file extension.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Filename">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Filename <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Filename.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Filename.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Filename.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Filename.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>Perhaps the most important data passed to the theme is the contents
+of the page which is provided in the property below. The property
+contains the documentation extracted from the source file in HTML
+format. Typically the theme will just insert this in the appropriate
+place on a page.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Contents">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Contents <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Contents.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Contents.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Contents.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Contents.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<h3 id="toc-related-properties">TOC Related Properties</h3>
+<p>The table of contents object is accessible through the Toc property.
+This object is always initialized, even when the user does not provide
+a TOC file. In that case the TOC is empty, and there are no sections
+in it.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.Toc">public</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Toc"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc">Toc</a></span> Toc <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Toc.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Toc.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Toc.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.Toc.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>When a TOC file is provided, and the current page can be found in it,
+then the following property contains a reference to the Section object
+we are on currently. This information can be used to highlight which
+section	in the TOC we are viewing.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.CurrentSection">public</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> CurrentSection <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.CurrentSection.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.CurrentSection.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.CurrentSection.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.CurrentSection.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The SectionPath helper function returns the relative path to section in
+the TOC from the current page. It is handy in generating links to TOC.
+The method also changes the source file path to a relative URL by
+changing the extension to &quot;html&quot; and replacing backslashes with
+forward slashes.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.PageParams.SectionPath(LiterateCS.Theme.Section)" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.SectionPath(LiterateCS.Theme.Section)">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateCS.Theme.PageParams.SectionPath(LiterateCS.Theme.Section)">SectionPath</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> entry<span class="punctuation">)</span> <span class="punctuation">=&gt;</span>
+			<span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="string">?</span> 
+				<span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="string">:</span>
+				<span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">.</span><span data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">Combine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams.Root">Root</a></span><span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.ChangeExtension(string, string)">.</span><span data-toggle="tooltip" title="System.IO.Path.ChangeExtension(string, string)">ChangeExtension</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">entry</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;html&quot;</span><span class="punctuation">)</span><span class="punctuation">)</span>
+					<span class="punctuation" data-toggle="tooltip" title="string.Replace(char, char)">.</span><span data-toggle="tooltip" title="string.Replace(char, char)">Replace</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;\\&#39;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="char">&#39;/&#39;</span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.PageParams.SectionPath(LiterateCS.Theme.Section)">;</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

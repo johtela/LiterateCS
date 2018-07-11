@@ -10,11 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiterateCS", "LiterateCS\LiterateCS.csproj", "{E164D885-0B71-45B9-A119-A9D9092CB5EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiterateCS", "LiterateCS\LiterateCS.csproj", "{E164D885-0B71-45B9-A119-A9D9092CB5EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Themes", "Themes", "{D123B53B-28EC-437C-BABD-4771B01DAAA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultTheme", "Themes\DefaultTheme\DefaultTheme.csproj", "{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultTheme", "Themes\DefaultTheme\DefaultTheme.csproj", "{686D5938-76C6-45DE-B5D4-3C9FAC997C0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6BE0685D-E844-4BDF-82C8-8A276D753D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

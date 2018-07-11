@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Toc - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="table-of-contents-data-structure">Table of Contents Data Structure</h1>
+<p>TOC is provided by the user in a YAML file. When it is read, a data structure
+is created  that represents the TOC data. This data structure is defined below.
+It is a basic hierarchical list structure that consist of nodes that correspond
+to sections in the documentation.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Collections<span class="punctuation">.</span>Generic<span class="punctuation">;</span>
+</code></pre>
+<h2 id="table-of-contents-class">Table of Contents Class</h2>
+<p>Table of contents has two lists inside it. The first one contains the
+top-level sections in a hierarchical structure. The second one is a computed
+field that contains the same sections in a flat list. The flattened list
+helps us find quickly the previous and next entry for a given section.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateCS.Theme.Toc">public</span> <span class="keyword">class</span> <span class="typename">Toc</span>
+	<span class="punctuation">{</span>
+		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span id="LiterateCS.Theme.Toc._contents">_contents</span><span class="punctuation">;</span>
+		<span class="keyword">private</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span id="LiterateCS.Theme.Toc._flattened">_flattened</span><span class="punctuation">;</span>
+</code></pre>
+<p>The method that flattens the contents traverses the data structure
+recursively and add each section to the flat list.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)" data-toggle="tooltip" title="LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)">private</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FlattenContents</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> sections<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> flattened<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section">var</span> section <span class="keyword">in</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">sections</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+					<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">flattened</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.Add(LiterateCS.Theme.Section)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.Add(LiterateCS.Theme.Section)">Add</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Subs">Subs</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+					<span data-toggle="tooltip" title="LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FlattenContents</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">section</span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Subs">Subs</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">flattened</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The Contents property can be set outside the class. When it is set,
+the flattened list is recomputed. The Flattened property is read-only.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Toc.Contents">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> Contents
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Toc.Contents.get">get</span> <span class="punctuation">{</span> <span class="keyword">return</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._contents">_contents</a></span><span class="punctuation">;</span> <span class="punctuation">}</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Toc.Contents.set">set</span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._contents">_contents</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">=</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">value</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span> <span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">=</span> <span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">new</span> <span class="typename">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc.FlattenContents(System.Collections.Generic.List<LiterateCS.Theme.Section>, System.Collections.Generic.List<LiterateCS.Theme.Section>)">FlattenContents</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._contents">_contents</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateCS.Theme.Toc.Flattened">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> Flattened
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Toc.Flattened.get">get</span> <span class="punctuation">{</span> <span class="keyword">return</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation">;</span> <span class="punctuation">}</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>When we have the flattened list of topics available, we can find
+the next and previous section in the list easily. We by just search for
+the index of the section and return the next or previous based on the
+index. If we cannot find the section, or we are at the beginning or end
+of the list, we return <code>null</code>.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Toc.NextSection(LiterateCS.Theme.Section)" data-toggle="tooltip" title="LiterateCS.Theme.Toc.NextSection(LiterateCS.Theme.Section)">public</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc.NextSection(LiterateCS.Theme.Section)">NextSection</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> current<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> <span id="i">i</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.IndexOf(LiterateCS.Theme.Section)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.IndexOf(LiterateCS.Theme.Section)">IndexOf</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">current</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&lt;</span> <span class="number" data-toggle="tooltip" title="int">0</span> <span class="punctuation" data-toggle="tooltip" title="bool">||</span> <span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&gt;=</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation" data-toggle="tooltip" title="int">.</span><span data-toggle="tooltip" title="int">Count</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span class="number" data-toggle="tooltip" title="int">1</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">?</span>
+				<span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">:</span>
+				<span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="int">+</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">]</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateCS.Theme.Toc.PreviousSection(LiterateCS.Theme.Section)" data-toggle="tooltip" title="LiterateCS.Theme.Toc.PreviousSection(LiterateCS.Theme.Section)">public</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> <span data-toggle="tooltip" title="LiterateCS.Theme.Toc.PreviousSection(LiterateCS.Theme.Section)">PreviousSection</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span> current<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="int">var</span> i <span class="punctuation">=</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.IndexOf(LiterateCS.Theme.Section)">.</span><span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>.IndexOf(LiterateCS.Theme.Section)">IndexOf</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.Section">current</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="bool">&lt;=</span> <span class="number" data-toggle="tooltip" title="int">0</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">?</span>	<span class="keyword">null</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section">:</span> <span data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Toc._flattened">_flattened</a></span><span class="punctuation">[</span><span data-toggle="tooltip" title="int">i</span> <span class="punctuation" data-toggle="tooltip" title="int">-</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">]</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+</code></pre>
+<h2 id="section-class">Section Class</h2>
+<p>The Section object represents an individual entry in TOC. There might be a
+file that corresponds to the section, but not necessarily. A section can be
+used also to logically group pages under a same topic without providing a
+separate page for it. In this case you cannot jump to the section, but you
+can still see it in TOC.</p>
+<pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateCS.Theme.Section">public</span> <span class="keyword">class</span> <span class="typename">Section</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<p>The Page property is the title of the section. It is a short string
+containing usually the first heading in the file.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Section.Page">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Page <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Page.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Page.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Page.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Page.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The relative path to the <em>source</em> file is stored in the File property.
+It is naturally unique within TOC. There cannot be two sections pointing
+to the same file. It can be <code>null</code>, though. As explained above, there
+can be sections without files.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Section.File">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> File <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.File.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.File.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.File.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.File.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>You can provide additional description about the section. This data is
+optional and may be omitted when showing the TOC.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Section.Desc">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Desc <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Desc.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Desc.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Desc.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Desc.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>Subsections are stored in a list. If there are no subsections under the
+current section the property is <code>null</code>.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Section.Subs">public</span> <span class="typename" data-toggle="tooltip" title="System.Collections.Generic.List<LiterateCS.Theme.Section>">List</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.Section"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section">Section</a></span><span class="punctuation">&gt;</span> Subs <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Subs.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Subs.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.Subs.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Section.Subs.set">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>Custom string conversion is provided mainly for debugging purposes.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Section.ToString()" data-toggle="tooltip" title="LiterateCS.Theme.Section.ToString()">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Section.ToString()">override</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Section.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">return</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation" data-toggle="tooltip" title="string.Format(string, object, object)">.</span><span data-toggle="tooltip" title="string.Format(string, object, object)">Format</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;{0} -&gt; {1}&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.Page">Page</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/Toc.html#LiterateCS.Theme.Section.File">File</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>

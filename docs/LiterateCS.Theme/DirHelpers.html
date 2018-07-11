@@ -1,0 +1,145 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>DirHelpers - projectname</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">projectname</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+								<div id="static-content" class="markdown">
+					<h1 id="directory-utilities">Directory Utilities</h1>
+<p>This class contains utility functions needed by theme assemblies as well as the
+<code>csweave</code> tool. It is an assorted collection static functions, mostly related to
+directory manipulation, that do not logically belong to any other class.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Linq<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateCS.Theme.DirHelpers">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="typename">DirHelpers</span>
+	<span class="punctuation">{</span>
+</code></pre>
+<p>The following method copies all subdirectories of a given input directory
+to a target directory. <strong>Note</strong> that it only copies the directory structure,
+not the files inside those directories.</p>
+<p>You can specify a glob filter for the input directories. Only directories
+with names matching the filter will be copied. If you want all the
+directories copied, give <code>*</code> as the filter.</p>
+<p>You can	also specify with the <code>recurse</code> parameter whether the whole
+directory tree is copied, or just the top level directories.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">static</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">CopySubDirectories</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> inputRoot<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> outputRoot<span class="punctuation">,</span> 
+			<span class="keyword" data-toggle="tooltip" title="string">string</span> filter<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> recurse<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">foreach</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> subDir <span class="keyword">in</span> <span class="typename" data-toggle="tooltip" title="System.IO.Directory">Directory</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Directory.GetDirectories(string, string, System.IO.SearchOption)">.</span><span data-toggle="tooltip" title="System.IO.Directory.GetDirectories(string, string, System.IO.SearchOption)">GetDirectories</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">inputRoot</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">filter</span><span class="punctuation">,</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">GetSearchOption</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="bool">recurse</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.EnsureExists(string)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.EnsureExists(string)">EnsureExists</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">subDir</span><span class="punctuation" data-toggle="tooltip" title="string.Replace(string, string)">.</span><span data-toggle="tooltip" title="string.Replace(string, string)">Replace</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">inputRoot</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">outputRoot</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The method below is used to make sure that a given directory exists. Most
+of the file operations fail, if a target directory does not exist.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.DirHelpers.EnsureExists(string)" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.EnsureExists(string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.EnsureExists(string)">static</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.EnsureExists(string)">EnsureExists</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> dir<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span class="punctuation" data-toggle="tooltip" title="bool">!</span><span class="typename" data-toggle="tooltip" title="System.IO.Directory">Directory</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Directory.Exists(string)">.</span><span data-toggle="tooltip" title="System.IO.Directory.Exists(string)">Exists</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">dir</span><span class="punctuation">)</span><span class="punctuation">)</span>
+				<span class="typename" data-toggle="tooltip" title="System.IO.Directory">Directory</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Directory.CreateDirectory(string)">.</span><span data-toggle="tooltip" title="System.IO.Directory.CreateDirectory(string)">CreateDirectory</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">dir</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+</code></pre>
+<p>The following methods are just shorthands for GetFiles and Copy methods
+defined in the System.IO namespace. They define a more convenient
+signature for the wrapped methods.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">static</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">[</span><span class="punctuation">]</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">Dir</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> path<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> filter<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> recurse<span class="punctuation">)</span> <span class="punctuation">=&gt;</span>
+				<span class="typename" data-toggle="tooltip" title="System.IO.Directory">Directory</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Directory.GetFiles(string, string, System.IO.SearchOption)">.</span><span data-toggle="tooltip" title="System.IO.Directory.GetFiles(string, string, System.IO.SearchOption)">GetFiles</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">path</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">filter</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">GetSearchOption</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="bool">recurse</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Dir(string, string, bool)">;</span>
+
+		<span class="keyword" id="LiterateCS.Theme.DirHelpers.Copy(string, string, bool)" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Copy(string, string, bool)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Copy(string, string, bool)">static</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.Copy(string, string, bool)">Copy</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> file<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> targetFolder<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> overwrite<span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.Copy(string, string, bool)">.</span><span data-toggle="tooltip" title="System.IO.File.Copy(string, string, bool)">Copy</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">file</span><span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">.</span><span data-toggle="tooltip" title="System.IO.Path.Combine(string, string)">Combine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">targetFolder</span><span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="System.IO.Path">Path</span><span class="punctuation" data-toggle="tooltip" title="System.IO.Path.GetFileName(string)">.</span><span data-toggle="tooltip" title="System.IO.Path.GetFileName(string)">GetFileName</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">file</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="bool">overwrite</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">static</span> <span class="typename" data-toggle="tooltip" title="System.IO.SearchOption">SearchOption</span> <span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">GetSearchOption</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="bool">bool</span> recurse<span class="punctuation">)</span> <span class="punctuation">=&gt;</span>
+			<span data-toggle="tooltip" title="bool">recurse</span> <span class="punctuation" data-toggle="tooltip" title="System.IO.SearchOption">?</span>
+				<span class="typename" data-toggle="tooltip" title="System.IO.SearchOption">SearchOption</span><span class="punctuation" data-toggle="tooltip" title="System.IO.SearchOption">.</span><span data-toggle="tooltip" title="System.IO.SearchOption">AllDirectories</span> <span class="punctuation" data-toggle="tooltip" title="System.IO.SearchOption">:</span>
+				<span class="typename" data-toggle="tooltip" title="System.IO.SearchOption">SearchOption</span><span class="punctuation" data-toggle="tooltip" title="System.IO.SearchOption">.</span><span data-toggle="tooltip" title="System.IO.SearchOption">TopDirectoryOnly</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.GetSearchOption(bool)">;</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+							</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">footer</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+</body>
+</html>
