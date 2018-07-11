@@ -203,7 +203,10 @@ namespace LiterateProgramming
 		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution (
 			SolutionFile solutionFile)
 		{
-			var amanager = new AnalyzerManager (_options.Solution);
+			var amanager = new AnalyzerManager (_options.Solution, new AnalyzerManagerOptions ()
+			{
+				LogWriter = Console.Out
+			});
 			var solution = amanager.GetWorkspace ().CurrentSolution;
 			var filtRegexes = FilterRegexes ();
 			return from proj in MSBuildHelpers.LoadProjectsInSolution (solution, solutionFile)

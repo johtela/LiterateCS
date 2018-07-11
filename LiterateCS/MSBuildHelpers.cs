@@ -96,7 +96,11 @@ namespace LiterateProgramming
 				mean that the required semantic information is not available in compiled 
 				project.
 				*/
-				var p = proj;
+				var diagOpts = proj.CompilationOptions.SpecificDiagnosticOptions
+					.Add ("CS1701", ReportDiagnostic.Suppress)
+					.Add ("CS8019", ReportDiagnostic.Suppress);
+				var p = proj.WithCompilationOptions (
+					proj.CompilationOptions.WithSpecificDiagnosticOptions (diagOpts));
 				var diag = p.GetCompilationAsync ().Result.GetDiagnostics ();
 				foreach (var msg in diag)
 					Console.Error.WriteLine (msg);
