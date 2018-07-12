@@ -36,7 +36,7 @@ namespace LiterateCS.Theme
 		{
 			DirHelpers.CopySubDirectories (themeDir, outputDir, "*", true);
 			foreach (var file in DirHelpers.Dir (themeDir, "*", true))
-				if (!Path.GetExtension (file).In (".dll", ".pdb"))
+				if (!Path.GetExtension (file).In (".dll", ".pdb", ".json"))
 					File.Copy (file, file.Replace (themeDir, outputDir), true);
 		}
 	}

@@ -13,7 +13,6 @@
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
     <PackageReference Include="ExtensionCord" Version="1.1.0" />
     <PackageReference Include="Markdig" Version="0.15.1" />
-    <PackageReference Include="Microsoft.Build" Version="15.7.179" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" />
     <PackageReference Include="YamlDotNet" Version="5.0.1" />
   </ItemGroup>

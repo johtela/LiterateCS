@@ -27,6 +27,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultTheme", "Themes\Defa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6BE0685D-E844-4BDF-82C8-8A276D753D50}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{FF495549-4370-4B02-8DDE-E427229E7E74}"
+	ProjectSection(SolutionItems) = preProject
+		docs\images\Code.png = docs\images\Code.png
+		docs\images\Diagram.png = docs\images\Diagram.png
+		docs\images\favicon.ico = docs\images\favicon.ico
+		docs\images\FrontMatter.png = docs\images\FrontMatter.png
+		docs\images\GitHubPages.png = docs\images\GitHubPages.png
+		docs\images\jumbotron.jpg = docs\images\jumbotron.jpg
+		docs\images\LPFlow.png = docs\images\LPFlow.png
+		docs\images\Navigation.png = docs\images\Navigation.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +63,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{686D5938-76C6-45DE-B5D4-3C9FAC997C0C} = {D123B53B-28EC-437C-BABD-4771B01DAAA4}
+		{FF495549-4370-4B02-8DDE-E427229E7E74} = {6BE0685D-E844-4BDF-82C8-8A276D753D50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BCDA963-6159-43CD-BCFF-FF24FDA22064}
