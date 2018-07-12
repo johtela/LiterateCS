@@ -1,0 +1,11 @@
+﻿.navbar {
+   margin-bottom: 0px;
+}
+.jumbotron {
+    background-image: url("../images/jumbotron.jpg");
+    background-size: cover;
+}
+img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    zoom: 1;
+}

@@ -8,14 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Weaver - projectname</title>
+    <title>Weaver - Literate Programming</title>
 
 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <link rel="stylesheet" href="../bootstrap/css/default/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bootstrap/css/readable/bootstrap.min.css" />
 <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../sidebar/sidebar.min.css" />
 <link rel="stylesheet" href="../css/book.min.css" />
-<link rel="stylesheet" href="../syntax-highlight/monokai.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/solarized-light.min.css" />
 <link rel="stylesheet" href="../mermaid/mermaid.css" />
 
 </head>
@@ -31,11 +31,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../index.html">projectname</a>
+                <a class="navbar-brand" href="../index.html">Literate Programming</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="../License.html">License</a></li>
                 </ul>
             </div>
         </div>
@@ -59,13 +62,94 @@
             </div>
             <div class="panel-body main-menu">
                 <ul>
+	<li><a href="../index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="../Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Weaver.html" class="selected">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="../LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="../FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="../TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="../TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="../License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="../README.html">README</a></li>
+	<ul>
+	</ul>
 </ul>
             </div>
         </div>
 
             </div>
 			<div class="col-md-9">
-								<div id="static-content" class="markdown">
+				<ul class="pager">
+	<li class="previous"><a href="../LiterateCS/SplitPath.html">Previous: SplitPath Structure</a></li>
+	<li class="next"><a href="../LiterateCS/MdWeaver.html">Next: Markdown Weaver</a></li>
+</ul>
+				<div id="static-content" class="markdown">
 					<h1 id="document-weaver">Document Weaver</h1>
 <p>The main workhorse of the application is the weaver. It enumerates the source
 files as specified by command line options and generates documentation for each
@@ -292,12 +376,16 @@ source file or Roslyn document. They are used by the subclasses.</p>
 </code></pre>
 
 				</div>
-							</div>
+				<ul class="pager">
+	<li class="previous"><a href="../LiterateCS/SplitPath.html">Previous: SplitPath Structure</a></li>
+	<li class="next"><a href="../LiterateCS/MdWeaver.html">Next: Markdown Weaver</a></li>
+</ul>
+			</div>
         </div>
     </div>
     
     <footer class="panel-footer text-center">
-        <div align="center">footer</div>
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
 		<div align="right">
 			<small>
 				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
@@ -311,5 +399,13 @@ source file or Roslyn document. They are used by the subclasses.</p>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../sidebar/sidebar.js"></script>
     <script src="../syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="../mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
 </body>
 </html>

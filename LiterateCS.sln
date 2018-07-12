@@ -8,6 +8,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E18EDBB-7E93-4F46-894F-E77C852F09E3}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		defaults.yml = defaults.yml
+		FrontMatter.md = FrontMatter.md
+		index.md = index.md
+		Introduction.md = Introduction.md
+		License.md = License.md
+		README.md = README.md
+		TableOfContents.md = TableOfContents.md
+		TipsAndTricks.md = TipsAndTricks.md
+		TOC.yml = TOC.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiterateCS", "LiterateCS\LiterateCS.csproj", "{E164D885-0B71-45B9-A119-A9D9092CB5EF}"

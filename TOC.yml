@@ -1,0 +1,101 @@
+﻿contents:
+  - page: Home
+    file: index.md
+    desc: Literate programming home page.
+
+  - page: Introduction
+    file: Introduction.md
+    desc: Introduction to literate programming and to the `csweave` tool.
+
+  - page: Command Line Options
+    file: LiterateCS\Options.cs
+    desc: Lists the available command line options and input parameters.
+
+  - page: Main Program
+    file: LiterateCS\Program.cs
+    desc: Main program that initiates the document generation.
+
+  - page: SplitPath Structure
+    file: LiterateCS\SplitPath.cs
+    desc: >
+        Helper data structure that makes working with file and directory paths
+        easier.
+
+  - page: Document Weaver
+    file: LiterateCS\Weaver.cs
+    desc: Weaver reads the source files and outputs documents based on options.
+
+  - page: Markdown Weaver
+    file: LiterateCS\MdWeaver.cs
+    desc: Weaver subclass that outputs Markdown as output.
+
+  - page: HTML Weaver
+    file: LiterateCS\HtmlWeaver.cs
+    desc: Weaver subclass that outputs HTML as output.
+
+  - page: TOC Manager
+    file: LiterateCS\TocManager.cs
+    desc: "Loads, saves and updates table of contents."
+
+  - page: MSBuild Helpers
+    file: LiterateCS\MSBuildHelpers.cs
+    desc: Helper methods for working with MSBuild projects.
+
+  - page: Source Blocks
+    file: LiterateCS\BlockList.cs
+    desc: Data structure that splits a source file into comments and code.
+
+  - page: Macros
+    file: LiterateCS\Macro.cs
+    desc: Subsequences of block lists that can be inserted into MD files.
+
+  - page: Block Builder
+    file: LiterateCS\BlockBuilder.cs
+    desc: "C# syntax tree walker that will create a block list from a source file."
+
+  - page: HTML Block Builder
+    file: LiterateCS\HtmlBlockBuilder.cs
+    desc: Subclass of block builder that enriches code blocks in HTML output.
+
+  - page: HTML Generation
+    file: LiterateCS\HtmlGenerator.cs
+    desc: Markdown to HTML generation and template processing.
+
+  - page: Themes
+    desc: Customizing the HTML output.
+    subs:
+      - page: Directory Utilities
+        file: LiterateCS.Theme\DirHelpers.cs
+        desc: Functions that help file/directory management.
+
+      - page: Table of Contents Classes
+        file: LiterateCS.Theme\Toc.cs
+        desc: Data structure representing the table of contents.
+
+      - page: Page Parameters
+        file: LiterateCS.Theme\PageParams.cs
+        desc: Parameters available for a theme when it is rendering a page.
+
+      - page: Theme Base Class
+        file: LiterateCS.Theme\Theme.cs
+        desc: Base class for themes to inherit from.
+
+  - page: Front Matter
+    file: FrontMatter.md
+    desc: Defining document metadata.
+
+  - page: Table of Contents File
+    file: TableOfContents.md
+    desc: Description of the TOC file format.
+
+  - page: "Tips & Tricks"
+    file: TipsAndTricks.md
+    desc: How to configure the tool to improve your workflow.
+
+  - page: License
+    file: License.md
+    desc: Program license and terms of use.
+
+  - page: README
+    file: README.md
+    desc: TODO! Add page description.
