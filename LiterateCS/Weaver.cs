@@ -207,6 +207,11 @@ namespace LiterateProgramming
 			{
 				LogWriter = Console.Out
 			});
+			foreach (var proj in amanager.Projects.Values)
+			{
+				proj.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
+				proj.Compile ();
+			}
 			var solution = amanager.GetWorkspace ().CurrentSolution;
 			var filtRegexes = FilterRegexes ();
 			return from proj in MSBuildHelpers.LoadProjectsInSolution (solution, solutionFile)

@@ -1,0 +1,70 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "49e8f1ba0790d0a23cbfa86c4804b19d6e8935a2"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "DefaultTheme/1.0.0": {
+        "dependencies": {
+          "LiterateCS.Theme": "1.0.0",
+          "System.CodeDom": "4.5.0"
+        },
+        "runtime": {
+          "DefaultTheme.dll": {}
+        }
+      },
+      "ExtensionCord/1.1.0": {
+        "runtime": {
+          "lib/netstandard1.0/ExtensionCord.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        }
+      },
+      "System.CodeDom/4.5.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "4.6.26515.6"
+          }
+        }
+      },
+      "LiterateCS.Theme/1.0.0": {
+        "dependencies": {
+          "ExtensionCord": "1.1.0"
+        },
+        "runtime": {
+          "LiterateCS.Theme.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DefaultTheme/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ExtensionCord/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SuQcWakbT7eFeq94AOrQhRUXO0g3BYWekiNj7aZy+caBl5geCYFyWADCYN2U+AiFD2J7QIsbCH6FRjtJuHRFug==",
+      "path": "extensioncord/1.1.0",
+      "hashPath": "extensioncord.1.1.0.nupkg.sha512"
+    },
+    "System.CodeDom/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WvCzCcwGSQo4fMMelnsQxLhcPr0VoGZHk26hAhiLE+5EqCmOL9LmHL9DC0jno+BpEc1Txl0Owf6kUfZ9eB7LpQ==",
+      "path": "system.codedom/4.5.0",
+      "hashPath": "system.codedom.4.5.0.nupkg.sha512"
+    },
+    "LiterateCS.Theme/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,82 @@
+﻿.code-block {
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.tooltip-inner {
+  max-width: 1000px;
+}
+pre.csharp,
+code.csharp {
+  color: #f8f8f2;
+  background: #272822;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+pre.csharp .punctuation,
+code.csharp .punctuation {
+  color: #d0d0c8;
+}
+pre.csharp .keyword,
+code.csharp .keyword {
+  color: #66d9ef;
+}
+pre.csharp .comment,
+code.csharp .comment {
+  color: #a6e22e;
+}
+pre.csharp .preprocessor,
+code.csharp .preprocessor {
+  color: slategray;
+}
+pre.csharp .string,
+code.csharp .string {
+  color: #f92672;
+}
+pre.csharp .number,
+code.csharp .number {
+  color: #ae81ff;
+}
+pre.csharp .typename,
+code.csharp .typename {
+  color: #e6db74;
+}
+pre.csharp a,
+code.csharp a {
+  color: inherit;
+}
+pre.csharp a:visited,
+code.csharp a:visited {
+  color: inherit;
+}
+pre.csharp a:hover,
+code.csharp a:hover {
+  color: deepskyblue;
+  text-decoration: underline;
+}
+pre.csharp a:active,
+code.csharp a:active {
+  color: blueviolet;
+  text-decoration: underline;
+}

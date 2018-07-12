@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
-    <ProjectReference Include="..\Themes\DefaultTheme\DefaultTheme.csproj" />
   </ItemGroup>
 
 </Project>
