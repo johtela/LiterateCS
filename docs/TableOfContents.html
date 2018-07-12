@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TableOfContents - Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="css/book.min.css" />
+<link rel="stylesheet" href="syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="TableOfContents.html" class="selected">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="README.html">README</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="FrontMatter.html">Previous: Front Matter</a></li>
+	<li class="next"><a href="TipsAndTricks.html">Next: Tips &amp; Tricks</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<h1 id="table-of-contents-file">Table of Contents File</h1>
+<p>To make it easier for the reader to find a specific topic the pages should
+be organized in a logical structure. The structure of the documentation is
+defined in the table of contents, or <em>TOC</em>, file. This file is used only when
+HTML output is selected. Markdown output  does not currently utilize the TOC.</p>
+<h2 id="file-format">File Format</h2>
+<p>TOC is stored in a special file called <code>TOC.yml</code>. It is defined in <a href="http://yaml.org/">YAML</a>
+format, as is the <a href="FrontMatter.html">front matter</a>. The contents of the file
+is laid out in the following way:</p>
+<pre><code>contents:
+  - page: &lt;title&gt;
+    file: &lt;relative file path&gt;
+    desc: &lt;description of the topic&gt;
+
+  - page: &lt;title&gt;
+    desc: &lt;description of the topic&gt;
+    subs:
+      - page: &lt;subtopic title&gt;
+        file: &lt;relative file path&gt;
+        desc: &lt;description of the topic&gt;
+        ...
+
+  - page: &lt;title&gt;
+    file: &lt;relative file path&gt;
+    desc: &lt;description of the topic&gt;
+    ...
+</code></pre>
+<p>The format is hierarchical. The first keyword is <code>contents:</code> under which the
+topics are listed. For each topic there is <code>page:</code> which contains the title
+of the topic. <code>file:</code> specifies the relative file path to the source file
+that contains the documentation. This information is optional, so it can be
+left out, if there is no file associated to the topic.</p>
+<p><code>desc:</code> contains a description string that can be optionally used in the
+TOC. This field can also be left out, if it is not needed.</p>
+<p>Subtopics can be added to any level by inserting them under the <code>subs:</code> keyword.
+Exactly same fields are available to subtopics as for the main level topics.</p>
+<h2 id="example">Example</h2>
+<p>Below is an excerpt from the TOC of this project. It serves as an example on
+how a TOC file typically looks like:</p>
+<pre><code>contents:
+  - page: Introduction
+    file: Index.md
+    desc: Introduction to literate programming and to the `csweave` tool.
+
+  - page: Command Line Options
+    file: src\Options.cs
+    desc: Lists the available command line options and input parameters.
+
+  - page: Main Program
+    file: src\Program.cs
+    desc: Main program that initiates the document generation.
+
+  - page: Themes
+    desc: Customizing the HTML output.
+    subs:
+      - page: Directory Utilities
+        file: CSWeave.Theme\DirHelpers.cs
+        desc: Functions that help file/directory management.
+
+      - page: Theme Base Class
+        file: CSWeave.Theme\Theme.cs
+        desc: Base class for themes to inherit from.
+
+  - page: Front Matter
+    file: FrontMatter.md
+    desc: Defining document metadata.
+</code></pre>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="FrontMatter.html">Previous: Front Matter</a></li>
+	<li class="next"><a href="TipsAndTricks.html">Next: Tips &amp; Tricks</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="sidebar/sidebar.js"></script>
+    <script src="syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

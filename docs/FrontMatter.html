@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>FrontMatter - Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="css/book.min.css" />
+<link rel="stylesheet" href="syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="FrontMatter.html" class="selected">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="README.html">README</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="LiterateCS.Theme/Theme.html">Previous: Theme Base Class</a></li>
+	<li class="next"><a href="TableOfContents.html">Next: Table of Contents File</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<h1 id="front-matter">Front Matter</h1>
+<p>All of the input files may contain a special block called <em>front matter</em>
+at the very beginning of them. The front matter is a <a href="http://yaml.org/">YAML</a>
+block that contains metadata related to the input file or to the whole project.
+It is a collection of string properties that is passed to the theme assembly
+for controlling the HTML generation.</p>
+<p>Typically the front matter looks something like this:</p>
+<pre><code>---
+ProjectName: Literate Programming
+GitHub: https://github.com/johtela/LiterateProgramming
+Footer: Copyright (c) 2017 Tommi Johtela
+ShowDescriptionsInToc: true
+SyntaxHighlight: son-of-obsidian
+---
+</code></pre>
+<p>It is delimited by three hyphens <code>---</code> and it must start on the first line of a
+markdown or C# file. No other text may appear before it, excluding the comment
+start token <code>/*</code> when it appears in a C# file.</p>
+<h2 id="default-settings">Default Settings</h2>
+<p>For some of the properties you probably want to set a same value for all files.
+You don't need to duplicate these settings in every input file. Rather, define
+them in the <code>defaults.yml</code> file, so they will be processed before any of the
+input files are read. It is still possible to override properties on individual
+files, if you like.</p>
+<p>The format of the <code>defaults.yml</code> file is exactly the same as for the front
+matter, except that you should not add the three hyphens <code>---</code> at the beginning
+and at the end. These are not part of YAML syntax.</p>
+<h2 id="available-properties">Available Properties</h2>
+<p>The list of available properties depends on the theme used. The properties
+available in the default theme are listed below. Property names and values
+are case-insensitive, so they can be typed using any convention: lowercase,
+uppercase, Camel case, Pascal case, etc.</p>
+<h3 id="template-string"><code>Template</code> (string)</h3>
+<p>The name of the template used for producing the HTML page. This setting
+is theme-dependent. In the default theme, the possible choices are:</p>
+<ul>
+<li><strong>Default</strong> - Default template for documentation pages.</li>
+<li><strong>Landing</strong> - Template for the landing page.</li>
+</ul>
+<p>Depending on the template used, a property might be relevant or not. The list
+of supported parameters available in the default theme is shown in the table
+below. The columns indicate if a parameter is supported by a specific template.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th style="text-align: center;">Default</th>
+<th style="text-align: center;">Landing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ProjectName</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>Logo</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>Download</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>NuGet</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>License</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>Footer</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr>
+<td>MarkdownStyle</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>ShowDescriptionInToc</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>SyntaxHighlight</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>UseDiagrams</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>DiagramStyle</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>UseMath</td>
+<td style="text-align: center;">*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td>Jumbotron</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">*</td>
+</tr>
+</tbody>
+</table>
+<h3 id="projectname-string"><code>ProjectName</code> (string)</h3>
+<p>The name of the project that is shown in the toolbar of the HTML pages.</p>
+<h3 id="logo-string"><code>Logo</code> (string)</h3>
+<p>A relative path to the image logo that is shown along with the project name. The
+image is scaled so that its height is 24 pixels.</p>
+<h3 id="github-url"><code>GitHub</code> (URL)</h3>
+<p>The URL of the project in GitHub. The link is shown as a button in the toolbar.</p>
+<h3 id="download-url"><code>Download</code> (URL)</h3>
+<p>The URL of the project download page. The link is shown as a button in the
+toolbar.</p>
+<h3 id="nuget-url"><code>NuGet</code> (URL)</h3>
+<p>The URL of the project NuGet page. The link is shown as a button in the
+toolbar.</p>
+<h3 id="license-string"><code>License</code> (string)</h3>
+<p>The name of the license file with the relative path and extension. The license
+file is assumed to be located under the project directory. The link is shown as
+a button in the toolbar.</p>
+<h3 id="footer-string"><code>Footer</code> (string)</h3>
+<p>The text shown in the footer of the HTML pages.</p>
+<h3 id="bootstrapstyle-string"><code>BootstrapStyle</code> (string)</h3>
+<p>The name of the stylesheet used with the Bootstrap library. The available
+styles in the default theme are (click a style to see its preview):</p>
+<ul>
+<li><a href="https://bootswatch.com/3/cerulean/">cerulean</a></li>
+<li><a href="https://bootswatch.com/3/cosmo/">cosmo</a></li>
+<li><a href="https://bootswatch.com/3/default/">default</a> - Default style.</li>
+<li><a href="https://bootswatch.com/3/flatly/">flatly</a></li>
+<li><a href="https://bootswatch.com/3/journal/">journal</a></li>
+<li><a href="https://bootswatch.com/3/lumen/">lumen</a></li>
+<li><a href="https://bootswatch.com/3/paper/">paper</a></li>
+<li><a href="https://bootswatch.com/3/readable/">readable</a></li>
+<li><a href="https://bootswatch.com/3/sandstone/">sandstone</a></li>
+<li><a href="https://bootswatch.com/3/simplex/">simplex</a></li>
+<li><a href="https://bootswatch.com/3/spacelab/">spacelab</a></li>
+<li><a href="https://bootswatch.com/3/united/">united</a></li>
+<li><a href="https://bootswatch.com/3/yeti/">yeti</a></li>
+</ul>
+<h3 id="markdownstyle-string"><code>MarkdownStyle</code> (string)</h3>
+<p>The name of the CSS style sheet that is used for markdown formatting.
+The available styles in the default theme are:</p>
+<ul>
+<li><strong>book</strong> - The default style with serif fonts.</li>
+<li><strong>modern</strong> - Uses the Lucida font family.</li>
+<li><strong>plain</strong> - Simplistic style with sans serif fonts.</li>
+</ul>
+<h3 id="showdescriptionintoc-truefalse"><code>ShowDescriptionInToc</code> (true/false)</h3>
+<p>Control whether the description of a page is shown along with the page
+title in the table of contents shown in the side bar. Off by default.</p>
+<h3 id="syntaxhighlight-string"><code>SyntaxHighlight</code> (string)</h3>
+<p>The name of the CSS style sheet that is used for syntax highlighting.
+The available syntax highlighting schemes in the default theme are:</p>
+<ul>
+<li><strong>monokai</strong> (default) - Dark theme used in many text editors.</li>
+<li><strong>coding-horror</strong> - Light theme inspired by the
+<a href="https://blog.codinghorror.com/">Coding Horror</a> blog.</li>
+<li><strong>solarized-light</strong> - Solarized theme used in many text editors.</li>
+<li><strong>son-of-obsidian</strong> - The most popular color scheme in
+<a href="https://studiostyl.es/">studiostyles</a>.</li>
+</ul>
+<h3 id="usediagrams-truefalse"><code>UseDiagrams</code> (true/false)</h3>
+<p>Diagram support is off by default. This is because enabling it increases page
+loading times. If you want to include diagrams in your documentation, set this
+property to <code>true</code>. For more information refer to the
+<a href="TipsAndTricks.html">Tips &amp; Tricks</a> page.</p>
+<h3 id="diagramstyle-string"><code>DiagramStyle</code> (string)</h3>
+<p>The name of CSS style file used by the <a href="http://knsv.github.io/mermaid/">mermaid</a>
+diagramming library. The default theme includes all style files that
+come out-of-the-box with the library:</p>
+<ul>
+<li><strong>mermaid</strong> (default) - Default light blue theme.</li>
+<li><strong>mermaid.dark</strong> - A slightly darker blue theme.</li>
+<li><strong>mermaid.forest</strong> - Green-colored theme.</li>
+</ul>
+<h3 id="usemath-truefalse"><code>UseMath</code> (true/false)</h3>
+<p>As with diagrams, support for mathematical formulas is disabled by default. The
+default theme uses the <a href="https://www.mathjax.org/">MathJax</a> library to render
+the formulas, and since it is a big library, loading it takes some time. To
+enable the math support, set this property to <code>true</code>. For more information refer
+to the <a href="TipsAndTricks.html">Tips &amp; Tricks</a> page.</p>
+<h3 id="jumbotron-markdown"><code>_Jumbotron</code> (markdown)</h3>
+<p>The contents of the jumbotron pane of the landing page. All the parameters
+that start with underscore <code>_</code> will be translated to HTML automatically.</p>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="LiterateCS.Theme/Theme.html">Previous: Theme Base Class</a></li>
+	<li class="next"><a href="TableOfContents.html">Next: Table of Contents File</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="sidebar/sidebar.js"></script>
+    <script src="syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

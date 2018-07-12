@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Introduction - Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="css/book.min.css" />
+<link rel="stylesheet" href="syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="Introduction.html" class="selected">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="README.html">README</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="index.html">Previous: Home</a></li>
+	<li class="next"><a href="LiterateCS/Options.html">Next: Command Line Options</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<h1 id="literate-programming-and-the-art-of-documenting-c-code">Literate Programming and the Art of Documenting C# Code</h1>
+<blockquote>
+<p>Let us change our traditional attitude to the construction of programs: Instead of imagining that
+our main task is to instruct a computer what to do, let us concentrate rather on explaining to human
+beings what we want a computer to do.</p>
+<p><em>Donald Knuth, Computer Journal, 1984</em></p>
+</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is a software design
+methodology proposed by <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>. Its guiding
+principle is that computer programs should be written like a book or an essay. Knuth argues that
+good programmers do not focus just on writing code, they also document the thought processes
+that led them to the chosen implementation; describing not only <em>what</em> the code does, but <em>why</em>.
+This helps other programmers understand the code better, but also the author will find it easier
+to revise the code later on.</p>
+<p>Back in the 80s when Knuth first introduced his idea, he wrote a set of tools to manage code
+and documentation together. These tools take a file containing text and code interleaved and
+produce the source code to be compiled, as well as the &quot;documentation source&quot; that can be converted
+to a readable format. They are basically preprocessors which operate on the same source file,
+extracting different parts from it. Knuth called this source language <code>WEB</code>, hence the tools
+were called <em>Weave</em> and <em>Tangle</em>. Weave produces the documentation in
+<a href="https://en.wikipedia.org/wiki/TeX"><em>TeX</em></a> format and Tangle produces compilable code. The
+concept is depicted in the picture below.</p>
+<div class="mermaid">graph LR
+    LP[LP File] -->|Weave| DOC[Documentation]
+    LP -->|Tangle| SRC[Source Code]
+    DOC -->|Generate| HTM[HTML, PDF, ...]
+    SRC -->|Compile| EXE
+</div>
+<p>A more common way to combine code and documentation is to write the documentation inside comments and
+extract it using a post-processor, leaving the compilation process unchanged. For example, Haskell,
+Python, and Lisp have literate programming tools available that work like this. However, there hasn't
+been any notable attempts to make literate programming possible in .NET. One of the reasons why literate
+programming is unfamiliar to most programmers is because the tooling has not been available for
+the mainstream development platforms.</p>
+<p>Another reason for literate programming's lack of popularity is that it requires the programmer
+to be proficient in two traits instead of just one. Writing fluent prose can be as hard as writing
+good code - and equally time consuming as well. Nevertheless, the benefits of having both working
+software and comprehensive documentation can sometimes outweigh the costs. Especially, when writing
+software whose inner workings need to be understood by others: libraries, tutorials, example
+programs, and so on. Additional benefit is that the documentation can be produced in various
+formats: as a PDF, blog post, presentation, website, or even as a complete book. In fact,
+there are quite popular recently published books that have been written as literate programs, for
+example the <a href="http://www.pbrt.org/">Physically Based Rendering</a> book.</p>
+<p>In .NET languages the standard way of documenting code is to write XML comments. API documentation
+generated from XML comments serves as a reference manual that can be used to quickly find what a
+specific class or method does. When done properly, it can be a satisfactory way of describing the
+correct use of an API. However, writing XML comments is a tedious task, and requires a
+lot of discipline. XML comments tend to be verbose and repetitive which means that the produced
+documentation is dense and boring to read. In many cases, reading the code is faster than browsing
+through the documentation. There is little additional information in the XML comments, usually.</p>
+<h2 id="csweave-literate-programming-tool-for-c"><code>csweave</code> - Literate Programming Tool for C#</h2>
+<p>To make literate programming possible also in C#, I wrote a tool called <code>csweave</code>. The
+documentation you are reading right now is generated from its source code. <code>csweave</code>
+uses a hybrid approach to unite code and documentation. You can either embed your
+documentation inside comment blocks in C# code, or you can start with separate text files
+and include sections of code in them by wrapping the code inside
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region">regions</a>.
+In either case the documentation is written in <a href="https://en.wikipedia.org/wiki/markdown">markdown language</a>,
+which allows you to structure and format your text.</p>
+<p>Since we are piggybacking on the existing language constructs (comments and regions),
+the compilation process is not altered. So, the tangling part of literate programming
+is covered by the existing compilers. The weaving part is taken care by <code>csweave</code>, which
+processes the source and markup files and produced the documentation from them. It
+can create either plain markup files, which can be then further processed with markdown
+converters such as <a href="https://pandoc.org/">Pandoc</a>, or alternatively it can build a
+feature-rich web site with dozens of configurable options.</p>
+<h3 id="documentation-in-comments">Documentation in Comments</h3>
+<p>If you prefer incorporating documentation into code, you can write it inside comments.
+You don't need to use special syntax to annotate the documentation. Multi-line comment blocks
+surrounded with <code>/*</code> and <code>*/</code> will be extracted and included in the output. Single line comments
+starting with <code>//</code>, as well as XML comments, are treated as code by <code>csweave</code>.</p>
+<p>Literate comments can appear anywhere in your code. The goal is to write your code in small
+pieces as you are describing what it does (and <em>why</em>) in the comments. This way the generated
+documentation becomes more readable and easy to follow.</p>
+<h3 id="inserting-code-regions-in-markdown">Inserting Code Regions in Markdown</h3>
+<p>If you don't want to clutter your code with a lot of comments, the other option is to write
+your prose in separate markdown files. When you want to include a piece of code in your text,
+you can use a <em>macro</em>. This feature was already present in Knuth's original LP tools. A macro
+is a piece of code that is wrapped inside the <code>region</code> directive. Regions have names, which
+identify the block of code they contain. When you want to include that block of code into your
+markdown file, you just write the region's name inside double angle brackets. That triggers
+the macro expansion. A macro call must be the only thing on a line - otherwise it is not
+recognized. For example, adding macro call <code>&lt;&lt;Main Error Handler&gt;&gt;</code> expands to the following
+code from <a href="src/Program.html">Program.cs</a>:</p>
+<pre class="csharp"><code class="csharp">				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">ForegroundColor</span> <span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">=</span> <span class="typename" data-toggle="tooltip" title="System.ConsoleColor">ConsoleColor</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">Red</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Fatal error in document generation:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.ResetColor()">.</span><span data-toggle="tooltip" title="System.Console.ResetColor()">ResetColor</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">StackTrace</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+				<span class="punctuation">{</span>
+					<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Inner exception:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">StackTrace</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="punctuation">}</span>
+				<span class="keyword">return</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">;</span>
+</code></pre>
+<p><em>This code block is used as an example on how to embed code into
+markdown files.</em></p>
+<p>Note that if you hace defined comment blocks inside the region those will be expanded also.
+Since we use the names of the regions as macro identifiers, the names must be unique. Otherwise
+<code>csweave</code> complains that you have defined ambiguous macros.</p>
+<h2 id="the-controversy-about-real-literate-programming">The Controversy about <em>Real</em> Literate Programming</h2>
+<p>Reading the Wikipedia page about literate programming one gets an impression that most of
+the literate programming tools are doing it wrong. Knuth's goal with literate programming was
+not just to provide documentation, but introduce a completely new programming paradigm, in
+which the structure of programs would be more free-form than in &quot;traditional&quot; languages. The
+use of macros to write programs in piecewise manner and tangling them together was an
+essential part of his proposition.</p>
+<p>If you look at literate programming as a better way to organize big software projects as Knuth
+suggests, the benefits are questionable. In fact, the whole justification of the method is
+somewhat obsolete. Compilers nowadays do not impose strict rules about the order of definitions.
+When they do, it is because the language designer has intentionally introduced modular constructs
+such as interfaces, classes, and namespaces which help us organize our code into logical units
+that contain related functionality. Organizing your documentation in an order that makes sense
+to a reader is a good idea, but structuring your program accordingly does not necessarily make
+finding your way in it any easier.</p>
+<p>This does not mean that the idea of literate programming is without merit, though, quite the
+opposite. Documentation is largely overlooked nowadays and having a good quality documentation
+is seen as a secondary goal at best. Writing documentation and code together forces you to think
+about what you are trying to accomplish, and provides a different point of view to the problem
+you are solving. You have to be able to verbally describe how your code works. If that seems like
+a hard task, it is a clear sign that your code needs improvement.</p>
+<p>By calling <code>csweave</code> a literate programming tool instead of a &quot;documentation generation tool&quot;
+as the Wikipedia article suggests, we are taking a standpoint that literate programming has
+evolved from its origins, and practicing it with modern programming languages requires
+abandoning some of its premises. Being a purist hardly helps getting more people to use
+literate programming. Its adoption is pretty marginal as it is.</p>
+<h2 id="the-structure-of-the-program">The Structure of the Program</h2>
+<p>We will go through the whole implementation of <code>csweave</code>, using it as an example on how to
+write programs in literate style. In the end we have covered all the features and options
+available in the program. Not just how they work, but also how they are implemented.</p>
+<p>The high-level flow chart of the program is shown below. You can click a box in the diagram
+to jump to the documentation of the corresponding module. Alternatively, you can jump to a page
+by clicking a section in the table of contents. You can also move to the next and previous page
+using the navigation buttons on the top and the bottom.</p>
+<div class="mermaid">graph TD
+    CMD[Parse command line options]
+    click CMD "src/Options.html"
+    PRG{Output format?}
+    click PRG "src/Program.html"
+    CMD --> PRG
+    WMD[Generate markdown files]
+    click WMD "src/MdWeaver.html"
+    WHT[Generate HTML files]
+    click WHT "src/HtmlWeaver.html"
+    PRG -->|markdown| WMD
+    PRG -->|HTML| WHT
+    BLK[Split source file into blocks]
+    click BLK "src/BlockBuilder.html"
+    BHT[Split source file to HTML blocks]
+    click BHT "src/HtmlBlockBuilder.html"
+    WMD -->|For each source file| BLK
+    WHT -->|For each source file| BHT
+    OMD[Output markdown]
+    BLK --> OMD
+    GHT[Convert markdown to HTML]
+    click GHT "src/HtmlGenerator.html"
+    BHT --> GHT
+    subgraph Theme
+    THM[Render HTML page]
+    click THM "CSWeave.Theme/Theme.html"
+    AUX[Copy auxiliary CSS/JS/font files]
+    THM -->|After all files processed| AUX
+    end
+    GHT --> THM
+    DON((Done))
+    OMD --> DON
+    AUX --> DON
+</div>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="index.html">Previous: Home</a></li>
+	<li class="next"><a href="LiterateCS/Options.html">Next: Command Line Options</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="sidebar/sidebar.js"></script>
+    <script src="syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

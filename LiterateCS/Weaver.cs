@@ -29,7 +29,6 @@ to keep things simple by working on the higher abstraction level.
 namespace LiterateProgramming
 {
 	using LiterateCS.Theme;
-	using Microsoft.Build.Construction;
 	using Microsoft.CodeAnalysis;
 	using Buildalyzer;
 	using Buildalyzer.Workspaces;
@@ -38,7 +37,6 @@ namespace LiterateProgramming
 	using System.IO;
 	using System.Linq;
 	using System.Text.RegularExpressions;
-	using ExtensionCord;
 
 	public abstract class Weaver
 	{
@@ -181,32 +179,19 @@ namespace LiterateProgramming
 		query assumes the "Build Action" property of the retrieved files to be either 
 		"Content" or "None". Files having other build types are skipped.
 		*/
-		protected IEnumerable<SplitPath> MarkdownFilesInSolution (SolutionFile solution)
-		{
-			var filtRegexes = FilterRegexes ();
-			return from proj in solution.ProjectsInOrder
-				   where proj.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat
-				   let root = ProjectRootElement.Open (proj.AbsolutePath)
-				   from item in root.Items
-				   where item.ItemType.In ("Content", "None")
-				   let relPath = _options.InputPath.WithFile (item.Include)
-				   where IsMarkdownFile (relPath) &&
-					   filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
-				   select relPath;
-		}
 		/*
 		And then we can gather the C# source files. Most of the heavy lifting is
 		delegated to the MSBuildHelper class. In addition to the file path we
 		return also the Document object that contains syntactic and semantic
 		information that the Roslyn compiler attaches to the source file.
 		*/
-		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution (
-			SolutionFile solutionFile)
+		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution ()
 		{
-			var amanager = new AnalyzerManager (_options.Solution, new AnalyzerManagerOptions ()
-			{
-				LogWriter = Console.Out
-			});
+			var amanager = new AnalyzerManager (_options.Solution, 
+				new AnalyzerManagerOptions ()
+				{
+					LogWriter = Console.Out
+				});
 			foreach (var proj in amanager.Projects.Values)
 			{
 				proj.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
@@ -214,11 +199,39 @@ namespace LiterateProgramming
 			}
 			var solution = amanager.GetWorkspace ().CurrentSolution;
 			var filtRegexes = FilterRegexes ();
-			return from proj in MSBuildHelpers.LoadProjectsInSolution (solution, solutionFile)
+			return from proj in CompileProjectsInSolution (solution)
 				   from doc in proj.Documents
 				   let relPath = SplitPath.Split (_options.InputPath.BasePath, doc.FilePath)
 				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
 				   select Tuple.Create (relPath, doc);
+		}
+
+		public static IEnumerable<Project> CompileProjectsInSolution (Solution solution)
+		{
+			foreach (var proj in solution.Projects)
+			{
+				/*
+				Finally we can compile the project and yield it out for enumeration. 
+				If there are compilation errors, they will be outputted to the console 
+				window. As noted above, getting referencing errors does not necessarily 
+				mean that the required semantic information is not available in compiled 
+				project.
+				*/
+				Project p = SuppressWarnings (proj, "CS1701", "CS8019");
+				var diag = p.GetCompilationAsync ().Result.GetDiagnostics ();
+				foreach (var msg in diag)
+					Console.Error.WriteLine (msg);
+				yield return p;
+			}
+		}
+
+		private static Project SuppressWarnings (Project proj, params string[] warnings)
+		{
+			var diagOpts = proj.CompilationOptions.SpecificDiagnosticOptions;
+			for (int i = 0; i < warnings.Length; i++)
+				diagOpts = diagOpts.Add (warnings[i], ReportDiagnostic.Suppress);
+			return proj.WithCompilationOptions (
+				proj.CompilationOptions.WithSpecificDiagnosticOptions (diagOpts));
 		}
 		/*
 		We need some helper functions to determine the type of a file. The type of a file

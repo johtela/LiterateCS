@@ -89,13 +89,12 @@ namespace LiterateProgramming
 
 		protected override void GenerateFromSolution ()
 		{
-			var solution = MSBuildHelpers.OpenSolution (_options.Solution);
-			foreach (var doc in CSharpDocumentsInSolution (solution))
+			foreach (var doc in CSharpDocumentsInSolution ())
 			{
 				WeaveFromCSharpDocument (doc.Item1, doc.Item2);
 				AddToToc (doc.Item1);
 			}
-			foreach (var inputFile in MarkdownFilesInSolution (solution))
+			foreach (var inputFile in MarkdownFiles ())
 			{
 				WeaveFromMarkdown (inputFile);
 				AddToToc (inputFile);

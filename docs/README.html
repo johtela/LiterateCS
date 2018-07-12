@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>README - Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="css/book.min.css" />
+<link rel="stylesheet" href="syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="README.html" class="selected">README</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="License.html">Previous: License</a></li>
+	<li class="next disabled"><a href="#">Next</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<p><a href="https://ci.appveyor.com/project/johtela/literateprogramming"><img src="https://ci.appveyor.com/api/projects/status/vv7v46pprias7hel?svg=true" alt="Build status" /></a></p>
+<h1 id="literate-programming-in-c">Literate Programming in C#</h1>
+<p><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate Programming</a> is a
+programming methodology that helps writing and maintaining software by uniting
+code and documentation. It makes writing documentation less arduous task, and
+improves the quality and utility of the written documentation. Some argue that
+it also improves the quality of the produced code by forcing the author to
+present it in such way that it is understandable to the readers.</p>
+<p>This project is an attempt to make literate programming easy and fun for C#
+programmers. The full description of the project is available in:</p>
+<p><a href="https://johtela.github.io/LiterateProgramming/">https://johtela.github.io/LiterateProgramming/</a></p>
+<p>Please browse through the web site to get an idea what literate programming
+is and how the <code>csweave</code> tool helps you practicing it.</p>
+<h2 id="installation">Installation</h2>
+<p>Download the latest version of the <code>csweave</code> tool from the
+<a href="https://github.com/johtela/LiterateProgramming/releases">releases page</a>.</p>
+<p>The software is provided as a zip package that contains everything inside a
+single folder. Just extract the package to any directory. Typically the
+executables reside in the local application data directory, that is,
+<code>C:\Users\&lt;username&gt;\AppData\Local\csweave</code>.</p>
+<p>To make running the tool easier, add the executable directory to your $PATH
+environment variable. You can do this from the Control Panel, or temporarily
+amend the search path in command prompt:</p>
+<pre><code>set PATH=%PATH%;C:\Users\&lt;username&gt;\AppData\Local\csweave
+</code></pre>
+<p>In PowerShell the same can be accomplished with:</p>
+<pre><code>$env:Path += &quot;;C:\Users\&lt;username&gt;\AppData\Local\csweave&quot;
+</code></pre>
+<p>Now you can run the tool without specifying the executable path. Most likely
+you want to run it inside your solution directory.</p>
+<h2 id="bug-reports-feedback">Bug Reports &amp; Feedback</h2>
+<p>If you find a bug or want to suggest a feature, you can submit an
+<a href="https://github.com/johtela/LiterateProgramming/issues">issue</a>. Just
+set the label reflecting the type of the issue accordingly.</p>
+<p>If you want to contribute to the development, let me know. All help
+is appreciated.</p>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="License.html">Previous: License</a></li>
+	<li class="next disabled"><a href="#">Next</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="sidebar/sidebar.js"></script>
+    <script src="syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

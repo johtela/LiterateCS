@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/landingpage.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1 id="literate-programming-in-c">Literate Programming in C#</h1>
+<p>Produce beautiful, interactive documentation for your C# projects using <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a>.  Write your documentation inside comments using  <a href="https://en.wikipedia.org/wiki/Markdown">markdown</a>  and compile it to a fully functional web site that can be published on  <a href="https://github.com">GitHub</a>.</p>
+
+        <p><a class="btn btn-primary btn-lg" href="Introduction.html" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+		<div class="row">
+<div class="col-md-6">
+<h2 id="step-1-write-your-documentation">Step 1: Write Your Documentation</h2>
+<p>Embed your documentation inside code comments or put it into separate markdown
+files. All the formatting features of markdown are available to you.
+<a href="https://github.com/lunet-io/markdig">Markdig</a> library is used to convert the
+markdown to HTML. It offers a lot of useful extensions from
+<a href="https://www.mathjax.org/">MathJax</a> formulas to
+<a href="https://knsv.github.io/mermaid/">mermaid</a> diagrams.</p>
+</div>
+<div class="col-md-6">
+<p><img src="images/Diagram.png" class="img-responsive center-block" /></p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<p><img src="images/FrontMatter.png" class="img-responsive center-block" /></p>
+</div>
+<div class="col-md-6">
+<h2 id="step-2-customize-the-output">Step 2: Customize the Output</h2>
+<p>Generate either raw markdown files or standalone web sites. Using themes
+and styles you can customize the appearance of the pages. Include a <a href="http://yaml.org/">YAML</a>
+front matter in your source files to pass parameters to the site generator.</p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<h2 id="step-3-add-table-of-contents">Step 3: Add Table of Contents</h2>
+<p>A table of contents file defines the structure of your documentation. A TOC
+file can be automatically generated and updated. The outputted web pages
+include a navigation pane and navigation buttons to jump from one page to
+another.</p>
+</div>
+<div class="col-md-6">
+<p><img src="images/Navigation.png" class="img-responsive center-block" /></p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<p><img src="images/Code.png" class="img-responsive center-block" /></p>
+</div>
+<div class="col-md-6">
+<h2 id="step-4-generate-the-documentation">Step 4: Generate the Documentation</h2>
+<p>The documentation &quot;weaver&quot; uses <a href="https://github.com/dotnet/roslyn">Roslyn</a> to
+parse and analyze your source code. Syntactic and semantic information provided
+by Roslyn is used for syntax-highlighting, and for adding cross-references and
+type information to the code blocks. You can jump to the definition of a symbol
+by clicking it, or inspect its type by hovering over it.</p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<h2 id="step-5-publish-your-docs">Step 5: Publish Your Docs</h2>
+<p>If your code resides under GitHub, you can publish it under
+<a href="https://pages.github.com/">GitHub Pages</a> by turning on a single option in the
+project settings. Just generate your documentation under the <code>docs</code> folder,
+and turn it on. Done!</p>
+</div>
+<div class="col-md-6">
+<p><img src="images/GitHubPages.png" class="img-responsive center-block" /></p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-3">
+<i class="fa fa-cloud-download fa-5x pull-right"></i>
+</div>
+<div class="col-md-6">
+<h2 id="give-it-a-try">Give It a Try!</h2>
+<p>Go to the releases page to download the latest version. You can also clone the
+<a href="https://github.com/johtela/LiterateProgramming">repository</a> and build the tool
+from the sources.</p>
+<p><a class="btn btn-default" href="https://github.com/johtela/LiterateProgramming/releases" role="button">Download »</a></p>
+</div>
+</div>
+
+	</div>
+
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

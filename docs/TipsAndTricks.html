@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TipsAndTricks - Literate Programming</title>
+
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="css/book.min.css" />
+<link rel="stylesheet" href="syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Literate Programming</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/MSBuildHelpers.html">MSBuild Helpers</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="TipsAndTricks.html" class="selected">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="README.html">README</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="TableOfContents.html">Previous: Table of Contents File</a></li>
+	<li class="next"><a href="License.html">Next: License</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<h1 id="tips-tricks">Tips &amp; Tricks</h1>
+<p>There are some additional features and tools you can put to use, to make the
+literate programming experience even better. Let's look at few of them.</p>
+<h2 id="including-formulas">Including Formulas</h2>
+<p><code>csweave</code> uses the <a href="https://github.com/lunet-io/markdig">Markdig</a> parser to
+generate HTML from markdown. Markdig supports mathematical formulas inside
+the markdown. Formulas are rendered by the <a href="https://www.mathjax.org/">MathJax</a>
+Javascript library. The library is loaded only if the <code>UseMath</code> property is
+specified in the <a href="FrontMatter.html">front matter</a>.</p>
+<p>To include formulas in your comments write them in the
+<a href="https://en.wikipedia.org/wiki/TeX"><em>TeX</em></a> format. For example, the quadratic
+equation is defined like this:</p>
+<p><code>$x = { -b \pm \sqrt{b^2 - 4ac} \over 2a }$</code></p>
+<p>and rendered like this:</p>
+<p><span class="math">x = { -b \pm \sqrt{b^2 - 4ac} \over 2a }</span>.</p>
+<p>MathJax library is loaded from a <em>CDN</em> (Content Delivery Network) and not
+included in the auxiliary files coming with the theme. The reason for this is
+the big size of the library, and the fact that it is not always needed. Enabling
+the feature will increase page loading times, but the penalty is not that big.
+When mathematics support is required, this feature is invaluable.</p>
+<h2 id="including-diagrams">Including Diagrams</h2>
+<p>Another feature that makes your documentation more lively and readable is the
+support for diagrams. Obviously you can include PNG/GIF/JPG images in your
+markdown using the <code>!</code> syntax. This is a standard markdown feature which works
+as expected.</p>
+<p>However, if you just want to present diagrams that illustrate the program logic,
+drawing those as images can be quite laborious. You need to pick up a paint or
+drawing program, export the pictures to files and include the files in your
+project. Maintaining the pictures also quickly becomes a chore.</p>
+<p>For this purpose, it is easier to define your diagram directly inside the
+markdown and let the <a href="http://knsv.github.io/mermaid/">mermaid</a> library generate
+the images. Mermaid support flowcharts, sequence diagrams, and Gant diagrams.
+On of these usually fills the need when a clarifying picture is called for.</p>
+<p>Below is an example diagram that is generated from the following definition:</p>
+<pre><code>   ```mermaid
+   graph LR
+       A[Hard edge] --&gt;|Link text| B(Round edge)
+       B --&gt; C{Decision}
+       C --&gt;|One| D[Result one]
+       C --&gt;|Two| E[Result two] 
+   ```
+</code></pre>
+<div class="mermaid">graph LR
+    A[Hard edge] -->|Link text| B(Round edge)
+    B --> C{Decision}
+    C -->|One| D[Result one]
+    C -->|Two| E[Result two] 
+</div>
+<p>Diagram support is not enabled by default. To enable it, set the <code>UseDiagrams</code>
+property to <code>true</code> in the <a href="FrontMatter.html">front matter</a>. You can also change
+the visual appearance of the diagrams with the <code>DiagramStyle</code> property.</p>
+<h2 id="editing-markdown-in-visual-studio">Editing Markdown in Visual Studio</h2>
+<p>Literate programming using Visual Studio can be made more pleasant by installing
+couple of extensions. <a href="https://marketplace.visualstudio.com/">Visual Studio Marketplace</a>
+offers multiple choices if you are looking for an extension that provides syntax
+highlighting and support for markdown files. I am using
+<a href="https://github.com/madskristensen/MarkdownEditor">Markdown Editor</a> for this
+purpose.</p>
+<p>There is far more scarce supply of extensions that help editing markdown inside
+C# comments, though. The only option I have found is
+<a href="https://marketplace.visualstudio.com/items?itemName=JulienDuminil.MarkdownComments">MarkdownComments</a>
+by Julien Duminil. It has a few very handy features, such as showing headings
+in bigger font and previewing the pictures. However, it has a couple of issues
+which cause the latest version not working correctly with C# files (only
+with C++). I have submitted a pull request to fix those issues, but it has not
+yet been merged to the master branch.</p>
+<p>If you feel experimental and want to try it out, I suggest taking my branch
+from <a href="https://github.com/johtela/MarkdownComments">GitHub</a> and building the
+extension yourself. Installing it is just a matter of double-clicking the
+produced installer. You can uninstall it easily from Visual Studio, if you
+don't like it.</p>
+<p>The last extension I would recommend is the
+<a href="https://github.com/EWSoftware/VSSpellChecker">Visual Studio Spell Checker</a>.
+Spell checking is of course completely optional, and the value of correct
+spelling is subjective. Nevertheless, I find it very helpful when writing
+documentation that somebody or something is checking what I type. When
+writing code the compiler is doing that job. With documentation there is
+nothing helping you by default. That is why I think a spell checker is a
+precious tool - also within Visual Studio.</p>
+<h2 id="running-csweave-inside-the-build">Running <code>csweave</code> inside the Build</h2>
+<p>Since <code>csweave</code> is a command line tool, it can be integrated to the build
+process with little effort. You can add it as the post-build step in
+Visual Studio solution, or incorporate it in your continuous integration
+scripts. However you are doing it, just bear in mind that <code>csweave</code> will
+actually compile the project. So, if your code base is big, the tool will
+take some time. Therefore, I don't recommend running it automatically within
+every build. Better launch it separately when you want to review your
+documentation.</p>
+<p>Also, I don't suggest that the errors coming from the tool should be used
+as the cause of failing a build. As mentioned in the documentation of the
+<a href="src/MSBuildHelpers.html">MSBuildHelpers</a> class, there are cases when
+Roslyn reports errors, even though the project compiles correctly in
+Visual Studio.</p>
+<p>If you don't want to see the compilation errors at all, or if they hinder
+your build process, you can get rid of them by redirecting STDERR to null.
+In command prompt, it is done like this:</p>
+<pre><code>csweave &lt;options&gt; 2&gt; nul
+</code></pre>
+<p>In PowerShell the same thing is quite a bit more complicated. It is not enough
+to suppress the error messages, you also need to make sure that PowerShell
+does not terminate <code>csweave</code> immediately when it outputs to STDERR. So, we
+need to temporarily set <code>$ErrorActionPreference</code> variable to ignore the errors.</p>
+<pre><code>&amp; {
+    $ErrorActionPreference = &quot;SilentlyContinue&quot;
+    &amp; csweave &lt;options&gt;
+}
+</code></pre>
+<p><code>csweave</code> will indicate with its return code if it succeeded or not. To check
+if the document generation worked in PowerShell, you should inspect the
+<code>$LASTEXITCODE</code> variable.</p>
+<pre><code>if ($LASTEXITCODE -eq 0)
+{
+    # Document generation succeeded.
+}
+</code></pre>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="TableOfContents.html">Previous: Table of Contents File</a></li>
+	<li class="next"><a href="License.html">Next: License</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2017 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="sidebar/sidebar.js"></script>
+    <script src="syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>
