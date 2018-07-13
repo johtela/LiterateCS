@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\LiterateCS\bin\Debug\netcoreapp2.1\Themes\DefaultTheme\</OutputPath>
+    <OutputPath>..\..\LiterateCS\bin\Debug\netcoreapp2.1\Themes\DefaultTheme\netcoreapp2.1\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\LiterateCS\bin\Release\netcoreapp2.1\Themes\DefaultTheme\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

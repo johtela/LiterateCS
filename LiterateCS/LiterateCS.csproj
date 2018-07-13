@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackageId>LiterateCS</PackageId>
     <Authors>Tommi Johtela</Authors>
     <Product />
+    <Copyright>Copyright © 2018 Tommi Johtela</Copyright>
     <Description>Literate programming tool for C#.</Description>
   </PropertyGroup>
 
