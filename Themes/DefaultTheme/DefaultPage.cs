@@ -49,77 +49,80 @@ namespace DefaultTheme
             #line default
             #line hidden
             this.Write("images/favicon.ico\">\r\n    ");
-            this.Write("<link rel=\"stylesheet\" href=\"");
+            this.Write("\n");
+            this.Write("\n");
+            this.Write("\n");
+            this.Write("\n<link rel=\"stylesheet\" href=\"");
             
-            #line 5 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
             this.Write("bootstrap/css/");
             
-            #line 5 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params["bootstrapstyle", "default"]));
             
             #line default
             #line hidden
-            this.Write("/bootstrap.min.css\" />\r\n<link rel=\"stylesheet\" href=\"");
+            this.Write("/bootstrap.min.css\" />\n<link rel=\"stylesheet\" href=\"");
             
-            #line 6 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
-            this.Write("font-awesome/css/font-awesome.min.css\">\r\n<link rel=\"stylesheet\" href=\"");
+            this.Write("font-awesome/css/font-awesome.min.css\">\n<link rel=\"stylesheet\" href=\"");
             
-            #line 7 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
-            this.Write("sidebar/sidebar.min.css\" />\r\n<link rel=\"stylesheet\" href=\"");
+            this.Write("sidebar/sidebar.min.css\" />\n<link rel=\"stylesheet\" href=\"");
             
-            #line 8 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
             this.Write("css/");
             
-            #line 8 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params["markdownstyle", "book"]));
             
             #line default
             #line hidden
-            this.Write(".min.css\" />\r\n<link rel=\"stylesheet\" href=\"");
+            this.Write(".min.css\" />\n<link rel=\"stylesheet\" href=\"");
             
-            #line 9 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
             this.Write("syntax-highlight/");
             
-            #line 9 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params["syntaxhighlight", "monokai"]));
             
             #line default
             #line hidden
-            this.Write(".min.css\" />\r\n<link rel=\"stylesheet\" href=\"");
+            this.Write(".min.css\" />\n<link rel=\"stylesheet\" href=\"");
             
-            #line 10 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params.Root));
             
             #line default
             #line hidden
             this.Write("mermaid/");
             
-            #line 10 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
+            #line 1 "C:\Users\tommi\Source\Repos\LiterateCS\Themes\DefaultTheme\_include\styles.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Params["diagramstyle", "mermaid"]));
             
             #line default
             #line hidden
-            this.Write(".css\" />\r\n");
+            this.Write(".css\" />\n");
             this.Write("\r\n</head>");
             this.Write("\r\n\r\n<body>\r\n    ");
             this.Write(@"
@@ -358,8 +361,8 @@ if (Params[lc] != lc)
             #line default
             #line hidden
             this.Write("</div>\r\n\t\t<div align=\"right\">\r\n\t\t\t<small>\r\n\t\t\t\tDocumentation created with <a href" +
-                    "=\"https://johtela.github.io/LiterateProgramming/\">Literate Programming</a>.\r\n\t\t\t" +
-                    "</small>\r\n\t\t</div>\r\n    </footer>\r\n");
+                    "=\"https://johtela.github.io/LiterateCS/\">LiterateCS</a>.\r\n\t\t\t</small>\r\n\t\t</div>\r" +
+                    "\n    </footer>\r\n");
             this.Write("\r\n\r\n    ");
             this.Write("\r\n    <script src=\"");
             

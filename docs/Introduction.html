@@ -8,10 +8,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Introduction - Literate Programming</title>
+    <title>Introduction - LiterateCS</title>
 
 	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
+    
+
+
+
+<link rel="stylesheet" href="bootstrap/css/readable/bootstrap.min.css" />
 <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="sidebar/sidebar.min.css" />
 <link rel="stylesheet" href="css/book.min.css" />
@@ -31,13 +35,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Literate Programming</a>
+                <a class="navbar-brand" href="index.html">LiterateCS</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-					<li><a href="https://github.com/johtela/LiterateProgramming"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
-                    <li><a href="https://github.com/johtela/LiterateProgramming/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+					<li><a href="https://github.com/johtela/LiterateCS"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://github.com/johtela/LiterateCS/releases"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
                     <li><a href="License.html">License</a></li>
                 </ul>
             </div>
@@ -157,8 +161,7 @@ our main task is to instruct a computer what to do, let us concentrate rather on
 beings what we want a computer to do.</p>
 <p><em>Donald Knuth, Computer Journal, 1984</em></p>
 </blockquote>
-<p><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is a software design
-methodology proposed by <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>. Its guiding
+<p><a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is a software design methodology proposed by <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>. Its guiding
 principle is that computer programs should be written like a book or an essay. Knuth argues that
 good programmers do not focus just on writing code, they also document the thought processes
 that led them to the chosen implementation; describing not only <em>what</em> the code does, but <em>why</em>.
@@ -169,9 +172,8 @@ and documentation together. These tools take a file containing text and code int
 produce the source code to be compiled, as well as the &quot;documentation source&quot; that can be converted
 to a readable format. They are basically preprocessors which operate on the same source file,
 extracting different parts from it. Knuth called this source language <code>WEB</code>, hence the tools
-were called <em>Weave</em> and <em>Tangle</em>. Weave produces the documentation in
-<a href="https://en.wikipedia.org/wiki/TeX"><em>TeX</em></a> format and Tangle produces compilable code. The
-concept is depicted in the picture below.</p>
+were called <em>Weave</em> and <em>Tangle</em>. Weave produces the documentation in <a href="https://en.wikipedia.org/wiki/TeX"><em>TeX</em></a> format and Tangle
+produces compilable code. The concept is depicted in the picture below.</p>
 <div class="mermaid">graph LR
     LP[LP File] -->|Weave| DOC[Documentation]
     LP -->|Tangle| SRC[Source Code]
@@ -200,27 +202,26 @@ correct use of an API. However, writing XML comments is a tedious task, and requ
 lot of discipline. XML comments tend to be verbose and repetitive which means that the produced
 documentation is dense and boring to read. In many cases, reading the code is faster than browsing
 through the documentation. There is little additional information in the XML comments, usually.</p>
-<h2 id="csweave-literate-programming-tool-for-c"><code>csweave</code> - Literate Programming Tool for C#</h2>
-<p>To make literate programming possible also in C#, I wrote a tool called <code>csweave</code>. The
-documentation you are reading right now is generated from its source code. <code>csweave</code>
+<h2 id="literatecs-literate-programming-tool-for-c">LiterateCS - Literate Programming Tool for C#</h2>
+<p>To make literate programming possible also in C#, I wrote a tool called LiterateCS. The
+documentation you are reading right now is generated from its source code. LiterateCS
 uses a hybrid approach to unite code and documentation. You can either embed your
 documentation inside comment blocks in C# code, or you can start with separate text files
-and include sections of code in them by wrapping the code inside
-<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region">regions</a>.
-In either case the documentation is written in <a href="https://en.wikipedia.org/wiki/markdown">markdown language</a>,
-which allows you to structure and format your text.</p>
+and include sections of code in them by wrapping the code inside <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region">regions</a>. In either case
+the documentation is written in <a href="https://en.wikipedia.org/wiki/markdown">markdown</a> language, which allows you to structure
+and format your text.</p>
 <p>Since we are piggybacking on the existing language constructs (comments and regions),
 the compilation process is not altered. So, the tangling part of literate programming
-is covered by the existing compilers. The weaving part is taken care by <code>csweave</code>, which
+is covered by the existing compilers. The weaving part is taken care by LiterateCS, which
 processes the source and markup files and produced the documentation from them. It
 can create either plain markup files, which can be then further processed with markdown
-converters such as <a href="https://pandoc.org/">Pandoc</a>, or alternatively it can build a
-feature-rich web site with dozens of configurable options.</p>
+converters such as <a href="https://pandoc.org/">Pandoc</a>, or alternatively it can build a feature-rich web site with
+dozens of configurable options.</p>
 <h3 id="documentation-in-comments">Documentation in Comments</h3>
 <p>If you prefer incorporating documentation into code, you can write it inside comments.
 You don't need to use special syntax to annotate the documentation. Multi-line comment blocks
 surrounded with <code>/*</code> and <code>*/</code> will be extracted and included in the output. Single line comments
-starting with <code>//</code>, as well as XML comments, are treated as code by <code>csweave</code>.</p>
+starting with <code>//</code>, as well as XML comments, are treated as code by LiterateCS.</p>
 <p>Literate comments can appear anywhere in your code. The goal is to write your code in small
 pieces as you are describing what it does (and <em>why</em>) in the comments. This way the generated
 documentation becomes more readable and easy to follow.</p>
@@ -233,7 +234,7 @@ identify the block of code they contain. When you want to include that block of 
 markdown file, you just write the region's name inside double angle brackets. That triggers
 the macro expansion. A macro call must be the only thing on a line - otherwise it is not
 recognized. For example, adding macro call <code>&lt;&lt;Main Error Handler&gt;&gt;</code> expands to the following
-code from <a href="src/Program.html">Program.cs</a>:</p>
+code from <a href="LiterateCS/Program.html">Program.cs</a>:</p>
 <pre class="csharp"><code class="csharp">				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">ForegroundColor</span> <span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">=</span> <span class="typename" data-toggle="tooltip" title="System.ConsoleColor">ConsoleColor</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">Red</span><span class="punctuation">;</span>
 				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Fatal error in document generation:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
@@ -251,7 +252,7 @@ code from <a href="src/Program.html">Program.cs</a>:</p>
 markdown files.</em></p>
 <p>Note that if you hace defined comment blocks inside the region those will be expanded also.
 Since we use the names of the regions as macro identifiers, the names must be unique. Otherwise
-<code>csweave</code> complains that you have defined ambiguous macros.</p>
+LiterateCS complains that you have defined ambiguous macros.</p>
 <h2 id="the-controversy-about-real-literate-programming">The Controversy about <em>Real</em> Literate Programming</h2>
 <p>Reading the Wikipedia page about literate programming one gets an impression that most of
 the literate programming tools are doing it wrong. Knuth's goal with literate programming was
@@ -273,13 +274,13 @@ is seen as a secondary goal at best. Writing documentation and code together for
 about what you are trying to accomplish, and provides a different point of view to the problem
 you are solving. You have to be able to verbally describe how your code works. If that seems like
 a hard task, it is a clear sign that your code needs improvement.</p>
-<p>By calling <code>csweave</code> a literate programming tool instead of a &quot;documentation generation tool&quot;
+<p>By calling LiterateCS a literate programming tool instead of a &quot;documentation generation tool&quot;
 as the Wikipedia article suggests, we are taking a standpoint that literate programming has
 evolved from its origins, and practicing it with modern programming languages requires
 abandoning some of its premises. Being a purist hardly helps getting more people to use
 literate programming. Its adoption is pretty marginal as it is.</p>
 <h2 id="the-structure-of-the-program">The Structure of the Program</h2>
-<p>We will go through the whole implementation of <code>csweave</code>, using it as an example on how to
+<p>We will go through the whole implementation of LiterateCS, using it as an example on how to
 write programs in literate style. In the end we have covered all the features and options
 available in the program. Not just how they work, but also how they are implemented.</p>
 <p>The high-level flow chart of the program is shown below. You can click a box in the diagram
@@ -288,30 +289,30 @@ by clicking a section in the table of contents. You can also move to the next an
 using the navigation buttons on the top and the bottom.</p>
 <div class="mermaid">graph TD
     CMD[Parse command line options]
-    click CMD "src/Options.html"
+    click CMD "LiterateCS/Options.html"
     PRG{Output format?}
-    click PRG "src/Program.html"
+    click PRG "LiterateCS/Program.html"
     CMD --> PRG
     WMD[Generate markdown files]
-    click WMD "src/MdWeaver.html"
+    click WMD "LiterateCS/MdWeaver.html"
     WHT[Generate HTML files]
-    click WHT "src/HtmlWeaver.html"
+    click WHT "LiterateCS/HtmlWeaver.html"
     PRG -->|markdown| WMD
     PRG -->|HTML| WHT
     BLK[Split source file into blocks]
-    click BLK "src/BlockBuilder.html"
+    click BLK "LiterateCS/BlockBuilder.html"
     BHT[Split source file to HTML blocks]
-    click BHT "src/HtmlBlockBuilder.html"
+    click BHT "LiterateCS/HtmlBlockBuilder.html"
     WMD -->|For each source file| BLK
     WHT -->|For each source file| BHT
     OMD[Output markdown]
     BLK --> OMD
     GHT[Convert markdown to HTML]
-    click GHT "src/HtmlGenerator.html"
+    click GHT "LiterateCS/HtmlGenerator.html"
     BHT --> GHT
     subgraph Theme
     THM[Render HTML page]
-    click THM "CSWeave.Theme/Theme.html"
+    click THM "LiterateCS.Theme/Theme.html"
     AUX[Copy auxiliary CSS/JS/font files]
     THM -->|After all files processed| AUX
     end
@@ -331,10 +332,10 @@ using the navigation buttons on the top and the bottom.</p>
     </div>
     
     <footer class="panel-footer text-center">
-        <div align="center">Copyright © 2017 Tommi Johtela</div>
+        <div align="center">Copyright © 2018 Tommi Johtela</div>
 		<div align="right">
 			<small>
-				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+				Documentation created with <a href="https://johtela.github.io/LiterateCS/">LiterateCS</a>.
 			</small>
 		</div>
     </footer>

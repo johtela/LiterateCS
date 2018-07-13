@@ -3,10 +3,9 @@ Template: landing
 _Jumbotron: >
     # Literate Programming in C#
 
-    Produce beautiful, interactive documentation for your C# projects using
+    Produce stylish, interactive documentation for your C# projects using
     [literate programming](https://en.wikipedia.org/wiki/Literate_programming). 
-    Write your documentation inside comments using 
-    [markdown](https://en.wikipedia.org/wiki/Markdown) 
+    Write your documentation using [markdown](https://en.wikipedia.org/wiki/Markdown) 
     and compile it to a fully functional web site that can be published on 
     [GitHub](https://github.com).
 ---
@@ -101,7 +100,8 @@ and turn it on. Done!
 
 ## Give It a Try!
 
-Go to the releases page to download the latest version. You can also clone the
+The tool is packaged as a NuGet package and is installed as a global tool. Installation
+instructions can be found... . You can also clone the
 [repository](https://github.com/johtela/LiterateProgramming) and build the tool
 from the sources.
 

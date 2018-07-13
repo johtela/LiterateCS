@@ -187,15 +187,16 @@ namespace LiterateProgramming
 		*/
 		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution ()
 		{
-			var amanager = new AnalyzerManager (_options.Solution, 
+			var amanager = new AnalyzerManager (_options.Solution /*, 
 				new AnalyzerManagerOptions ()
 				{
 					LogWriter = Console.Out
-				});
-			foreach (var proj in amanager.Projects.Values)
+				} */);
+			foreach (var proj in amanager.Projects)
 			{
-				proj.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
-				proj.Compile ();
+				proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
+				ConsoleOut ("Compiling project {0}", proj.Key);
+				proj.Value.Compile ();
 			}
 			var solution = amanager.GetWorkspace ().CurrentSolution;
 			var filtRegexes = FilterRegexes ();
@@ -206,7 +207,7 @@ namespace LiterateProgramming
 				   select Tuple.Create (relPath, doc);
 		}
 
-		public static IEnumerable<Project> CompileProjectsInSolution (Solution solution)
+		public IEnumerable<Project> CompileProjectsInSolution (Solution solution)
 		{
 			foreach (var proj in solution.Projects)
 			{
@@ -217,6 +218,7 @@ namespace LiterateProgramming
 				mean that the required semantic information is not available in compiled 
 				project.
 				*/
+				ConsoleOut ("Analyzing project {0}", proj.Name);
 				Project p = SuppressWarnings (proj, "CS1701", "CS8019");
 				var diag = p.GetCompilationAsync ().Result.GetDiagnostics ();
 				foreach (var msg in diag)

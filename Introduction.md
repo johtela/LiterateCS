@@ -6,8 +6,7 @@
 >
 > _Donald Knuth, Computer Journal, 1984_
 
-[Literate programming](https://en.wikipedia.org/wiki/Literate_programming) is a software design 
-methodology proposed by [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth). Its guiding 
+[Literate programming] is a software design methodology proposed by [Donald Knuth]. Its guiding 
 principle is that computer programs should be written like a book or an essay. Knuth argues that 
 good programmers do not focus just on writing code, they also document the thought processes 
 that led them to the chosen implementation; describing not only _what_ the code does, but _why_. 
@@ -19,9 +18,8 @@ and documentation together. These tools take a file containing text and code int
 produce the source code to be compiled, as well as the "documentation source" that can be converted 
 to a readable format. They are basically preprocessors which operate on the same source file, 
 extracting different parts from it. Knuth called this source language `WEB`, hence the tools 
-were called _Weave_ and _Tangle_. Weave produces the documentation in 
-[_TeX_](https://en.wikipedia.org/wiki/TeX) format and Tangle produces compilable code. The 
-concept is depicted in the picture below.
+were called _Weave_ and _Tangle_. Weave produces the documentation in [_TeX_] format and Tangle 
+produces compilable code. The concept is depicted in the picture below.
 
 ```mermaid
 graph LR
@@ -46,7 +44,7 @@ software whose inner workings need to be understood by others: libraries, tutori
 programs, and so on. Additional benefit is that the documentation can be produced in various 
 formats: as a PDF, blog post, presentation, website, or even as a complete book. In fact, 
 there are quite popular recently published books that have been written as literate programs, for 
-example the [Physically Based Rendering](http://www.pbrt.org/) book.
+example the [Physically Based Rendering] book.
 
 In .NET languages the standard way of documenting code is to write XML comments. API documentation
 generated from XML comments serves as a reference manual that can be used to quickly find what a 
@@ -56,31 +54,39 @@ lot of discipline. XML comments tend to be verbose and repetitive which means th
 documentation is dense and boring to read. In many cases, reading the code is faster than browsing 
 through the documentation. There is little additional information in the XML comments, usually.
 
-## `csweave` - Literate Programming Tool for C#
+[Literate programming]: https://en.wikipedia.org/wiki/Literate_programming
+[Donald Knuth]: https://en.wikipedia.org/wiki/Donald_Knuth
+[_TeX_]: https://en.wikipedia.org/wiki/TeX
+[Physically Based Rendering]: http://www.pbrt.org/
 
-To make literate programming possible also in C#, I wrote a tool called `csweave`. The 
-documentation you are reading right now is generated from its source code. `csweave` 
+## LiterateCS - Literate Programming Tool for C#
+
+To make literate programming possible also in C#, I wrote a tool called LiterateCS. The 
+documentation you are reading right now is generated from its source code. LiterateCS 
 uses a hybrid approach to unite code and documentation. You can either embed your 
 documentation inside comment blocks in C# code, or you can start with separate text files 
-and include sections of code in them by wrapping the code inside
-[regions](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region). 
-In either case the documentation is written in [markdown language](https://en.wikipedia.org/wiki/markdown), 
-which allows you to structure and format your text.
+and include sections of code in them by wrapping the code inside [regions]. In either case 
+the documentation is written in [markdown] language, which allows you to structure 
+and format your text.
 
 Since we are piggybacking on the existing language constructs (comments and regions),
 the compilation process is not altered. So, the tangling part of literate programming
-is covered by the existing compilers. The weaving part is taken care by `csweave`, which 
+is covered by the existing compilers. The weaving part is taken care by LiterateCS, which 
 processes the source and markup files and produced the documentation from them. It
 can create either plain markup files, which can be then further processed with markdown
-converters such as [Pandoc](https://pandoc.org/), or alternatively it can build a 
-feature-rich web site with dozens of configurable options.
+converters such as [Pandoc], or alternatively it can build a feature-rich web site with 
+dozens of configurable options.
+
+[regions]: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-region
+[markdown]: https://en.wikipedia.org/wiki/markdown
+[Pandoc]: https://pandoc.org/
 
 ### Documentation in Comments
 
 If you prefer incorporating documentation into code, you can write it inside comments.
 You don't need to use special syntax to annotate the documentation. Multi-line comment blocks 
 surrounded with `/*` and `*/` will be extracted and included in the output. Single line comments 
-starting with `//`, as well as XML comments, are treated as code by `csweave`. 
+starting with `//`, as well as XML comments, are treated as code by LiterateCS. 
 
 Literate comments can appear anywhere in your code. The goal is to write your code in small
 pieces as you are describing what it does (and _why_) in the comments. This way the generated 
@@ -96,13 +102,13 @@ identify the block of code they contain. When you want to include that block of 
 markdown file, you just write the region's name inside double angle brackets. That triggers
 the macro expansion. A macro call must be the only thing on a line - otherwise it is not 
 recognized. For example, adding macro call `<<Main Error Handler>>` expands to the following 
-code from [Program.cs](src/Program.html):
+code from [Program.cs](LiterateCS/Program.html):
 
 <<Main Error Handler>>
 
 Note that if you hace defined comment blocks inside the region those will be expanded also.
 Since we use the names of the regions as macro identifiers, the names must be unique. Otherwise 
-`csweave` complains that you have defined ambiguous macros.
+LiterateCS complains that you have defined ambiguous macros.
 
 ## The Controversy about _Real_ Literate Programming
 
@@ -129,7 +135,7 @@ about what you are trying to accomplish, and provides a different point of view 
 you are solving. You have to be able to verbally describe how your code works. If that seems like 
 a hard task, it is a clear sign that your code needs improvement.
 
-By calling `csweave` a literate programming tool instead of a "documentation generation tool" 
+By calling LiterateCS a literate programming tool instead of a "documentation generation tool" 
 as the Wikipedia article suggests, we are taking a standpoint that literate programming has 
 evolved from its origins, and practicing it with modern programming languages requires 
 abandoning some of its premises. Being a purist hardly helps getting more people to use
@@ -137,7 +143,7 @@ literate programming. Its adoption is pretty marginal as it is.
 
 ## The Structure of the Program
 
-We will go through the whole implementation of `csweave`, using it as an example on how to 
+We will go through the whole implementation of LiterateCS, using it as an example on how to 
 write programs in literate style. In the end we have covered all the features and options
 available in the program. Not just how they work, but also how they are implemented.
 
@@ -149,30 +155,30 @@ using the navigation buttons on the top and the bottom.
 ```mermaid
 graph TD
     CMD[Parse command line options]
-    click CMD "src/Options.html"
+    click CMD "LiterateCS/Options.html"
     PRG{Output format?}
-    click PRG "src/Program.html"
+    click PRG "LiterateCS/Program.html"
     CMD --> PRG
     WMD[Generate markdown files]
-    click WMD "src/MdWeaver.html"
+    click WMD "LiterateCS/MdWeaver.html"
     WHT[Generate HTML files]
-    click WHT "src/HtmlWeaver.html"
+    click WHT "LiterateCS/HtmlWeaver.html"
     PRG -->|markdown| WMD
     PRG -->|HTML| WHT
     BLK[Split source file into blocks]
-    click BLK "src/BlockBuilder.html"
+    click BLK "LiterateCS/BlockBuilder.html"
     BHT[Split source file to HTML blocks]
-    click BHT "src/HtmlBlockBuilder.html"
+    click BHT "LiterateCS/HtmlBlockBuilder.html"
     WMD -->|For each source file| BLK
     WHT -->|For each source file| BHT
     OMD[Output markdown]
     BLK --> OMD
     GHT[Convert markdown to HTML]
-    click GHT "src/HtmlGenerator.html"
+    click GHT "LiterateCS/HtmlGenerator.html"
     BHT --> GHT
     subgraph Theme
     THM[Render HTML page]
-    click THM "CSWeave.Theme/Theme.html"
+    click THM "LiterateCS.Theme/Theme.html"
     AUX[Copy auxiliary CSS/JS/font files]
     THM -->|After all files processed| AUX
     end

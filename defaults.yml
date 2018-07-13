@@ -1,8 +1,8 @@
-﻿ProjectName: Literate Programming
-GitHub: https://github.com/johtela/LiterateProgramming
-Download: https://github.com/johtela/LiterateProgramming/releases
+﻿ProjectName: LiterateCS
+GitHub: https://github.com/johtela/LiterateCS
+Download: https://github.com/johtela/LiterateCS/releases
 License: License.html
-Footer: "Copyright © 2017 Tommi Johtela"
+Footer: "Copyright © 2018 Tommi Johtela"
 ShowDescriptionsInToc: false
 BootstrapStyle: readable
 MarkdownStyle: book

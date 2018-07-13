@@ -291,8 +291,8 @@ if (Params[lc] != lc)
             #line default
             #line hidden
             this.Write("</div>\r\n\t\t<div align=\"right\">\r\n\t\t\t<small>\r\n\t\t\t\tDocumentation created with <a href" +
-                    "=\"https://johtela.github.io/LiterateProgramming/\">Literate Programming</a>.\r\n\t\t\t" +
-                    "</small>\r\n\t\t</div>\r\n    </footer>\r\n");
+                    "=\"https://johtela.github.io/LiterateCS/\">LiterateCS</a>.\r\n\t\t\t</small>\r\n\t\t</div>\r" +
+                    "\n    </footer>\r\n");
             this.Write("\r\n\r\n    ");
             this.Write("\r\n    <script src=\"");
             

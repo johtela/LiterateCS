@@ -7,7 +7,7 @@
         <div align="center"><#= Params["footer"] #></div>
 		<div align="right">
 			<small>
-				Documentation created with <a href="https://johtela.github.io/LiterateProgramming/">Literate Programming</a>.
+				Documentation created with <a href="https://johtela.github.io/LiterateCS/">LiterateCS</a>.
 			</small>
 		</div>
     </footer>
