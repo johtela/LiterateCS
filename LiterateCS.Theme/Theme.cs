@@ -19,6 +19,7 @@ namespace LiterateCS.Theme
 		name of the default template should be "default".
 		*/
 		public abstract string[] AvalailablePageTemplates { get; }
+		public abstract string AssetDir { get; }
 		/*
 		The second method to implement performs the rendering of the page using
 		the template specified. The	default template is used, if `pageTemplate`
@@ -32,12 +33,11 @@ namespace LiterateCS.Theme
 		files under the theme directory except the ones with extension ".dll" or
 		".pdb".
 		*/
-		public virtual void CopyAuxiliaryFiles (string themeDir, string outputDir)
+		public virtual void CopyAssets (string assetDir, string outputDir)
 		{
-			DirHelpers.CopySubDirectories (themeDir, outputDir, "*", true);
-			foreach (var file in DirHelpers.Dir (themeDir, "*", true))
-				if (!Path.GetExtension (file).In (".dll", ".pdb", ".json"))
-					File.Copy (file, file.Replace (themeDir, outputDir), true);
+			DirHelpers.CopySubDirectories (assetDir, outputDir, "*", true);
+			foreach (var file in DirHelpers.Dir (assetDir, "*", true))
+				File.Copy (file, file.Replace (assetDir, outputDir), true);
 		}
 	}
 }

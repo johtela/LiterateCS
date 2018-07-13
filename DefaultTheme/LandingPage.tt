@@ -7,10 +7,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<#@ include file="_include/LandingHead.tt" #>
+<#@ include file="include/LandingHead.tt" #>
 
 <body>
-    <#@ include file="_include/navbar.tt" #>
+    <#@ include file="include/navbar.tt" #>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -24,8 +24,8 @@
 		<#= Params.Contents #>
 	</div>
 
-    <#@ include file="_include/Footer.tt" #>
+    <#@ include file="include/Footer.tt" #>
 
-    <#@ include file="_include/LandingScripts.tt" #>
+    <#@ include file="include/LandingScripts.tt" #>
 </body>
 </html>

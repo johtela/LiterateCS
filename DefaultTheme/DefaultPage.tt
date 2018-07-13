@@ -4,20 +4,20 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".html" #>
-<#@ include file="_include/Toc.tt" #>
-<#@ include file="_include/Pager.tt" #>
+<#@ include file="include/Toc.tt" #>
+<#@ include file="include/Pager.tt" #>
 <!DOCTYPE html>
 <html lang="en">
 
-<#@ include file="_include/Head.tt" #>
+<#@ include file="include/Head.tt" #>
 
 <body>
-    <#@ include file="_include/navbar.tt" #>
+    <#@ include file="include/navbar.tt" #>
 
     <div class="container">
         <div class="row">
             <div class="col-md-3 hidden-xs hidden-sm">
-                <#@ include file="_include/SideBar.tt" #>
+                <#@ include file="include/SideBar.tt" #>
             </div>
 			<div class="col-md-9">
 				<# OutputPager (); #>
@@ -28,8 +28,8 @@
 			</div>
         </div>
     </div>
-    <#@ include file="_include/Footer.tt" #>
+    <#@ include file="include/Footer.tt" #>
 
-    <#@ include file="_include/Scripts.tt" #>
+    <#@ include file="include/Scripts.tt" #>
 </body>
 </html>

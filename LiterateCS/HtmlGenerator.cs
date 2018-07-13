@@ -302,8 +302,8 @@ namespace LiterateProgramming
 		*/
 		public void CopyAuxiliaryFiles ()
 		{
-			_theme.CopyAuxiliaryFiles (_options.ThemePath.BasePath,
-				_options.OutputPath.BasePath);
+			var assetDir = _options.ThemePath.WithFile (_theme.AssetDir);
+			_theme.CopyAssets (!assetDir, _options.OutputPath.BasePath);
 		}
 	}
 }

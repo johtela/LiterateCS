@@ -158,7 +158,7 @@ namespace LiterateProgramming
 		is provided by `csweave`, but if you want, you can copy it and customize it to your liking.
 		The `--theme` option should be given, if you want to use a custom theme.
 		*/
-		[Option ('m', "theme", Default = @"Themes\DefaultTheme\netcoreapp2.1\DefaultTheme.dll",
+		[Option ('m', "theme", Default = "DefaultTheme.dll",
 		HelpText = "The theme DLL which generates HTML documents according to page templates. " +
 		"If not specified, the default theme is used.")]
 		public string Theme { get; set; }

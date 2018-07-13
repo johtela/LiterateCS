@@ -17,6 +17,8 @@
 		public override string[] AvalailablePageTemplates =>
 			_templates.Keys.ToArray ();
 
+		public override string AssetDir => "default_assets";
+
 		public override string RenderPage (string pageTemplate, PageParams pageParams)
 		{
 			var templName = pageTemplate ?? "default";

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\LiterateCS\bin\Debug\netcoreapp2.1\Themes\DefaultTheme\</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\LiterateCS\bin\Release\netcoreapp2.1\Themes\DefaultTheme\</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
+    <ProjectReference Include="..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,32 +31,7 @@
       <LastGenOutput>LandingPage.cs</LastGenOutput>
       <CustomToolNamespace>DefaultTheme</CustomToolNamespace>
     </None>
-    <None Update="bootstrap\**\*.*">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="css\**\*.css">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="font-awesome\**\*.*">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="mermaid\**\*.*">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="sidebar\**\*.css;sidebar\**\*.js">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="syntax-highlight\**\*.css;syntax-highlight\**\*.js">
+    <None Include="default_assets\**\*.*" Exclude="default_assets\**\*.less">
       <IncludeInPackage>true</IncludeInPackage>
       <CopyToOutput>true</CopyToOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
