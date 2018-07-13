@@ -187,16 +187,16 @@ namespace LiterateProgramming
 		*/
 		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution ()
 		{
-			var amanager = new AnalyzerManager (_options.Solution /*, 
+			var amanager = new AnalyzerManager (_options.Solution, 
 				new AnalyzerManagerOptions ()
 				{
 					LogWriter = Console.Out
-				} */);
+				});
 			foreach (var proj in amanager.Projects)
 			{
-				proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
+				//proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
 				ConsoleOut ("Compiling project {0}", proj.Key);
-				proj.Value.Compile ();
+				proj.Value.Build ();
 			}
 			var solution = amanager.GetWorkspace ().CurrentSolution;
 			var filtRegexes = FilterRegexes ();
