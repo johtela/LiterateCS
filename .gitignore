@@ -9,3 +9,4 @@ obj
 *.csproj.user
 *.swp
 *.zip
+*.nupkg

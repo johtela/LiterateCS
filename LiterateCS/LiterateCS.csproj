@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
+    <ToolCommandName>literatecs</ToolCommandName>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackageId>LiterateCS</PackageId>
     <Authors>Tommi Johtela</Authors>
