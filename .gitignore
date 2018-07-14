@@ -10,3 +10,4 @@ obj
 *.swp
 *.zip
 *.nupkg
+/buildlog.txt

@@ -187,24 +187,37 @@ namespace LiterateProgramming
 		*/
 		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution ()
 		{
-			var amanager = new AnalyzerManager (_options.Solution, 
-				new AnalyzerManagerOptions ()
-				{
-					LogWriter = Console.Out
-				});
-			foreach (var proj in amanager.Projects)
-			{
-				//proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
-				ConsoleOut ("Compiling project {0}", proj.Key);
-				proj.Value.Build ();
-			}
-			var solution = amanager.GetWorkspace ().CurrentSolution;
+			var solution = BuildSolution ();
 			var filtRegexes = FilterRegexes ();
 			return from proj in CompileProjectsInSolution (solution)
 				   from doc in proj.Documents
 				   let relPath = SplitPath.Split (_options.InputPath.BasePath, doc.FilePath)
 				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
 				   select Tuple.Create (relPath, doc);
+		}
+
+		private Solution BuildSolution ()
+		{
+			var logwriter = _options.BuildLog != null ?
+				File.CreateText (_options.BuildLog) :
+				TextWriter.Null;
+			using (logwriter)
+			{
+				var amanager = new AnalyzerManager (_options.Solution,
+					new AnalyzerManagerOptions ()
+					{
+						LogWriter = logwriter
+					});
+				foreach (var proj in amanager.Projects)
+				{
+					proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
+					ConsoleOut ("Building project {0}", proj.Key);
+					proj.Value.Compile ();
+				}
+				if (_options.BuildLog != null)
+					ConsoleOut ("Build log written to {0}", _options.BuildLog);
+				return amanager.GetWorkspace ().CurrentSolution;
+			}
 		}
 
 		public IEnumerable<Project> CompileProjectsInSolution (Solution solution)
@@ -218,7 +231,7 @@ namespace LiterateProgramming
 				mean that the required semantic information is not available in compiled 
 				project.
 				*/
-				ConsoleOut ("Analyzing project {0}", proj.Name);
+				ConsoleOut ("Processing project {0}", proj.Name);
 				Project p = SuppressWarnings (proj, "CS1701", "CS8019");
 				var diag = p.GetCompilationAsync ().Result.GetDiagnostics ();
 				foreach (var msg in diag)

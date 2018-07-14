@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Buildalyzer.Workspaces" Version="0.5.0" />
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
     <PackageReference Include="ExtensionCord" Version="1.1.0" />
     <PackageReference Include="Markdig" Version="0.15.1" />
@@ -21,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Buildalyzer\src\Buildalyzer.Workspaces\Buildalyzer.Workspaces.csproj" />
-    <ProjectReference Include="..\..\Buildalyzer\src\Buildalyzer\Buildalyzer.csproj" />
     <ProjectReference Include="..\DefaultTheme\DefaultTheme.csproj" />
     <ProjectReference Include="..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
   </ItemGroup>

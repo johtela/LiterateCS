@@ -164,6 +164,16 @@ namespace LiterateProgramming
 		public string Theme { get; set; }
 
 		/*
+		### Build Log
+		When a solution file is used as an input, LiterateCS builds the solution first to
+		determine all its dependencies. If you want to get a log file of the build for 
+		troubleshooting, use the `--buildlog` option.
+		*/
+		[Option ('b', "buildlog", Required = false,
+		HelpText = "Path to the build log file.")]
+		public string BuildLog { get; set; }
+
+		/*
 		### Verbose Mode
 		If you want the tool to output information as it processes files, you can use the 
 		verbose option.

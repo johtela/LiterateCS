@@ -291,6 +291,14 @@ The <code>--theme</code> option should be given, if you want to use a custom the
 		<span class="string" data-toggle="tooltip" title="string">&quot;If not specified, the default theme is used.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
 		<span class="keyword" id="LiterateProgramming.Options.Theme">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> Theme <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.Theme.set">;</span> <span class="punctuation">}</span>
 </code></pre>
+<h3 id="build-log">Build Log</h3>
+<p>When a solution file is used as an input, LiterateCS builds the solution first to
+determine all its dependencies. If you want to get a log file of the build for
+troubleshooting, use the <code>--buildlog</code> option.</p>
+<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;b&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;buildlog&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="bool">Required</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">,</span>
+		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Path to the build log file.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
+		<span class="keyword" id="LiterateProgramming.Options.BuildLog">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> BuildLog <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.BuildLog.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.BuildLog.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Options.BuildLog.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Options.BuildLog.set">;</span> <span class="punctuation">}</span>
+</code></pre>
 <h3 id="verbose-mode">Verbose Mode</h3>
 <p>If you want the tool to output information as it processes files, you can use the
 verbose option.</p>
