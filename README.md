@@ -1,4 +1,5 @@
 ﻿[![Build status](https://ci.appveyor.com/api/projects/status/ah34q0i74rjanqpf?svg=true)](https://ci.appveyor.com/project/johtela/literatecs)
+[![NuGet Version](https://img.shields.io/nuget/v/LiterateCS.svg)](https://www.nuget.org/packages/LiterateCS)
 
 # Literate Programming in C# and .NET Core
 
