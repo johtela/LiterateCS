@@ -7,13 +7,13 @@ function Assert ([scriptblock] $condition)
 }
 
 $rootdir = split-path -parent $MyInvocation.MyCommand.Definition
-    
-#Write-Host "Installing the package."
-#dotnet tool install -g LiterateCS --add-source $rootdir\LiterateCS\bin\Release
-
-Write-Host "Generating HTML documentation for LiterateCS."
 Set-Location $rootdir
 [Environment]::CurrentDirectory = $rootdir
+    
+Write-Host "Installing the package."
+dotnet tool install -g LiterateCS --add-source LiterateCS\bin\Release
+
+Write-Host "Generating HTML documentation for LiterateCS."
 & {
     $ErrorActionPreference = "SilentlyContinue"
     & literatecs LiterateCS\*.cs LiterateCS.Theme\*.cs *.md -s LiterateCS.sln -o docs -f html -tv
@@ -31,7 +31,7 @@ Assert { Test-Path docs\mermaid\*.css }
 Assert { Test-Path docs\sidebar\*.min.css }
 Assert { Test-Path docs\syntax-highlight\*.min.css }
 
-#Write-Host "Uninstalling the package."
-#dotnet tool uninstall -g LiterateCS
+Write-Host "Uninstalling the package."
+dotnet tool uninstall -g LiterateCS
 
 Pop-Location
