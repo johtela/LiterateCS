@@ -1,6 +1,6 @@
 ﻿/*
 # Source Blocks
-In order to extract the documentation from the code, `csweave` needs to split a source file
+In order to extract the documentation from the code, LiterateCS needs to split a source file
 into blocks which represent either text or code. Blocks capture parts of a source file and
 make it easier to process them differently depending on their kind.
 */

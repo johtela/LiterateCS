@@ -152,45 +152,44 @@
 </ul>
 				<div id="static-content" class="markdown">
 					<h1 id="main-program">Main Program</h1>
-<p>The main program is quite simple. It just checks the command line arguments and calls the
+<p>The main program is very simple. It just parses the command line arguments and calls the
 <a href="Weaver.html">Weaver</a> class that does the actual work.</p>
-<h2 id="dependencies">Dependencies</h2>
-<p>There are no special dependencies in the main program. Only reference is to the System
-namespace.</p>
 <pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateProgramming">namespace</span> LiterateProgramming
 <span class="punctuation">{</span>
 	<span class="keyword">using</span> System<span class="punctuation">;</span>
 	<span class="keyword">using</span> CommandLine<span class="punctuation">;</span>
 </code></pre>
-<p>The main class imaginatively named as <code>Program</code>.</p>
+<p>The main class is imaginatively named as <code>Program</code>.</p>
 <pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateProgramming.Program">class</span> <span class="typename">Program</span>
 	<span class="punctuation">{</span>
 		<span class="keyword" id="LiterateProgramming.Program.Main(string[])" data-toggle="tooltip" title="LiterateProgramming.Program.Main(string[])">static</span> <span class="keyword" data-toggle="tooltip" title="int">int</span> <span data-toggle="tooltip" title="LiterateProgramming.Program.Main(string[])">Main</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">[</span><span class="punctuation">]</span> args<span class="punctuation">)</span>
 		<span class="punctuation">{</span>
 </code></pre>
 <h2 id="command-line-parsing">Command Line Parsing</h2>
-<p>First we create a command line parser that we got from the
-<a href="https://github.com/commandlineparser/commandline">NuGet</a> library. We configure the
-command line options to be case insensitive.</p>
+<p>First we create a command line parser and configure it to be case
+insensitive.</p>
 <pre class="csharp"><code class="csharp">			<span class="keyword" data-toggle="tooltip" title="CommandLine.Parser">var</span> <span id="cmdLineParser">cmdLineParser</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="CommandLine.Parser">new</span> <span class="typename">Parser</span> <span class="punctuation">(</span>settings <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span>
 			<span class="punctuation">{</span>
 				<span data-toggle="tooltip" title="CommandLine.ParserSettings">settings</span><span class="punctuation" data-toggle="tooltip" title="bool">.</span><span data-toggle="tooltip" title="bool">CaseSensitive</span> <span class="punctuation" data-toggle="tooltip" title="bool">=</span> <span class="keyword" data-toggle="tooltip" title="bool">false</span><span class="punctuation">;</span>
 				<span data-toggle="tooltip" title="CommandLine.ParserSettings">settings</span><span class="punctuation" data-toggle="tooltip" title="System.IO.TextWriter">.</span><span data-toggle="tooltip" title="System.IO.TextWriter">HelpWriter</span> <span class="punctuation" data-toggle="tooltip" title="System.IO.TextWriter">=</span> <span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.IO.TextWriter">.</span><span data-toggle="tooltip" title="System.IO.TextWriter">Out</span><span class="punctuation">;</span>
 			<span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">;</span>
 </code></pre>
-<p>Then we parse the command line options into an object that contains the settings. If the
-parsing fails, the parser will output usage information automatically after which we terminate
-the program.</p>
+<p>Then we parse the command line options into an object that contains the
+settings. If the parsing fails, the parser will output usage information
+automatically after which we terminate the program with exit code 0.</p>
 <pre class="csharp"><code class="csharp">			<span class="keyword">return</span> <span data-toggle="tooltip" title="CommandLine.Parser">cmdLineParser</span><span class="punctuation" data-toggle="tooltip" title="CommandLine.Parser.ParseArguments<LiterateProgramming.Options>(System.Collections.Generic.IEnumerable<string>)">.</span><span data-toggle="tooltip" title="CommandLine.Parser.ParseArguments<LiterateProgramming.Options>(System.Collections.Generic.IEnumerable<string>)">ParseArguments</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Options.html#LiterateProgramming.Options">Options</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string[]">args</span><span class="punctuation">)</span>
 				<span class="punctuation" data-toggle="tooltip" title="CommandLine.ParserResult<LiterateProgramming.Options>.MapResult<LiterateProgramming.Options, int>(System.Func<LiterateProgramming.Options, int>, System.Func<System.Collections.Generic.IEnumerable<CommandLine.Error>, int>)">.</span><span data-toggle="tooltip" title="CommandLine.ParserResult<LiterateProgramming.Options>.MapResult<LiterateProgramming.Options, int>(System.Func<LiterateProgramming.Options, int>, System.Func<System.Collections.Generic.IEnumerable<CommandLine.Error>, int>)">MapResult</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)"><a href="../LiterateCS/Program.html#LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)">GenerateDocumentation</a></span><span class="punctuation">,</span> _ <span class="punctuation" data-toggle="tooltip" title="lambda expression">=&gt;</span> <span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">)</span><span class="punctuation">;</span>
 		<span class="punctuation">}</span>
 </code></pre>
 <h2 id="generating-documentation">Generating Documentation</h2>
-<p>Finally we create a <a href="Weaver.html">Weaver</a> object and call its <code>Generate</code>
-method to generate the documentation according to the options.</p>
+<p>If the parsing succeeds, CommandLineParser library will call the
+GenerateDocumentation method with the parsed options.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)" data-toggle="tooltip" title="LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)">private</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)">static</span> <span class="keyword" data-toggle="tooltip" title="int">int</span> <span data-toggle="tooltip" title="LiterateProgramming.Program.GenerateDocumentation(LiterateProgramming.Options)">GenerateDocumentation</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateProgramming.Options"><a href="../LiterateCS/Options.html#LiterateProgramming.Options">Options</a></span> options<span class="punctuation">)</span>
 		<span class="punctuation">{</span>
-			<span class="keyword">try</span>
+</code></pre>
+<p>We create a <a href="Weaver.html">Weaver</a> object and call its <code>Generate</code>
+method to generate the documentation according to the options.</p>
+<pre class="csharp"><code class="csharp">			<span class="keyword">try</span>
 			<span class="punctuation">{</span>
 				<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.Weaver">var</span> <span id="weaver">weaver</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateProgramming.Options">options</span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.Options.Format">Format</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateProgramming.OutputFormat"><a href="../LiterateCS/Options.html#LiterateProgramming.OutputFormat.html">html</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Weaver">?</span>
 					<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.HtmlWeaver">new</span> <span class="typename"><a href="../LiterateCS/HtmlWeaver.html#LiterateProgramming.HtmlWeaver">HtmlWeaver</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateProgramming.Options">options</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="LiterateProgramming.Weaver">:</span>
@@ -223,8 +222,8 @@ markdown files.</em></p>
 	<span class="punctuation">}</span>
 <span class="punctuation">}</span>
 </code></pre>
-<p>And that's it! If you want to know how the document generation actually works, jump to the
-documentation of the <a href="Weaver.html">Weaver</a> class.</p>
+<p>That's all! To see how the documentation generation actually works, jump to the
+<a href="Weaver.html">Weaver</a> class.</p>
 
 				</div>
 				<ul class="pager">

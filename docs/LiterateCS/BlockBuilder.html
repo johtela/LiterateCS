@@ -238,9 +238,9 @@ as usual.</p>
 </code></pre>
 <h2 id="generating-block-lists-from-code-file">Generating Block Lists from Code File</h2>
 <p>The methods that generate block lists from code are defined below.
-There are two variants: one takes a file and the other takes a MSBuild
-<a href="http://www.coderesx.com/roslyn/html/5373B517.htm">document</a>. The
-implementations are basically the same in both cases. They differ
+There are two variants: one takes a file and the other takes a Roslyn
+<a href="https://github.com/dotnet/roslyn/wiki/Roslyn-Overview#solutions-projects-documents">Document</a>.
+The implementations are basically the same in both cases. They differ
 only in how the AST is obtained.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.BlockBuilder.FromCodeFile(string)" data-toggle="tooltip" title="LiterateProgramming.BlockBuilder.FromCodeFile(string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateProgramming.BlockBuilder.FromCodeFile(string)">virtual</span> <span class="typename" data-toggle="tooltip" title="LiterateProgramming.BlockList"><a href="../LiterateCS/BlockList.html#LiterateProgramming.BlockList">BlockList</a></span> <span data-toggle="tooltip" title="LiterateProgramming.BlockBuilder.FromCodeFile(string)">FromCodeFile</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> codeFile<span class="punctuation">)</span>
 		<span class="punctuation">{</span>

@@ -1,7 +1,7 @@
 ﻿/*
 # Page Parameters
 
-All the data `csweave` will pass to the theme is contained inside a
+All the data LiterateCS will pass to the theme is contained inside a
 PageParams object. This class defines the built-in parameters that are
 always available, and the custom parameters specified in front matter.
 */

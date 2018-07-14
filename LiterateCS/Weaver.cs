@@ -2,8 +2,8 @@
 # Document Weaver
 
 The main workhorse of the application is the weaver. It enumerates the source 
-files as specified by command line options and generates documentation for each 
-file separately.
+files as specified in the command line options and generates documentation for 
+each file separately.
 
 The Weaver class is abstract, and the actual documentation generation is
 delegated to its subclasses. There are two subclasses for the two output
@@ -13,18 +13,16 @@ for HTML.
 Let's first look at the base class which contains code common to both weavers.
 
 ## Dependencies
-We utilize a couple of libraries provided by Microsoft to access MSBuild 
-solution and project files. The first one resides in the `Microsoft.Build.*`
-assemblies. They contain classes and methods for manipulating MS Build solution
-files; to open a solution, enumerate the files in it, get the build 
-configurations, and so on. 
+We utilize a couple of libraries to compile and analyze C# code. The first one is 
+the [Roslyn](https://github.com/dotnet/roslyn) compiler platform. Assemblies related to 
+it lay under the `Microsoft.CodeAnalysis.*` namespace.
 
-The other important dependency is the [Roslyn](https://github.com/dotnet/roslyn)
-compiler platform. The assemblies related to that lay under the `Microsoft.CodeAnalysis.*`
-namespace. Weaver needs to reference the namespaces to access their types, but 
-doesn't really use them. More involved code related to Roslyn and solution compilation 
-is separated to the helper class [MSBuildHelpers](MSBuildHelpers.html). Weaver tries 
-to keep things simple by working on the higher abstraction level.
+The other libarary we depend on is [Buildalyzer](https://github.com/daveaglick/Buildalyzer) 
+which helps loading and build msbuild projects. Quite a lot of scaffolding is needed
+to configure Roslyn correctly to be able to compile 
+[MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reference) 
+projects with it. Buildalyzer simplifies this task immensely, and allows us to ignore the 
+details with respect to different kinds of MSBuild projects.
 */
 namespace LiterateProgramming
 {
@@ -59,7 +57,7 @@ namespace LiterateProgramming
 		protected abstract void GenerateFromFiles ();
 		protected abstract void GenerateFromSolution ();
 		/*
-		Another method which the subclasses can override is the CreateBlockBuilder that is
+		Another method which the subclasses may override is the CreateBlockBuilder that is
 		defined	below. This	method will create the [BlockBuilder](BlockBuilder.html) class 
 		that is responsible for splitting the input files into blocks. The standard 
 		implementation is sufficient for generating markdown output, but 
@@ -71,7 +69,7 @@ namespace LiterateProgramming
 			return new BlockBuilder (_options);
 		}
 		/*
-		### Main Execution Method
+		### Main Documentation Generation Method
 		Main program will call the method below to run the document generation. The method
 		determines whether the files are read from a solution or from an input folder. Based
 		on the options it will call the appropriate virtual method. 
@@ -169,21 +167,9 @@ namespace LiterateProgramming
 		}
 		/*
 		### Enumerating Files in Solution
-		When a solution file is used as an input, markdown and C# files are retrieved
-		separately. This is because the markdown files are not visible in MSBuild 
-		Workspace provided by Roslyn. Apparently Roslyn is only interested in the C# 
-		source files. We need the classes provided by the `Microsoft.Build.Construction` 
-		library to access all files in a solution.
-
-		First let's collect the markdown files from a solution file. Note that the LINQ
-		query assumes the "Build Action" property of the retrieved files to be either 
-		"Content" or "None". Files having other build types are skipped.
-		*/
-		/*
-		And then we can gather the C# source files. Most of the heavy lifting is
-		delegated to the MSBuildHelper class. In addition to the file path we
-		return also the Document object that contains syntactic and semantic
-		information that the Roslyn compiler attaches to the source file.
+		When a solution file is used as an input, C# files are retrieved in a different way. 
+		They are enumerated using the Roslyn 
+		[workspace](https://github.com/dotnet/roslyn/wiki/Roslyn-Overview#working-with-a-workspace). 
 		*/
 		protected IEnumerable<Tuple<SplitPath, Document>> CSharpDocumentsInSolution ()
 		{
@@ -195,7 +181,15 @@ namespace LiterateProgramming
 				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
 				   select Tuple.Create (relPath, doc);
 		}
+		/*
+		To get a Roslyn workspace, we use the Buildalyzer to build the solution in design 
+		mode. This allows it work out all the depencies that need to be referenced in order 
+		for the Roslyn compiler to succeed.
 
+		The BuildSolution method below uses Buildalyzer to first load a solution, and
+		then build each project separately. The build log can be optionally written
+		to a file, if the `--buildlog` option was given.
+		*/
 		private Solution BuildSolution ()
 		{
 			var logwriter = _options.BuildLog != null ?
@@ -219,18 +213,14 @@ namespace LiterateProgramming
 				return amanager.GetWorkspace ().CurrentSolution;
 			}
 		}
-
+		/*
+		Then we compile all the projects again, but this time using Roslyn. If there are 
+		compilation errors, they will be outputted to the console.
+		*/
 		public IEnumerable<Project> CompileProjectsInSolution (Solution solution)
 		{
 			foreach (var proj in solution.Projects)
 			{
-				/*
-				Finally we can compile the project and yield it out for enumeration. 
-				If there are compilation errors, they will be outputted to the console 
-				window. As noted above, getting referencing errors does not necessarily 
-				mean that the required semantic information is not available in compiled 
-				project.
-				*/
 				ConsoleOut ("Processing project {0}", proj.Name);
 				Project p = SuppressWarnings (proj, "CS1701", "CS8019");
 				var diag = p.GetCompilationAsync ().Result.GetDiagnostics ();
@@ -239,7 +229,10 @@ namespace LiterateProgramming
 				yield return p;
 			}
 		}
-
+		/*
+		To suppress some warnings that are caused by compiling against .NET Core
+		framework, we must set some compilation options for the project. 
+		*/
 		private static Project SuppressWarnings (Project proj, params string[] warnings)
 		{
 			var diagOpts = proj.CompilationOptions.SpecificDiagnosticOptions;
@@ -248,15 +241,6 @@ namespace LiterateProgramming
 			return proj.WithCompilationOptions (
 				proj.CompilationOptions.WithSpecificDiagnosticOptions (diagOpts));
 		}
-		/*
-		We need some helper functions to determine the type of a file. The type of a file
-		is deduced from its extension or from its name. 
-		*/
-		protected bool IsSourceFile (SplitPath file) =>
-			file.Extension == _options.SourceExt;
-
-		protected bool IsMarkdownFile (SplitPath file) =>
-			file.Extension == _options.MarkdownExt;
 		/*
 		The following three helper functions construct a block list from a markdown file, 
 		source file or Roslyn document. They are used by the subclasses.
@@ -269,5 +253,14 @@ namespace LiterateProgramming
 
 		protected BlockList BlockListFromDocument (Document document) =>
 			CreateBlockBuilder ().FromDocument (document);
+		/*
+		Finally we need some helper functions to determine the type of a file. The 
+		type of a file is deduced from its extension or from its name. 
+		*/
+		protected bool IsSourceFile (SplitPath file) =>
+			file.Extension == _options.SourceExt;
+
+		protected bool IsMarkdownFile (SplitPath file) =>
+			file.Extension == _options.MarkdownExt;
 	}
 }

@@ -152,7 +152,7 @@
 </ul>
 				<div id="static-content" class="markdown">
 					<h1 id="splitpath-structure">SplitPath Structure</h1>
-<p><code>csweave</code> operates with three base directories:</p>
+<p>LiterateCS operates on three base directories:</p>
 <ul>
 <li>input directory which contains the files to be processed,</li>
 <li>output directory where the generated documentation will be placed, and</li>
@@ -267,9 +267,9 @@ when we are creating links between generated HTML files.</p>
 <p>The following code just concatenates as many parent directory pointers
 (<code>../</code>) together as the depth of the file path indicates to construct
 a relative path to the base directory.</p>
-<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.SplitPath.RelativeFileRoot">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> RelativeFileRoot
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateProgramming.SplitPath.RelativePathToRoot">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> RelativePathToRoot
 		<span class="punctuation">{</span>
-			<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath.RelativeFileRoot.get">get</span>
+			<span class="keyword" data-toggle="tooltip" title="LiterateProgramming.SplitPath.RelativePathToRoot.get">get</span>
 			<span class="punctuation">{</span>
 				<span class="keyword" data-toggle="tooltip" title="int">var</span> <span id="depth">depth</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="int"><a href="../LiterateCS/SplitPath.html#LiterateProgramming.SplitPath.FilePathDepth">FilePathDepth</a></span><span class="punctuation">;</span>
 				<span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">var</span> <span id="result">result</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">new</span> <span class="typename">StringBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>

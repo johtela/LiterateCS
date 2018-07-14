@@ -1,7 +1,7 @@
 ﻿/*
 # SplitPath Structure
 
-`csweave` operates with three base directories:
+LiterateCS operates on three base directories:
 
 * input directory which contains the files to be processed,
 * output directory where the generated documentation will be placed, and
@@ -132,7 +132,7 @@ namespace LiterateProgramming
 		(`../`) together as the depth of the file path indicates to construct
 		a relative path to the base directory.
 		*/
-		public string RelativeFileRoot
+		public string RelativePathToRoot
 		{
 			get
 			{

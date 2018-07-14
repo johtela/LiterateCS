@@ -1,20 +1,15 @@
 /*
 # Main Program
 
-The main program is quite simple. It just checks the command line arguments and calls the 
+The main program is very simple. It just parses the command line arguments and calls the 
 [Weaver](Weaver.html) class that does the actual work.
-
-## Dependencies
-
-There are no special dependencies in the main program. Only reference is to the System 
-namespace.
 */
 namespace LiterateProgramming
 {
 	using System;
 	using CommandLine;
 	/* 
-	The main class imaginatively named as `Program`. 
+	The main class is imaginatively named as `Program`. 
 	*/
 	class Program
 	{
@@ -22,10 +17,8 @@ namespace LiterateProgramming
 		{
 			/* 
 			## Command Line Parsing
-
-			First we create a command line parser that we got from the 
-			[NuGet](https://github.com/commandlineparser/commandline) library. We configure the 
-			command line options to be case insensitive.
+			First we create a command line parser and configure it to be case 
+			insensitive.
 			*/
 			var cmdLineParser = new Parser (settings =>
 			{
@@ -33,21 +26,24 @@ namespace LiterateProgramming
 				settings.HelpWriter = Console.Out;
 			});
 			/*
-			Then we parse the command line options into an object that contains the settings. If the
-			parsing fails, the parser will output usage information automatically after which we terminate
-			the program.
+			Then we parse the command line options into an object that contains the 
+			settings. If the parsing fails, the parser will output usage information 
+			automatically after which we terminate the program with exit code 0.
 			*/
 			return cmdLineParser.ParseArguments<Options> (args)
 				.MapResult (GenerateDocumentation, _ => 0);
 		}
 		/*
 		## Generating Documentation
-
-		Finally we create a [Weaver](Weaver.html) object and call its `Generate` 
-		method to generate the documentation according to the options.
+		If the parsing succeeds, CommandLineParser library will call the 
+		GenerateDocumentation method with the parsed options.
 		*/
 		private static int GenerateDocumentation (Options options)
 		{
+			/*
+			We create a [Weaver](Weaver.html) object and call its `Generate` 
+			method to generate the documentation according to the options.
+			*/
 			try
 			{
 				var weaver = options.Format == OutputFormat.html ?
@@ -86,6 +82,6 @@ namespace LiterateProgramming
 	}
 }
 /*
-And that's it! If you want to know how the document generation actually works, jump to the 
-documentation of the [Weaver](Weaver.html) class.
+That's all! To see how the documentation generation actually works, jump to the 
+[Weaver](Weaver.html) class.
 */

@@ -9,9 +9,9 @@ for controlling the HTML generation.
 Typically the front matter looks something like this:
 
     ---
-    ProjectName: Literate Programming
-    GitHub: https://github.com/johtela/LiterateProgramming
-    Footer: Copyright (c) 2017 Tommi Johtela
+    ProjectName: LiterateCS
+    GitHub: https://github.com/johtela/LiterateCS
+    Footer: Copyright (c) 2018 Tommi Johtela
     ShowDescriptionsInToc: true
     SyntaxHighlight: son-of-obsidian
     ---

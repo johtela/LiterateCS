@@ -2,7 +2,7 @@
 # Directory Utilities
 
 This class contains utility functions needed by theme assemblies as well as the
-`csweave` tool. It is an assorted collection static functions, mostly related to
+LiterateCS tool. It is an assorted collection static functions, mostly related to
 directory manipulation, that do not logically belong to any other class.
 */
 namespace LiterateCS.Theme

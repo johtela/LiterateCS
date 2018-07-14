@@ -233,7 +233,7 @@ namespace LiterateProgramming
 				sref.SyntaxTree.FilePath);
 			var inputfile = SplitPath.Split (_options.InputPath.BasePath,
 				_document.FilePath);
-			return Path.Combine (inputfile.RelativeFileRoot,
+			return Path.Combine (inputfile.RelativePathToRoot,
 				reffile.ChangeExtension ("html").FilePath).Replace ('\\', '/') +
 				"#" + GetSymbolId (symbol);
 		}

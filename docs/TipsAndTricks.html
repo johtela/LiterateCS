@@ -155,7 +155,7 @@
 <p>There are some additional features and tools you can put to use, to make the
 literate programming experience even better. Let's look at few of them.</p>
 <h2 id="including-formulas">Including Formulas</h2>
-<p><code>csweave</code> uses the <a href="https://github.com/lunet-io/markdig">Markdig</a> parser to
+<p>LiterateCS uses the <a href="https://github.com/lunet-io/markdig">Markdig</a> parser to
 generate HTML from markdown. Markdig supports mathematical formulas inside
 the markdown. Formulas are rendered by the <a href="https://www.mathjax.org/">MathJax</a>
 Javascript library. The library is loaded only if the <code>UseMath</code> property is
@@ -230,35 +230,34 @@ documentation that somebody or something is checking what I type. When
 writing code the compiler is doing that job. With documentation there is
 nothing helping you by default. That is why I think a spell checker is a
 precious tool - also within Visual Studio.</p>
-<h2 id="running-csweave-inside-the-build">Running <code>csweave</code> inside the Build</h2>
-<p>Since <code>csweave</code> is a command line tool, it can be integrated to the build
+<h2 id="running-literatecs-inside-the-build">Running LiterateCS inside the Build</h2>
+<p>Since LiterateCS is a command line tool, it can be integrated to the build
 process with little effort. You can add it as the post-build step in
 Visual Studio solution, or incorporate it in your continuous integration
-scripts. However you are doing it, just bear in mind that <code>csweave</code> will
-actually compile the project. So, if your code base is big, the tool will
-take some time. Therefore, I don't recommend running it automatically within
-every build. Better launch it separately when you want to review your
+scripts. However you are doing it, just bear in mind that LiterateCS will
+actually build your projects twice, because setting up Roslyn in .NET Core
+is somewhat complicated task currently. So, if your code base is big, the
+tool will take some time. Therefore, I don't recommend running it automatically
+within every build. Better launch it separately when you want to review your
 documentation.</p>
 <p>Also, I don't suggest that the errors coming from the tool should be used
-as the cause of failing a build. As mentioned in the documentation of the
-<a href="src/MSBuildHelpers.html">MSBuildHelpers</a> class, there are cases when
-Roslyn reports errors, even though the project compiles correctly in
-Visual Studio.</p>
+as the cause of failing a build. There are cases when Roslyn reports errors,
+even though the project compiles correctly in Visual Studio.</p>
 <p>If you don't want to see the compilation errors at all, or if they hinder
 your build process, you can get rid of them by redirecting STDERR to null.
 In command prompt, it is done like this:</p>
-<pre><code>csweave &lt;options&gt; 2&gt; nul
+<pre><code>literatecs &lt;options&gt; 2&gt; nul
 </code></pre>
 <p>In PowerShell the same thing is quite a bit more complicated. It is not enough
 to suppress the error messages, you also need to make sure that PowerShell
-does not terminate <code>csweave</code> immediately when it outputs to STDERR. So, we
+does not terminate LiterateCS immediately when it outputs to STDERR. So, we
 need to temporarily set <code>$ErrorActionPreference</code> variable to ignore the errors.</p>
 <pre><code>&amp; {
     $ErrorActionPreference = &quot;SilentlyContinue&quot;
-    &amp; csweave &lt;options&gt;
+    &amp; LiterateCS &lt;options&gt;
 }
 </code></pre>
-<p><code>csweave</code> will indicate with its return code if it succeeded or not. To check
+<p>LiterateCS will indicate with its return code if it succeeded or not. To check
 if the document generation worked in PowerShell, you should inspect the
 <code>$LASTEXITCODE</code> variable.</p>
 <pre><code>if ($LASTEXITCODE -eq 0)

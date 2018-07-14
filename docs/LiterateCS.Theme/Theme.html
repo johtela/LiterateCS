@@ -158,28 +158,31 @@ interface through which the HtmlGenerator class can use the theme.</p>
 <pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
 <span class="punctuation">{</span>
 	<span class="keyword">using</span> System<span class="punctuation">.</span>IO<span class="punctuation">;</span>
-	<span class="keyword">using</span> ExtensionCord<span class="punctuation">;</span>
 
 	<span class="keyword" id="LiterateCS.Theme.Theme">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="typename">Theme</span>
 	<span class="punctuation">{</span>
 </code></pre>
-<p>The first method that needs to be implemented returns the list of page
+<p>The first property that needs to be implemented returns the list of page
 templates available in the theme. A theme can have as many templates
 as it likes, but it must define at least one: the default template. The
 name of the default template should be &quot;default&quot;.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.AvalailablePageTemplates">public</span> <span class="keyword">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">[</span><span class="punctuation">]</span> AvalailablePageTemplates <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AvalailablePageTemplates.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AvalailablePageTemplates.get">;</span> <span class="punctuation">}</span>
-		<span class="keyword" id="LiterateCS.Theme.Theme.AssetDir">public</span> <span class="keyword">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> AssetDir <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AssetDir.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AssetDir.get">;</span> <span class="punctuation">}</span>
 </code></pre>
-<p>The second method to implement performs the rendering of the page using
+<p>The second property that themes must implement is the path to the asset
+directory. LiterateCS copies all the assets automatically to the output
+directory. If you want to customize this behavior, you can override the
+CopyAssets method below.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.AssetDir">public</span> <span class="keyword">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> AssetDir <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AssetDir.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.AssetDir.get">;</span> <span class="punctuation">}</span>
+</code></pre>
+<p>The third method to implement performs the rendering of the page using
 the template specified. The	default template is used, if <code>pageTemplate</code>
 is <code>null</code>. Page parameters are set by the HtmlGerenator and passed to
 the render method.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">abstract</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">RenderPage</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> pageTemplate<span class="punctuation">,</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.PageParams"><a href="../LiterateCS.Theme/PageParams.html#LiterateCS.Theme.PageParams">PageParams</a></span> pageParams<span class="punctuation">)</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.Theme.RenderPage(string, LiterateCS.Theme.PageParams)">;</span>
 </code></pre>
 <p>Theme class provides a default implementation for copying the auxiliary
-files needed by the HTML pages. The default implementation copies all
-files under the theme directory except the ones with extension &quot;.dll&quot; or
-&quot;.pdb&quot;.</p>
+files needed by the HTML pages. The default implementation copies all the
+files under the asseet directory.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.Theme.CopyAssets(string, string)" data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAssets(string, string)">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAssets(string, string)">virtual</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Theme.Theme.CopyAssets(string, string)">CopyAssets</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> assetDir<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> outputDir<span class="punctuation">)</span>
 		<span class="punctuation">{</span>
 			<span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers">DirHelpers</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">.</span><span data-toggle="tooltip" title="LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)"><a href="../LiterateCS.Theme/DirHelpers.html#LiterateCS.Theme.DirHelpers.CopySubDirectories(string, string, string, bool)">CopySubDirectories</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">assetDir</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">outputDir</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;*&quot;</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">)</span><span class="punctuation">;</span>

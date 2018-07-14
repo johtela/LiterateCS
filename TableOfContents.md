@@ -49,7 +49,7 @@ how a TOC file typically looks like:
     contents:
       - page: Introduction
         file: Index.md
-        desc: Introduction to literate programming and to the `csweave` tool.
+        desc: Introduction to literate programming and to the LiterateCS tool.
 
       - page: Command Line Options
         file: src\Options.cs

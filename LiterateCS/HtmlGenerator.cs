@@ -243,7 +243,7 @@ namespace LiterateProgramming
 		private void InitParams (SplitPath inputFile, SplitPath outputFile)
 		{
 			_params.Filename = outputFile.FileNameWithoutExtension;
-			_params.Root = outputFile.RelativeFileRoot;
+			_params.Root = outputFile.RelativePathToRoot;
 			_params.CurrentSection = _params.Toc.Flattened.FirstOrDefault (e =>
 				 e.File == inputFile.FilePath);
 		}

@@ -100,9 +100,9 @@ namespace LiterateProgramming
 		/*
 		## Generating Block Lists from Code File
 		The methods that generate block lists from code are defined below. 
-		There are two variants: one takes a file and the other takes a MSBuild
-		[document](http://www.coderesx.com/roslyn/html/5373B517.htm). The
-		implementations are basically the same in both cases. They differ 
+		There are two variants: one takes a file and the other takes a Roslyn
+		[Document](https://github.com/dotnet/roslyn/wiki/Roslyn-Overview#solutions-projects-documents). 
+		The implementations are basically the same in both cases. They differ 
 		only in how the AST is obtained.
 		*/
 		public virtual BlockList FromCodeFile (string codeFile)
