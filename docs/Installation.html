@@ -158,16 +158,17 @@
 <p>LiterateCS runs on top of the <a href="https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300">.NET Core 2.1</a>. It is distributed as a <a href="https://nuget.org">Nuget</a> package
 and deployed as <a href="https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools">.NET Core global tool</a>. This makes it easy to install, uninstall, and
 update. The technology for distributing command line tools as Nuget packages is quite
-new, but seems to work well in practice.</p>
+new (it was introduced in .NET Core 2.1.3) but seems to work well in practice.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>Before installing LiterateCS, make sure that you have .NET Core SDK version 2.1 or newer
-installed. If you don't have it already, you can dowload it from <a href="https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300">here</a>.</p>
+<p>Before installing LiterateCS, make sure that you have <strong>.NET Core SDK version 2.1.3 or
+newer</strong> installed. If you don't have it already, you can dowload it from
+<a href="https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300">here</a>.</p>
 <h2 id="installing">Installing</h2>
 <p>To install LiterateCS, open a command prompt (PowerShell or classic version) and
 type:</p>
 <pre><code>dotnet tool install -g literatecs
 </code></pre>
-<p>This download the tool from <a href="https://nuget.org">https://nuget.org</a> and installs it tool in the folder
+<p>This downloads the tool from <a href="https://nuget.org">nuget.org</a> and installs it in the folder
 <code>$HOME/.dotnet/tools/.store/literatecs</code> by default. It also creates an executable
 into <code>$HOME/.dotnet/tools</code> that should be already in your search path.</p>
 <p>To verify that LiterateCS is correctly installed you can type:</p>
@@ -181,8 +182,7 @@ command line options.</p>
 <p>This shows you all the currently installed .NET core global tools.</p>
 <p><strong>Note</strong>: Contrary to what the name &quot;global tools&quot; suggests, they are actually
 user-specific. They are not visible to other users of the computer. This is
-easy to understand when you know that the installation directory is under the
-home directory.</p>
+obvious when you know that the installation directory is under the home directory.</p>
 <h2 id="uninstalling">Uninstalling</h2>
 <p>Uninstallation is easy. Just type:</p>
 <pre><code>dotnet tool uninstall -g literatecs
