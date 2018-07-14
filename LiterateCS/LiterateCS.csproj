@@ -10,6 +10,13 @@
     <Product />
     <Copyright>Copyright © 2018 Tommi Johtela</Copyright>
     <Description>Literate programming tool for C#.</Description>
+    <PackageProjectUrl>https://johtela.github.io/LiterateCS/</PackageProjectUrl>
+    <PackageLicenseUrl>https://johtela.github.io/LiterateCS/License.html</PackageLicenseUrl>
+    <PackageIconUrl>https://johtela.github.io/LiterateCS/images/favicon.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/johtela/LiterateCS</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>.net csharp literate-programming</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
