@@ -95,3 +95,7 @@
   - page: README
     file: README.md
     desc: TODO! Add page description.
+
+  - page: Installation
+    file: Installation.md
+    desc: TODO! Add page description.
