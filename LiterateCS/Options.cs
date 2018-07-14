@@ -1,7 +1,7 @@
 ﻿/*
 # Command Line Options & Usage
 
-`csweave` is a console tool and it is controlled primarily through command line options. 
+LiterateCS is a console tool and it is controlled primarily through command line options. 
 [Command Line Parser Library](https://github.com/commandlineparser/commandline) is used to parse 
 the options. It simplifies the process and allows us to define new parameters just by adding 
 properties to the Option class.
@@ -14,6 +14,7 @@ namespace LiterateProgramming
 	using System.IO;
 	using System.Reflection;
 	using CommandLine;
+	using CommandLine.Text;
 	/*
 	## Output Format
 	The output format is either HTML or Markdown. The following enumeration is used to define 
@@ -32,7 +33,7 @@ namespace LiterateProgramming
 	{
 		/*
 		### Filters for Source Files
-		The arguments given without an option specifiers `-` or `--` are assumed to be filters 
+		The arguments given without option specifiers `-` or `--` are assumed to be filters 
 		that specify what files are processed by the tool. You can give multiple filters or file 
 		names to be searched for. The filters may contain literal text and three kinds of 
 		wildcards that conform to the _glob_ convention:
@@ -47,7 +48,7 @@ namespace LiterateProgramming
 		input folder or to the solution folder.
 		*/
 		[Value (0, Min = 1, Max = 100, MetaName = "<filters>", 
-		HelpText = "Filters for source files")]
+		HelpText = "Filters for input files; both source and markdown.")]
 		public IEnumerable<string> Filters { get; set; }
 
 		/*
@@ -56,8 +57,7 @@ namespace LiterateProgramming
 		solution.
 		*/
 		[Option ('s', "solution", Required = false,
-		HelpText = "Process the all the C# and markdown files residing under a msbuild " +
-		"solution")]
+		HelpText = "Read the the C# and markdown files from a msbuild solution (*.sln).")]
 		public string Solution { get; set; }
 
 		/*
@@ -68,9 +68,9 @@ namespace LiterateProgramming
 		directory is assumed to be the input directory.
 		*/
 		[Option ('i', "input", Required = false,
-		HelpText = "The root folder for the files to be processed. Files under this directory " +
-		"are checked against the filters. If input folder is not specified, the current " + 
-		"directory is used.")]
+		HelpText = "The root folder for the files to be processed. Files under this " +
+		"directory are checked against the filters. If input folder is not specified, the " +
+		"current directory is used.")]
 		public string InputFolder { get; set; }
 
 		/*
@@ -85,7 +85,7 @@ namespace LiterateProgramming
 
 		/*
 		### Source File Extension
-		`csweave` needs to recognize which of the input files are source (C#) files, and 
+		LiterateCS needs to recognize which of the input files are source (C#) files, and 
 		which ones are markdown files. Typically source files have the `.cs` extension. If 
 		you are using a different file extension, you can specify it with the `-e` option.
 		*/
@@ -107,9 +107,10 @@ namespace LiterateProgramming
 		/*
 		### Include Subfolders
 		If you want the tool to scan also the subfolder of the input folder, you can give 
-		the `-r` option. When given, `csweave` will traverse the input folder recursively 
+		the `-r` option. When given, LiterateCS will traverse the input folder recursively 
 		and process all the files matching the filters, regardless of how deep in the folder 
-		hierarchy they reside.
+		hierarchy they reside. When using a solution as an input, this option applies only
+		to markdown files.
 		*/
 		[Option ('r', "recursive", Default = false,
 		HelpText = "Searches also the subfolders of the input folder for the files to " + 
@@ -136,13 +137,13 @@ namespace LiterateProgramming
 		this option in your arguments.
 		*/
 		[Option ('t', "trim", Default = false,
-		HelpText = "Left-trim the comments before processing them to avoid interpreting them " +
-		"as code blocks.")]
+		HelpText = "Left-trim the comments before processing them to avoid interpreting " +
+		"them as code blocks.")]
 		public bool Trim { get; set; }
 
 		/*
 		### Update TOC
-		If you want `csweave` to automatically add the files it processes to the table of
+		If you want LiterateCS to automatically add the files it processes to the table of
 		contents file (`TOC.yml`), enable this option. This makes maintaining the TOC file
 		easier and reminds you to update it after new files have been added.
 		*/
@@ -152,20 +153,20 @@ namespace LiterateProgramming
 
 		/*
 		### Theme
-		Themes are DLLs which transform parsed data into HTML documents based on templates. Along 
-		with the template there are auxiliary CSS, JS, and font files that need to be deployed to
-		the target folder. Theme DLLs manage those files and copy them when needed. The default theme
-		is provided by `csweave`, but if you want, you can copy it and customize it to your liking.
-		The `--theme` option should be given, if you want to use a custom theme.
+		Themes are .NET assemblies which transform parsed code and text into HTML documents 
+		using page templates. In addition, themes manage the auxiliary CSS, JS, and font files 
+		that need to be copied to the target folder. The default theme is provided by LiterateCS, 
+		but if you want, you can clone it and customize it to your liking.	The `--theme` option 
+		should be specified, if you want to use a custom theme.
 		*/
 		[Option ('m', "theme", Default = "DefaultTheme.dll",
-		HelpText = "The theme DLL which generates HTML documents according to page templates. " +
-		"If not specified, the default theme is used.")]
+		HelpText = "The theme DLL which generates HTML documents according to page " +
+		"templates. If not specified, the default theme is used.")]
 		public string Theme { get; set; }
 
 		/*
 		### Build Log
-		When a solution file is used as an input, LiterateCS builds the solution first to
+		When a solution file is used as an input, LiterateCS first builds the solution to
 		determine all its dependencies. If you want to get a log file of the build for 
 		troubleshooting, use the `--buildlog` option.
 		*/
@@ -189,10 +190,10 @@ namespace LiterateProgramming
 		structures. The idea behind this data type is explained on its own documentation page, 
 		but in a nutshell its main purpose is to separate the two parts of a file path: the 
 		absolute base path and the relative file path. Doing this makes the code that needs 
-		these paths more succinct and readable. It also makes mapping the paths to hyperlinks 
+		these paths more succinct and readable. It also makes converting paths to hyperlinks 
 		easier. 
 
-		The files produced by `csweave` are stored in a similar directory hierarchy as the 
+		The files produced by LiterateCS are stored in a similar directory hierarchy as the 
 		input files. The base directory for the input files is defined by the `-i` option, or 
 		if a solution file is provided (with the `-s` option), the base input directory will
 		be the one where the solution file resides. If neither is given, the current directory
@@ -212,8 +213,7 @@ namespace LiterateProgramming
 		Lastly, the theme path is constructed. The base path of the theme is the directory
 		where the theme DLL resides. If the theme path given as an option is not an absolute
 		one, it is assumed that the path points to a folder under the application directory
-		(where the executables reside).	By default, these files reside under the directory	
-		'_applicationDirectory_\Themes', each theme in its own subdirectory.
+		(where the executables reside).
 		*/
 		public SplitPath ThemePath
 		{
@@ -227,60 +227,130 @@ namespace LiterateProgramming
 					Path.GetFileName (fullPath));
 			}
 		}
+		/*
+		## Usage Examples
+		Below are some example command lines for the most common usage scenarios. 
+		We utilize the new feature in the Command Line Parser library, which 
+		"[unparses](https://github.com/commandlineparser/commandline/wiki#usage-attribute)" 
+		the option object back to command line arguments.
+		*/
+		[Usage (ApplicationAlias = "literatecs")]
+		public static IEnumerable<Example> Examples =>
+			new Example[]
+			{
+				/*
+				### Create Markdown Output
+				The following command line processes all C# and markdown files in a 
+				solution (including all projects and subfolders), and generates markdown 
+				output to a directory called "docs". It also includes the `-t` switch to 
+				strip the indentation from the comments. This setting is usually on.
+				```
+				literatecs **.cs **.md -s <solution>.sln -o docs -f md -t
+				```
+				Below we construct this example using an instance of Options class.
+				Command Line Parser shows this example in the help screen which is
+				outputted whenever there are errors in the command line, or when the 
+				`--help` option is specified.
+				*/
+				new Example ("Generate markdown documentation for a solution",
+					new UnParserSettings
+					{
+						PreferShortName = true,
+						GroupSwitches = true
+					},
+					new Options
+					{
+						Filters = new string[] { "**.cs", "**.md" },
+						Solution = "<solution>.sln",
+						OutputFolder = "docs",
+						Format = OutputFormat.md,
+						Trim = true
+					}),
+				/*
+				### Create HTML Output from Files in a Directory
+				The example below scans the subfolder "src" for C# files, and the root folder 
+				for markdown files. It produces HTML and outputs information to console for
+				each processed file (verbose option).
+
+				**Note 1:** If you use the `-i` switch to specify the input folder, and you want 
+				to process any subfolders under it, you must include the `-r` option to recursively 
+				scan them. Specifying the subfolder in the filters is not enough.
+
+				**Note 2:** Since we are just reading individual files C# files inside a directory
+				and do not provide a solution file, LiterateCS cannot use Roslyn to compile the
+				code and produce semantic information. So, the syntax highlighting is limited
+				to basic tokens, and the links and type information is not available in the 
+				produced HTML files.
+				```
+				literatecs src\*.cs *.md -i <root> -o docs -f html -rtv
+				```
+				*/
+				new Example ("Create HTML documentation from files in a directory",
+					new UnParserSettings
+					{
+						PreferShortName = true,
+						GroupSwitches = true
+					},
+					new Options
+					{
+						Filters = new string[] { "src\\*.cs", "*.md" },
+						InputFolder = "<root>",
+						OutputFolder = "docs",
+						Format = OutputFormat.html,
+						Recursive = true,
+						Trim = true,
+						Verbose = true
+					}),
+				/*
+				### Create HTML Output for a Solution
+				The last example uses all the available functionality. It produces documentation
+				for the LiterateCS tool itself. It specifies the solution file, and processes C# 
+				files under "src" subdirectory, along with the markdown files under the solution 
+				directory.
+
+				Table of contents file is updated while the files are processed. This is specified
+				with the `-u` switch.
+
+				```
+				literatecs src\*.cs *.md -s <solution>.sln -o docs -f html -tuv
+				```
+				*/
+				new Example ("Create HTML documentation for a solution",
+					new UnParserSettings
+					{
+						PreferShortName = true,
+						GroupSwitches = true
+					},
+					new Options
+					{
+						Filters = new string[] { "src\\*.cs", "*.md" },
+						Solution = "<solution>.sln",
+						OutputFolder = "docs",
+						Format = OutputFormat.html,
+						Trim = true,
+						UpdateToc = true,
+						Verbose = true
+					}),
+				/*
+				**Tip:** If you think the command line above is a bit dense, you can also use the 
+				long format for the options to make them more understandable. The options are 
+				case-insensitive, so you can write them in any way you like.
+
+				```
+				literatecs src\*.cs *.md --solution <solution>.sln --output docs --format html --trim --UpdateTOC --verbose 
+				```
+				*/
+				new Example ("Same example with long option names",
+					new Options
+					{
+						Filters = new string[] { "src\\*.cs", "*.md" },
+						Solution = "<solution>.sln",
+						OutputFolder = "docs",
+						Format = OutputFormat.html,
+						Trim = true,
+						UpdateToc = true,
+						Verbose = true
+					})
+			};
 	}
 }
-/*
-## Usage Examples
-Below are some example command lines for the most common usage scenarios.
-
-### Create Markdown Output
-
-The following command line processes all C# and markdown files in a solution 
-(including all projects and subfolders), and generates markdown output to a 
-directory called "docs". It also includes the `-t` switch to strip the indentation 
-from the comments. This setting is usually on.
-```
-csweave **.cs **.md -s <solution>.sln -o docs -f md -t
-```
-
-### Create HTML Output from Files in a Directory
-
-The example below scans the subfolder "src" for C# files, and the root folder 
-for markdown files. It produces HTML and outputs information to console for
-each processed file (verbose option).
-
-**Note 1:** If you use the `-i` switch to specify the input folder, and you want 
-to process any subfolders under it, you must include the `-r` option to recursively 
-scan them. Specifying the subfolder in the filters is not enough.
-
-**Note 2:** Since we are just reading individual files C# files inside a directory
-and do not provide a solution file, `csweave` cannot use Roslyn to compile the
-code and produce semantic information. So, the syntax highlighting is limited
-to basic tokens, and the links and type information is not available in the 
-produced HTML files.
-```
-csweave src\*.cs *.md -i <root> -r -o docs -f html -t -v
-```
-
-### Create HTML Output for a Solution
-
-The last example uses all the available functionality. It produces documentation
-for the `csweave` tool itself. It specifies the solution file, and filters out
-C# files under "src" and "CSWeave.Theme" subdirectories, along with the markdown
-files under the solution directory.
-
-Table of contents file is updated while the files are processed. This is specified
-with the `-u` switch.
-
-```
-csweave src\*.cs CSWeave.Theme\*.cs *.md -s ..\..\LiterateProgramming.sln -o ..\..\docs -f html -t -v -u
-```
-
-**Tip:** If you think the command line above is a bit dense, you can also use the 
-long format for the options to make them more understandable. The options are 
-case-insensitive, so you can write them in any way you like.
-
-```
-csweave src\*.cs CSWeave.Theme\*.cs *.md --Solution ..\..\LiterateProgramming.sln --Output ..\..\docs --Format html --Trim --Verbose --UpdateTOC
-```
-*/

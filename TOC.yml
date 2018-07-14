@@ -37,10 +37,6 @@
     file: LiterateCS\TocManager.cs
     desc: "Loads, saves and updates table of contents."
 
-  - page: MSBuild Helpers
-    file: LiterateCS\MSBuildHelpers.cs
-    desc: Helper methods for working with MSBuild projects.
-
   - page: Source Blocks
     file: LiterateCS\BlockList.cs
     desc: Data structure that splits a source file into comments and code.
