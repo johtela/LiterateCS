@@ -19,10 +19,10 @@ it lay under the `Microsoft.CodeAnalysis.*` namespace.
 
 The other libarary we depend on is [Buildalyzer](https://github.com/daveaglick/Buildalyzer) 
 which helps loading and build msbuild projects. Quite a lot of scaffolding is needed
-to configure Roslyn correctly to be able to compile 
+to configure Roslyn to compile 
 [MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reference) 
-projects with it. Buildalyzer simplifies this task immensely, and allows us to ignore the 
-details with respect to different kinds of MSBuild projects.
+projects correctly. Buildalyzer simplifies this task immensely and allows us to ignore 
+the details with respect to different kinds of MSBuild projects.
 */
 namespace LiterateProgramming
 {
