@@ -178,7 +178,9 @@ namespace LiterateProgramming
 			return from proj in CompileProjectsInSolution (solution)
 				   from doc in proj.Documents
 				   let relPath = SplitPath.Split (_options.InputPath.BasePath, doc.FilePath)
-				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
+				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath)) &&
+						!(relPath.FilePath.EndsWith ("AssemblyAttributes.cs") ||
+						  relPath.FilePath.EndsWith ("AssemblyInfo.cs"))
 				   select Tuple.Create (relPath, doc);
 		}
 		/*
