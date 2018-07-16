@@ -15,9 +15,9 @@ full-blown static web site that you can host in [GitHub Pages].
 The idea of literate programming differs from the usual way of thinking
 about technical documentation. Instead of documentation being an afterthough
 which is taken care of after the project is done, literate programming encourages 
-you to document your code while your writing it. Also, you don't write the
+you to document your code while you are writing it. Also, you don't write the
 documentation as an API reference like with [xmldoc comments], but rather 
-write it like a prose explaining the things that need explaining and skipping
+like text of an essay, explaining the things that need explaining and skipping
 the obvious parts.
 
 To get an idea about how this works in practice, refer to the literate 
