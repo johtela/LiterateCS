@@ -3,20 +3,31 @@
 
 # Literate Programming in C# and .NET Core
 
-[Literate Programming] is a programming methodology that helps writing and 
-maintaining software by uniting code and documentation. It makes writing 
-documentation a less arduous task by providing the tooling for creating 
-clear, professional-looking documentation from your code. Some argue that 
-it also improves the quality of your code by encouraging you to write it 
-in a way that is easier to follow.
+LiterateCS is a [Literate Programming] tool that produces clear, 
+professional-looking documentation automatically from your C# projects. 
+It parses your C# code files and extracts [markdown] documentation from
+comments. Alternatively you can write your documentation in separate 
+markdown files and interleave pieces of code in them by referring to 
+C# regions. LiterateCS can then create either a simple markdown output 
+that you can upload to your project's [wiki] pages, or it can generate a 
+full-blown static web site that you can host in [GitHub Pages].
 
-This project is an attempt to make literate programming easy and fun for C#
-programmers. The full description of the project is available in: 
+The idea of literate programming differs from the usual way of thinking
+about technical documentation. Instead of documentation being an afterthough
+which is taken care of after the project is done, literate programming encourages 
+you to document your code while your writing it. Also, you don't write the
+documentation as an API reference like with [xmldoc comments], but rather 
+write it like a prose explaining the things that need explaining and skipping
+the obvious parts.
 
-<https://johtela.github.io/LiterateCS/>
+To get an idea about how this works in practice, refer to the literate 
+documentation created from this project. It can be found at:
 
-Please browse through the web site to get an idea what literate programming 
-is and how LiterateCS helps you apply its principles.
+**<https://johtela.github.io/LiterateCS/>**
+
+Other examples of documentation created with LiterateCS can be found at: 
+* <https://johtela.github.io/ExtensionCord/>
+* <https://johtela.github.io/LinqCheck/>
 
 ## Download and Installation
 
@@ -34,6 +45,10 @@ If you find a bug or want to suggest a feature, you can submit an [issue].
 If you want to contribute to the development, let me know. All help is appreciated.
 
 [Literate Programming]: https://en.wikipedia.org/wiki/Literate_programming
+[markdown]: https://en.wikipedia.org/wiki/Markdown
+[wiki]: https://help.github.com/articles/about-github-wikis/
+[xmldoc comments]: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/xml-documentation-comments
+[GitHub Pages]: https://pages.github.com/
 [.NET Core 2.1]: https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300
 [.NET Core global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 [installation instructions]: https://johtela.github.io/LiterateCS/Installation.html
