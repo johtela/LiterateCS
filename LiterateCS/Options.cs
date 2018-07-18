@@ -8,13 +8,20 @@ properties to the Option class.
 
 ## Dependencies
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
+	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using System.Reflection;
+	using ExtensionCord;
 	using CommandLine;
 	using CommandLine.Text;
+	using YamlDotNet.Core;
+	using YamlDotNet.Core.Events;
+	using YamlDotNet.Serialization;
+
 	/*
 	## Output Format
 	The output format is either HTML or Markdown. The following enumeration is used to define 
@@ -32,6 +39,24 @@ namespace LiterateProgramming
 	public class Options
 	{
 		/*
+		### Defaults and Table of Contents Files
+		There are two special input files which are processed separately. They
+		are	defined in [YAML](http://yaml.org/) format and they have fixed names. 
+		The first one is the `defaults.yml` file which contains the default settings 
+		used in the HTML generation. This file will be processed before any of 
+		the other files, so all the global (project-level) properties should be 
+		defined in it. See [Front Matter](../FrontMatter.html) to learn about
+		available properties.
+		*/
+		public const string DefaultsFile = "defaults.yml";
+		/*
+		The other special file is the table of contents or _TOC_ for short. Its file 
+		name is `TOC.yml` and its structure is described in 
+		[its own section](../TableOfContents.html). You can add entries to TOC manually, 
+		or use the `-u` option to automatically update it when files are missing from it.
+		*/
+		public const string TocFile = "TOC.yml";
+		/*
 		### Filters for Source Files
 		The arguments given without option specifiers `-` or `--` are assumed to be filters 
 		that specify what files are processed by the tool. You can give multiple filters or file 
@@ -47,9 +72,25 @@ namespace LiterateProgramming
 		The file names that are matched against the filters are given relative either to the 
 		input folder or to the solution folder.
 		*/
-		[Value (0, Min = 1, Max = 100, MetaName = "<filters>", 
+		private IEnumerable<string> _filters;
+
+		[Value (0, MetaName = "<filters>", 
 		HelpText = "Filters for input files; both source and markdown.")]
-		public IEnumerable<string> Filters { get; set; }
+		[YamlMember (Alias = "filters")]
+		public IEnumerable<string> Filters
+		{
+			get => _filters;
+			set
+			{
+				/*
+				This bit of logic prevents command line parser from overriding
+				filters read from `defaults.yml` with an empty list.
+				*/
+				if ((value != null && value.Any ()) ||
+					_filters == null || _filters.None ())
+					_filters = value;
+			}
+		}
 
 		/*
 		### Solution File
@@ -57,7 +98,9 @@ namespace LiterateProgramming
 		solution.
 		*/
 		[Option ('s', "solution", Required = false,
-		HelpText = "Read the the C# and markdown files from a msbuild solution (*.sln).")]
+		HelpText = "Read the the C# and markdown files from a msbuild solution (*.sln). " +
+		"If this option is specified, the '--input' option is ignored.")]
+		[YamlMember (Alias="solution")]
 		public string Solution { get; set; }
 
 		/*
@@ -71,17 +114,22 @@ namespace LiterateProgramming
 		HelpText = "The root folder for the files to be processed. Files under this " +
 		"directory are checked against the filters. If input folder is not specified, the " +
 		"current directory is used.")]
+		[YamlMember (Alias = "input")]
 		public string InputFolder { get; set; }
 
 		/*
 		### Output Folder
 		The output folder specifies where the tool stores the generated files. The output 
 		folder will contain the markdown and HTML files, as well as all the auxiliary files 
-		(CSS, Javascript, etc.)	needed by the documents.
+		(CSS, Javascript, etc.)	needed by the documents. If a relative path is specified,
+		then it is relative to the input folder or solution folder. If nothing is specified, 
+		the default output folder is set to "docs/" under the input folder.
 		*/
-		[Option ('o', "output", Required = true,
-		HelpText = "Output folder where the documentation will be generated to.")]
-		public string OutputFolder { get; set; }
+		[Option ('o', "output", Required = false,
+		HelpText = "Output folder where the documentation will be generated to. "+ 
+		"The default output folder is <input|solutionfolder>/docs.")]
+		[YamlMember (Alias = "output")]
+		public string OutputFolder { get; set; } = "docs";
 
 		/*
 		### Source File Extension
@@ -89,20 +137,22 @@ namespace LiterateProgramming
 		which ones are markdown files. Typically source files have the `.cs` extension. If 
 		you are using a different file extension, you can specify it with the `-e` option.
 		*/
-		[Option ('e', "csext", Default = ".cs",
+		[Option ('e', "csext",
 		HelpText = "File extension for the C# source files. Used to identify source files " +
-		"in the input folder.")]
-		public string SourceExt { get; set; }
+		"in the input folder. The default is '.cs'")]
+		[YamlMember (Alias = "csext")]
+		public string SourceExt { get; set; } = ".cs";
 
 		/*
 		### Markdown File Extension
 		Similarly to C# files, markdown files are recognized by the file extension. If not 
 		specified, `.md` is assumed to be the extension.
 		*/
-		[Option ('d', "mdext", Default = ".md",
+		[Option ('d', "mdext",
 		HelpText = "File extension for the markdown files. Used to identify markdown files " +
-		"in the input folder.")]
-		public string MarkdownExt { get; set; }
+		"in the input folder. The default is '.md'")]
+		[YamlMember (Alias = "mdext")]
+		public string MarkdownExt { get; set; } = ".md";
 
 		/*
 		### Include Subfolders
@@ -112,9 +162,10 @@ namespace LiterateProgramming
 		hierarchy they reside. When using a solution as an input, this option applies only
 		to markdown files.
 		*/
-		[Option ('r', "recursive", Default = false,
+		[Option ('r', "recursive", 
 		HelpText = "Searches also the subfolders of the input folder for the files to " + 
 		"be processed.")]
+		[YamlMember (Alias = "recursive")]
 		public bool Recursive { get; set; }
 
 		/*
@@ -122,8 +173,10 @@ namespace LiterateProgramming
 		Output format is specified by the `-f` option. Only valid values are `md` for markdown 
 		and `html` for HTML documents.
 		*/
-		[Option ('f', "format", Default = OutputFormat.md,
-		HelpText = "Format of the outputted documentation; either 'md' or 'html'.")]
+		[Option ('f', "format", 
+		HelpText = "Format of the outputted documentation; either 'md' or 'html'. " +
+		"Default is 'md'")]
+		[YamlMember (Alias = "format")]
 		public OutputFormat Format { get; set; }
 
 		/*
@@ -136,9 +189,10 @@ namespace LiterateProgramming
 		have indented comments that you want to be considered as normal text in markdown, include 
 		this option in your arguments.
 		*/
-		[Option ('t', "trim", Default = false,
+		[Option ('t', "trim", 
 		HelpText = "Left-trim the comments before processing them to avoid interpreting " +
 		"them as code blocks.")]
+		[YamlMember (Alias = "trim")]
 		public bool Trim { get; set; }
 
 		/*
@@ -147,8 +201,9 @@ namespace LiterateProgramming
 		contents file (`TOC.yml`), enable this option. This makes maintaining the TOC file
 		easier and reminds you to update it after new files have been added.
 		*/
-		[Option ('u', "updatetoc", Default = false,
+		[Option ('u', "updatetoc", 
 		HelpText = "Adds processed files that are not already in the TOC file to it.")]
+		[YamlMember (Alias = "updatetoc")]
 		public bool UpdateToc { get; set; }
 
 		/*
@@ -159,10 +214,11 @@ namespace LiterateProgramming
 		but if you want, you can clone it and customize it to your liking.	The `--theme` option 
 		should be specified, if you want to use a custom theme.
 		*/
-		[Option ('m', "theme", Default = "DefaultTheme.dll",
+		[Option ('m', "theme",
 		HelpText = "The theme DLL which generates HTML documents according to page " +
 		"templates. If not specified, the default theme is used.")]
-		public string Theme { get; set; }
+		[YamlMember (Alias = "theme")]
+		public string Theme { get; set; } = "DefaultTheme.dll";
 
 		/*
 		### Build Log
@@ -172,6 +228,7 @@ namespace LiterateProgramming
 		*/
 		[Option ('b', "buildlog", Required = false,
 		HelpText = "Path to the build log file.")]
+		[YamlMember (Alias = "buildlog")]
 		public string BuildLog { get; set; }
 
 		/*
@@ -181,6 +238,7 @@ namespace LiterateProgramming
 		*/
 		[Option ('v', "verbose",
 		HelpText = "Outputs information about processed files to the standard output.")]
+		[YamlMember (Alias = "verbose")]
 		public bool Verbose { get; set; }
 
 		/*
@@ -228,11 +286,59 @@ namespace LiterateProgramming
 			}
 		}
 		/*
-		## Usage Examples
-		Below are some example command lines for the most common usage scenarios. 
-		We utilize the new feature in the Command Line Parser library, which 
+		## Loading Command Line Options from `default.yml`
+		Typically you run the `literatecs` command with the same options again and
+		again. For this reason, it is usually easier to specify the options in the
+		`defaults.yml` file. You can still override the options in the command line
+		if desired, but the initial values will be fetched from the	defaults file. 
+		If it does not appear there either, the application default is used.
+		*/
+		public static Options LoadFromDefaultsFile ()
+		{
+			if (!File.Exists (DefaultsFile))
+				return new Options ();
+			Console.WriteLine ("Reading default command line options from '{0}'", 
+				DefaultsFile);
+			try
+			{
+				using (var input = File.OpenText (DefaultsFile))
+				{
+					var deserializer = new DeserializerBuilder ()
+							.Build ();
+					var parser = new YamlDotNet.Core.Parser (input);
+
+					parser.Expect<StreamStart> ();
+					var frontMatter = deserializer
+						.Deserialize<Dictionary<string, string>> (parser);
+
+					var result = deserializer
+						.Deserialize<Options> (parser);
+
+					return result ?? new Options ();
+				}
+			}
+			catch (SyntaxErrorException e)
+			{
+				throw new InvalidOperationException (
+					"Error parsing options from: " + DefaultsFile, e);
+			}
+		}
+		/*
+		After both defaults file and command line argument are parsed, it is good
+		to check that all effective options are correct. For that we will provide a
+		method that outputs all the options as a command line. We utilize the new 
+		feature in the Command Line Parser library, which 
 		"[unparses](https://github.com/commandlineparser/commandline/wiki#usage-attribute)" 
 		the option object back to command line arguments.
+		*/
+		public void OutputEffectiveOptions ()
+		{
+			Console.WriteLine ("Command line options used:");
+			Console.WriteLine (CommandLine.Parser.Default.FormatCommandLine (this));
+		}
+		/*
+		## Usage Examples
+		Below are some example command lines for the most common usage scenarios. 
 		*/
 		[Usage (ApplicationAlias = "literatecs")]
 		public static IEnumerable<Example> Examples =>

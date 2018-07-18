@@ -4,7 +4,7 @@ In order to extract the documentation from the code, LiterateCS needs to split a
 into blocks which represent either text or code. Blocks capture parts of a source file and
 make it easier to process them differently depending on their kind.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using System;
 	using System.Collections;

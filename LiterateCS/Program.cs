@@ -4,7 +4,7 @@
 The main program is very simple. It just parses the command line arguments and calls the 
 [Weaver](Weaver.html) class that does the actual work.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using System;
 	using CommandLine;
@@ -30,26 +30,12 @@ namespace LiterateProgramming
 			settings. If the parsing fails, the parser will output usage information 
 			automatically after which we terminate the program with exit code 0.
 			*/
-			return cmdLineParser.ParseArguments<Options> (args)
-				.MapResult (GenerateDocumentation, _ => 0);
-		}
-		/*
-		## Generating Documentation
-		If the parsing succeeds, CommandLineParser library will call the 
-		GenerateDocumentation method with the parsed options.
-		*/
-		private static int GenerateDocumentation (Options options)
-		{
-			/*
-			We create a [Weaver](Weaver.html) object and call its `Generate` 
-			method to generate the documentation according to the options.
-			*/
 			try
 			{
-				var weaver = options.Format == OutputFormat.html ?
-					new HtmlWeaver (options) :
-					(Weaver)new MdWeaver (options);
-				weaver.GenerateDocumentation ();
+				var defaultOptions = new Lazy<Options> (Options.LoadFromDefaultsFile);
+				cmdLineParser.ParseArguments (() => defaultOptions.Value, args)
+					.WithParsed (GenerateDocumentation);
+				return 0;
 			}
 			catch (Exception e)
 			{
@@ -77,7 +63,23 @@ namespace LiterateProgramming
 				*/
 				#endregion
 			}
-			return 0;
+		}
+		/*
+		## Generating Documentation
+		If the parsing succeeds, CommandLineParser library will call the 
+		GenerateDocumentation method with the parsed options.
+		*/
+		private static void GenerateDocumentation (Options options)
+		{
+			options.OutputEffectiveOptions ();
+			/*
+			We create a [Weaver](Weaver.html) object and call its `Generate` 
+			method to generate the documentation according to the options.
+			*/
+			var weaver = options.Format == OutputFormat.html ?
+				new HtmlWeaver (options) :
+				(Weaver)new MdWeaver (options);
+			weaver.GenerateDocumentation ();
 		}
 	}
 }

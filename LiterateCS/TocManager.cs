@@ -13,7 +13,7 @@ to the file format and serialization. It uses [YamlDotNet](https://github.com/aa
 library to parse and deserialize the TOC file. The format of the file is described
 on a [separate page](../TableOfContents.html).
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using LiterateCS.Theme;
 	using System;

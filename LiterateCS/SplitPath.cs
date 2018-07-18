@@ -13,7 +13,7 @@ we define a helper data structure that encapsulates a file path, but stores it i
 two parts: base path and file path. We call this data structure SplitPath and 
 define it as follows.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using System;
 	using System.IO;

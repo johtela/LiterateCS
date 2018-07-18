@@ -25,7 +25,7 @@ Adding references to Microsoft.CodeAnalysis namespaces bring in the Roslyn
 libraries. We also need the System.Web assembly to access the function which 
 escapes invalid characters in HTML.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using Microsoft.CodeAnalysis;
 	using Microsoft.CodeAnalysis.CSharp;

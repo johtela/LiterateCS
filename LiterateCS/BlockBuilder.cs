@@ -26,7 +26,7 @@ output.
 So, let's tackle the parsing problem first, and see how it is performed by 
 the BlockBuilder class.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using Microsoft.CodeAnalysis;
 	using Microsoft.CodeAnalysis.CSharp;

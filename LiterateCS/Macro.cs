@@ -11,7 +11,7 @@ The Macro class defines the data structure that is used to store macros. It
 implements the `IEnumerable<BlockList>` interface to allow iterating though
 the blocks belonging to a macro.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using System;
 	using System.Collections;

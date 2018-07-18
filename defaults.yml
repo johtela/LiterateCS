@@ -1,4 +1,6 @@
-﻿ProjectName: LiterateCS
+﻿# Front matter defaults
+---
+ProjectName: LiterateCS
 GitHub: https://github.com/johtela/LiterateCS
 Download: https://www.nuget.org/packages/LiterateCS/
 License: License.html
@@ -10,3 +12,17 @@ SyntaxHighlight: solarized-light
 UseDiagrams: true
 DiagramStyle: mermaid
 UseMath: true
+
+# Command line arguments
+---
+filters:
+  - "LiterateCS/*.cs"
+  - "LiterateCS.Theme/*.cs"
+  - "*.md"
+output: docs
+solution: LiterateCS.sln
+format: html
+trim: true
+verbose: true
+updatetoc: true
+buildlog: buildlog.txt

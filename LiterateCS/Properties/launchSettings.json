@@ -2,7 +2,6 @@
   "profiles": {
     "LiterateCS": {
       "commandName": "Project",
-      "commandLineArgs": "LiterateCS\\*.cs LiterateCS.Theme\\*.cs *.md -s LiterateCS.sln -o docs -f html -tvu -b buildlog.txt",
       "workingDirectory": "C:\\Users\\tommi\\Source\\Repos\\LiterateCS"
     }
   }

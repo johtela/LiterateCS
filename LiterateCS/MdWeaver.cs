@@ -7,7 +7,7 @@ _weave_ the generated blocks to the output files. The splitting part is done
 in the [BlockBuilder](BlockBuilder.html) class. The markdown weaver takes the 
 generated block lists and writes them verbatim to the output files.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using Microsoft.CodeAnalysis;
 	using System.IO;

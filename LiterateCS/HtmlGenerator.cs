@@ -16,7 +16,7 @@ the [YamlDotNet](https://github.com/aaubry/YamlDotNet) library.
 [Markdig](https://github.com/lunet-io/markdig) library takes care of converting
 markdown to HTML. References to the corresponding namespaces can be found below.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using LiterateCS.Theme;
 	using Markdig;
@@ -47,7 +47,7 @@ namespace LiterateProgramming
 		/*
 		The `_theme` field contains the reference to the loaded theme.
 		*/
-		private Theme _theme;
+		private Theme.Theme _theme;
 		/*
 		## Constructor
 
@@ -84,19 +84,19 @@ namespace LiterateProgramming
 		we use the reflection API again to construct an instance of the theme
 		class we discovered.
 		*/
-		private Theme LoadTheme ()
+		private Theme.Theme LoadTheme ()
 		{
 			var themeDll = !_options.ThemePath;
 			if (!File.Exists (themeDll))
 				throw new ArgumentException ("Could not find theme file in: " + themeDll);
 			var assy = Assembly.LoadFile (themeDll);
 			var themeType = assy.GetTypes ().FirstOrDefault (t => 
-				t.IsSubclassOf (typeof (Theme)));
+				t.IsSubclassOf (typeof (Theme.Theme)));
 			if (themeType == null)
 				throw new ArgumentException (
 					"Could not find Theme class from the assembly " +
 					_options.Theme);
-			return (Theme)Activator.CreateInstance (themeType);
+			return (Theme.Theme)Activator.CreateInstance (themeType);
 		}
 		/*
 		## Converting TOC entries to HTML

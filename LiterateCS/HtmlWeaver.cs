@@ -14,31 +14,13 @@ are used to produce the actual HTML output:
 But first, let's focus on how the source files are processed when HTML output is
 selected.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using Microsoft.CodeAnalysis;
 	using System.IO;
 
 	public class HtmlWeaver : Weaver
 	{
-		/*
-		## Defaults and Table of Contents Files
-		There are two special input files which are processed separately. They
-		are	defined in [YAML](http://yaml.org/) format and they have fixed names. 
-		The first one is the `defaults.yml` file which contains the default settings 
-		used in the HTML generation. This file will be processed before any of 
-		the other files, so all the global (project-level) properties should be 
-		defined in it. See [Front Matter](../FrontMatter.html) to learn about
-		available properties.
-		*/
-		private const string _defaultsFile = "defaults.yml";
-		/*
-		The other special file is the table of contents or _TOC_ for short. Its file 
-		name is `TOC.yml` and its structure is described in 
-		[its own section](../TableOfContents.html). You can add entries to TOC manually, 
-		or use the `-u` option to automatically update it when files are missing from it.
-		*/
-		private const string _tocFile = "TOC.yml";
 		/*
 		## Initialization
 		Constructor loads the TOC manager and creates the HTML generator. After that,
@@ -52,7 +34,7 @@ namespace LiterateProgramming
 		{
 			LoadToc ();
 			_generateHtml = new HtmlGenerator (_options, _tocManager.Toc);
-			LoadDefaults ();
+			LoadDefaultFrontMatter ();
 		}
 		/*
 		A customized version of BlockBuilder is employed by overriding the virtual
@@ -127,20 +109,20 @@ namespace LiterateProgramming
 		}
 		/*
 		## Loading Defaults
-		To load the default settings we call the `ParseFrontMatter` method in the 
+		To load the default front matter we call the `ParseFrontMatter` method in the 
 		HTML generator.
 		*/
-		private void LoadDefaults ()
+		private void LoadDefaultFrontMatter ()
 		{
-			var defaults = !_options.InputPath.WithFile (_defaultsFile);
+			var defaults = !_options.InputPath.WithFile (Options.DefaultsFile);
 			if (File.Exists (defaults))
 			{
-				ConsoleOut ("Reading default settings from file '{0}'", defaults);
+				ConsoleOut ("Reading default front matter from '{0}'", defaults);
 				_generateHtml.ParseFrontMatter (File.ReadAllText (defaults),
 					defaults);
 			}
 		}
-		/*
+		/*	
 		## TOC Management
 		Loading and updating table of contents is handled by the 
 		[TocManager](TocManager.html) class. We can add new entries to 
@@ -149,7 +131,7 @@ namespace LiterateProgramming
 		*/
 		private void LoadToc ()
 		{
-			var tocFile = !_options.InputPath.WithFile (_tocFile);
+			var tocFile = !_options.InputPath.WithFile (Options.TocFile);
 			if (File.Exists (tocFile))
 			{
 				ConsoleOut ("Reading TOC from file '{0}'", tocFile);

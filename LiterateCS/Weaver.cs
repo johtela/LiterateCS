@@ -24,7 +24,7 @@ to configure Roslyn to compile
 projects correctly. Buildalyzer simplifies this task immensely and allows us to ignore 
 the details with respect to different kinds of MSBuild projects.
 */
-namespace LiterateProgramming
+namespace LiterateCS
 {
 	using LiterateCS.Theme;
 	using Microsoft.CodeAnalysis;
