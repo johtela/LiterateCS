@@ -27,8 +27,11 @@ namespace LiterateCS
 			});
 			/*
 			Then we parse the command line options into an object that contains the 
-			settings. If the parsing fails, the parser will output usage information 
-			automatically after which we terminate the program with exit code 0.
+			settings. We use the settings read from the `defaults.yml` file to 
+			initialize the Options object.
+			
+			If the parsing fails, the parser will output usage information 
+			automatically after which we terminate the program with exit code 0. 
 			*/
 			try
 			{
@@ -71,9 +74,13 @@ namespace LiterateCS
 		*/
 		private static void GenerateDocumentation (Options options)
 		{
+			/*
+			First we output the effective options we are going to use. This helps 
+			the user to see what options were picked form `defaults.yml` file.
+			*/
 			options.OutputEffectiveOptions ();
 			/*
-			We create a [Weaver](Weaver.html) object and call its `Generate` 
+			Then we create a [Weaver](Weaver.html) object and call its `Generate` 
 			method to generate the documentation according to the options.
 			*/
 			var weaver = options.Format == OutputFormat.html ?

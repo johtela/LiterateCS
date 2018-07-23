@@ -178,7 +178,9 @@ insensitive.</p>
 			<span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">;</span>
 </code></pre>
 <p>Then we parse the command line options into an object that contains the
-settings. If the parsing fails, the parser will output usage information
+settings. We use the settings read from the <code>defaults.yml</code> file to
+initialize the Options object.</p>
+<p>If the parsing fails, the parser will output usage information
 automatically after which we terminate the program with exit code 0.</p>
 <pre class="csharp"><code class="csharp">			<span class="keyword">try</span>
 			<span class="punctuation">{</span>
@@ -215,9 +217,12 @@ markdown files.</em></p>
 GenerateDocumentation method with the parsed options.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)" data-toggle="tooltip" title="LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)">private</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)">static</span> <span class="keyword" data-toggle="tooltip" title="void">void</span> <span data-toggle="tooltip" title="LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)">GenerateDocumentation</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Options"><a href="../LiterateCS/Options.html#LiterateCS.Options">Options</a></span> options<span class="punctuation">)</span>
 		<span class="punctuation">{</span>
-			<span data-toggle="tooltip" title="LiterateCS.Options">options</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.OutputEffectiveOptions()">.</span><span data-toggle="tooltip" title="LiterateCS.Options.OutputEffectiveOptions()"><a href="../LiterateCS/Options.html#LiterateCS.Options.OutputEffectiveOptions()">OutputEffectiveOptions</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
 </code></pre>
-<p>We create a <a href="Weaver.html">Weaver</a> object and call its <code>Generate</code>
+<p>First we output the effective options we are going to use. This helps
+the user to see what options were picked form <code>defaults.yml</code> file.</p>
+<pre class="csharp"><code class="csharp">			<span data-toggle="tooltip" title="LiterateCS.Options">options</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.OutputEffectiveOptions()">.</span><span data-toggle="tooltip" title="LiterateCS.Options.OutputEffectiveOptions()"><a href="../LiterateCS/Options.html#LiterateCS.Options.OutputEffectiveOptions()">OutputEffectiveOptions</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>Then we create a <a href="Weaver.html">Weaver</a> object and call its <code>Generate</code>
 method to generate the documentation according to the options.</p>
 <pre class="csharp"><code class="csharp">			<span class="keyword" data-toggle="tooltip" title="LiterateCS.Weaver">var</span> <span id="weaver">weaver</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="LiterateCS.Options">options</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.Options.Format">Format</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">==</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.OutputFormat.html">html</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Weaver">?</span>
 				<span class="keyword" data-toggle="tooltip" title="LiterateCS.HtmlWeaver">new</span> <span class="typename"><a href="../LiterateCS/HtmlWeaver.html#LiterateCS.HtmlWeaver">HtmlWeaver</a></span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Options">options</span><span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Weaver">:</span>
