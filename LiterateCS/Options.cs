@@ -39,14 +39,20 @@ namespace LiterateCS
 	public class Options
 	{
 		/*
-		### Defaults and Table of Contents Files
 		There are two special input files which are processed separately. They
 		are	defined in [YAML](http://yaml.org/) format and they have fixed names. 
 		The first one is the `defaults.yml` file which contains the default settings 
-		used in the HTML generation. This file will be processed before any of 
-		the other files, so all the global (project-level) properties should be 
-		defined in it. See [Front Matter](../FrontMatter.html) to learn about
-		available properties.
+		used by LiterateCS. This file will be processed before any of the other files, 
+		so all the global (project-level) properties should be defined in it. 
+		
+		The first part of the file contains front matter defaults. See the chapter on
+		[Front Matter](../FrontMatter.html) to learn about available properties. The
+		second part of the file contains the default command line arguments. The 
+		processing order is that `defaults.yml` file will be read first and all the
+		command line arguments found there are used as default values. However, if 
+		the same option is specified in the command line, it overrides the setting 
+		found in the defaults file. If an option is not present in the defaults file
+		or in the command line, the application-level default value is used.
 		*/
 		public const string DefaultsFile = "defaults.yml";
 		/*
@@ -286,7 +292,7 @@ namespace LiterateCS
 			}
 		}
 		/*
-		## Loading Command Line Options from `default.yml`
+		## Loading Command Line Options from `defaults.yml`
 		Typically you run the `literatecs` command with the same options again and
 		again. For this reason, it is usually easier to specify the options in the
 		`defaults.yml` file. You can still override the options in the command line
@@ -301,19 +307,30 @@ namespace LiterateCS
 				DefaultsFile);
 			try
 			{
+				/*
+				We use the [YamlDotNet serialization](
+				https://github.com/aaubry/YamlDotNet/wiki/Samples.DeserializingMultipleDocuments) 
+				to read the file.
+				*/
 				using (var input = File.OpenText (DefaultsFile))
 				{
 					var deserializer = new DeserializerBuilder ()
 							.Build ();
 					var parser = new YamlDotNet.Core.Parser (input);
-
+					/*
+					We skip the first document, which contains the front matter defaults.
+					*/
 					parser.Expect<StreamStart> ();
-					var frontMatter = deserializer
-						.Deserialize<Dictionary<string, string>> (parser);
-
+					deserializer.Deserialize<Dictionary<string, string>> (parser);
+					/*
+					Then we can deserialize the default command line options.
+					*/
 					var result = deserializer
 						.Deserialize<Options> (parser);
-
+					/*
+					If no settings could be found, we return an Option object initialized 
+					with application-level defaults.
+					*/
 					return result ?? new Options ();
 				}
 			}

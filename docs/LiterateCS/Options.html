@@ -187,14 +187,19 @@ of the option (boolean, string, enumeration, etc.) is inferred from the type of 
 <pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateCS.Options">public</span> <span class="keyword">class</span> <span class="typename">Options</span>
 	<span class="punctuation">{</span>
 </code></pre>
-<h3 id="defaults-and-table-of-contents-files">Defaults and Table of Contents Files</h3>
 <p>There are two special input files which are processed separately. They
 are	defined in <a href="http://yaml.org/">YAML</a> format and they have fixed names.
 The first one is the <code>defaults.yml</code> file which contains the default settings
-used in the HTML generation. This file will be processed before any of
-the other files, so all the global (project-level) properties should be
-defined in it. See <a href="../FrontMatter.html">Front Matter</a> to learn about
-available properties.</p>
+used by LiterateCS. This file will be processed before any of the other files,
+so all the global (project-level) properties should be defined in it.</p>
+<p>The first part of the file contains front matter defaults. See the chapter on
+<a href="../FrontMatter.html">Front Matter</a> to learn about available properties. The
+second part of the file contains the default command line arguments. The
+processing order is that <code>defaults.yml</code> file will be read first and all the
+command line arguments found there are used as default values. However, if
+the same option is specified in the command line, it overrides the setting
+found in the defaults file. If an option is not present in the defaults file
+or in the command line, the application-level default value is used.</p>
 <pre class="csharp"><code class="csharp">		<span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateCS.Options.DefaultsFile">DefaultsFile</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;defaults.yml&quot;</span><span class="punctuation">;</span>
 </code></pre>
 <p>The other special file is the table of contents or <em>TOC</em> for short. Its file
@@ -401,7 +406,7 @@ one, it is assumed that the path points to a folder under the application direct
 			<span class="punctuation">}</span>
 		<span class="punctuation">}</span>
 </code></pre>
-<h2 id="loading-command-line-options-from-default.yml">Loading Command Line Options from <code>default.yml</code></h2>
+<h2 id="loading-command-line-options-from-defaults.yml">Loading Command Line Options from <code>defaults.yml</code></h2>
 <p>Typically you run the <code>literatecs</code> command with the same options again and
 again. For this reason, it is usually easier to specify the options in the
 <code>defaults.yml</code> file. You can still override the options in the command line
@@ -415,20 +420,26 @@ If it does not appear there either, the application default is used.</p>
 				<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.DefaultsFile">DefaultsFile</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
 			<span class="keyword">try</span>
 			<span class="punctuation">{</span>
-				<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamReader">var</span> <span id="input">input</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.OpenText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.OpenText(string)">OpenText</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.DefaultsFile">DefaultsFile</a></span><span class="punctuation">)</span><span class="punctuation">)</span>
+</code></pre>
+<p>We use the <a href="https://github.com/aaubry/YamlDotNet/wiki/Samples.DeserializingMultipleDocuments">YamlDotNet serialization</a>
+to read the file.</p>
+<pre class="csharp"><code class="csharp">				<span class="keyword">using</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="System.IO.StreamReader">var</span> <span id="input">input</span> <span class="punctuation">=</span> <span class="typename" data-toggle="tooltip" title="System.IO.File">File</span><span class="punctuation" data-toggle="tooltip" title="System.IO.File.OpenText(string)">.</span><span data-toggle="tooltip" title="System.IO.File.OpenText(string)">OpenText</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.DefaultsFile">DefaultsFile</a></span><span class="punctuation">)</span><span class="punctuation">)</span>
 				<span class="punctuation">{</span>
 					<span class="keyword" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">var</span> <span id="deserializer">deserializer</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder">new</span> <span class="typename">DeserializerBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span>
 							<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder.Build()">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.DeserializerBuilder.Build()">Build</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
 					<span class="keyword" data-toggle="tooltip" title="YamlDotNet.Core.Parser">var</span> <span id="parser">parser</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="YamlDotNet.Core.Parser">new</span> YamlDotNet<span class="punctuation">.</span>Core<span class="punctuation">.</span><span class="typename">Parser</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.IO.StreamReader">input</span><span class="punctuation">)</span><span class="punctuation">;</span>
-
-					<span data-toggle="tooltip" title="YamlDotNet.Core.Parser">parser</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Core.IParser.Expect<YamlDotNet.Core.Events.StreamStart>()">.</span><span data-toggle="tooltip" title="YamlDotNet.Core.IParser.Expect<YamlDotNet.Core.Events.StreamStart>()">Expect</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.Events.StreamStart">StreamStart</span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
-					<span class="keyword" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">var</span> <span id="frontMatter">frontMatter</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">deserializer</span>
-						<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<System.Collections.Generic.Dictionary<string, string>>(YamlDotNet.Core.IParser)">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<System.Collections.Generic.Dictionary<string, string>>(YamlDotNet.Core.IParser)">Deserialize</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">&gt;</span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="YamlDotNet.Core.Parser">parser</span><span class="punctuation">)</span><span class="punctuation">;</span>
-
-					<span class="keyword" data-toggle="tooltip" title="LiterateCS.Options">var</span> <span id="result">result</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">deserializer</span>
+</code></pre>
+<p>We skip the first document, which contains the front matter defaults.</p>
+<pre class="csharp"><code class="csharp">					<span data-toggle="tooltip" title="YamlDotNet.Core.Parser">parser</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Core.IParser.Expect<YamlDotNet.Core.Events.StreamStart>()">.</span><span data-toggle="tooltip" title="YamlDotNet.Core.IParser.Expect<YamlDotNet.Core.Events.StreamStart>()">Expect</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.Events.StreamStart">StreamStart</span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+					<span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">deserializer</span><span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<System.Collections.Generic.Dictionary<string, string>>(YamlDotNet.Core.IParser)">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<System.Collections.Generic.Dictionary<string, string>>(YamlDotNet.Core.IParser)">Deserialize</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="System.Collections.Generic.Dictionary<string, string>">Dictionary</span><span class="punctuation">&lt;</span><span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span><span class="punctuation">&gt;</span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="YamlDotNet.Core.Parser">parser</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>Then we can deserialize the default command line options.</p>
+<pre class="csharp"><code class="csharp">					<span class="keyword" data-toggle="tooltip" title="LiterateCS.Options">var</span> <span id="result">result</span> <span class="punctuation">=</span> <span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer">deserializer</span>
 						<span class="punctuation" data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<LiterateCS.Options>(YamlDotNet.Core.IParser)">.</span><span data-toggle="tooltip" title="YamlDotNet.Serialization.Deserializer.Deserialize<LiterateCS.Options>(YamlDotNet.Core.IParser)">Deserialize</span><span class="punctuation">&lt;</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Options"><a href="../LiterateCS/Options.html#LiterateCS.Options">Options</a></span><span class="punctuation">&gt;</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="YamlDotNet.Core.Parser">parser</span><span class="punctuation">)</span><span class="punctuation">;</span>
-
-					<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateCS.Options">result</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options">??</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options">new</span> <span class="typename"><a href="../LiterateCS/Options.html#LiterateCS.Options">Options</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code></pre>
+<p>If no settings could be found, we return an Option object initialized
+with application-level defaults.</p>
+<pre class="csharp"><code class="csharp">					<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateCS.Options">result</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options">??</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options">new</span> <span class="typename"><a href="../LiterateCS/Options.html#LiterateCS.Options">Options</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="punctuation">}</span>
 			<span class="punctuation">}</span>
 			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">SyntaxErrorException</span> e<span class="punctuation">)</span>

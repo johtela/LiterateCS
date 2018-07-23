@@ -29,8 +29,9 @@ input files are read. It is still possible to override properties on individual
 files, if you like.
 
 The format of the `defaults.yml` file is exactly the same as for the front 
-matter, except that you should not add the three hyphens `---` at the beginning 
-and at the end. These are not part of YAML syntax.
+matter including the three hyphens `---` at the beginning and the end. These 
+separate the [YAML documents](http://yaml.org/spec/1.2/spec.html#id2800132) 
+inside the file.
 
 ## Available Properties
 

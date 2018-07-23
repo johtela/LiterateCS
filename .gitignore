@@ -11,3 +11,4 @@ obj
 *.zip
 *.nupkg
 /buildlog.txt
+launchSettings.json
