@@ -88,14 +88,21 @@ namespace LiterateCS
 		{
 			var themeDll = !_options.ThemePath;
 			if (!File.Exists (themeDll))
-				throw new ArgumentException ("Could not find theme file in: " + themeDll);
+				throw new LiterateException (
+					"The specified theme assembly file was not found. " +
+					"Make sure that the theme path is correct.\n" + 
+					"By default themes reside under the application directory.",
+					themeDll, 
+					"https://johtela.github.io/LiterateCS/LiterateCS/Options.html#theme");
 			var assy = Assembly.LoadFile (themeDll);
 			var themeType = assy.GetTypes ().FirstOrDefault (t => 
 				t.IsSubclassOf (typeof (Theme.Theme)));
 			if (themeType == null)
-				throw new ArgumentException (
-					"Could not find Theme class from the assembly " +
-					_options.Theme);
+				throw new LiterateException (
+					"Could not find Theme class from the specified theme assembly.\n" +
+					"Make sure that you have a public class that there that inherits " +
+					"from LiterateCS.Theme.Theme", themeDll,
+					"https://johtela.github.io/LiterateCS/LiterateCS.Theme/Theme.html");
 			return (Theme.Theme)Activator.CreateInstance (themeType);
 		}
 		/*
@@ -226,8 +233,10 @@ namespace LiterateCS
 				*/
 				catch (YamlDotNet.Core.SyntaxErrorException e)
 				{
-					throw new InvalidOperationException (
-						"Error parsing front matter from: " + filePath, e);
+					throw new LiterateException (
+						"Invalid syntax in the front matter. Make sure that the YAML data " + 
+						"is defined according to the specification.",
+						filePath, "https://johtela.github.io/LiterateCS/FrontMatter.html",e);
 				}			
 			}
 			return result;

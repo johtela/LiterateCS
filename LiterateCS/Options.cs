@@ -21,6 +21,7 @@ namespace LiterateCS
 	using YamlDotNet.Core;
 	using YamlDotNet.Core.Events;
 	using YamlDotNet.Serialization;
+	using LiterateCS.Theme;
 
 	/*
 	## Output Format
@@ -334,10 +335,12 @@ namespace LiterateCS
 					return result ?? new Options ();
 				}
 			}
-			catch (SyntaxErrorException e)
+			catch (YamlException e)
 			{
-				throw new InvalidOperationException (
-					"Error parsing options from: " + DefaultsFile, e);
+				throw new LiterateException (
+					"Invalid syntax in the 'defaults.yml' file. Make sure that the YAML data " +
+					"is defined according to the specification.",
+					DefaultsFile, "http://yaml.org/", e);
 			}
 		}
 		/*

@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>LiterateException - LiterateCS</title>
+
+	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    
+
+
+
+<link rel="stylesheet" href="../bootstrap/css/readable/bootstrap.min.css" />
+<link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../sidebar/sidebar.min.css" />
+<link rel="stylesheet" href="../css/book.min.css" />
+<link rel="stylesheet" href="../syntax-highlight/solarized-light.min.css" />
+<link rel="stylesheet" href="../mermaid/mermaid.css" />
+
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">LiterateCS</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+					<li><a href="https://github.com/johtela/LiterateCS"><i class="fa fa-github" aria-hidden="true"></i> GitHub Repository</a></li>
+                    <li><a href="https://www.nuget.org/packages/LiterateCS/"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+                    <li><a href="../License.html">License</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 hidden-xs hidden-sm">
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>On This Page</h4>
+            </div>
+            <div id="header-menu" class="panel-body main-menu">
+                <ul></ul>
+            </div>
+        </div>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Table of Contents</h4>
+            </div>
+            <div class="panel-body main-menu">
+                <ul>
+	<li><a href="../index.html">Home</a></li>
+	<ul>
+	</ul>
+	<li><a href="../Introduction.html">Introduction</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Options.html">Command Line Options</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Program.html">Main Program</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/SplitPath.html">SplitPath Structure</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Weaver.html">Document Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/MdWeaver.html">Markdown Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlWeaver.html">HTML Weaver</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/TocManager.html">TOC Manager</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/BlockList.html">Source Blocks</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/Macro.html">Macros</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/BlockBuilder.html">Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlBlockBuilder.html">HTML Block Builder</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS/HtmlGenerator.html">HTML Generation</a></li>
+	<ul>
+	</ul>
+	<li>Themes</li>
+	<ul>
+<ul>
+	<li><a href="../LiterateCS.Theme/DirHelpers.html">Directory Utilities</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/Toc.html">Table of Contents Classes</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/PageParams.html">Page Parameters</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
+	<ul>
+	</ul>
+	<li><a href="../LiterateCS.Theme/LiterateException.html" class="selected">Reporting Errors</a></li>
+	<ul>
+	</ul>
+</ul>
+	</ul>
+	<li><a href="../FrontMatter.html">Front Matter</a></li>
+	<ul>
+	</ul>
+	<li><a href="../TableOfContents.html">Table of Contents File</a></li>
+	<ul>
+	</ul>
+	<li><a href="../TipsAndTricks.html">Tips &amp; Tricks</a></li>
+	<ul>
+	</ul>
+	<li><a href="../License.html">License</a></li>
+	<ul>
+	</ul>
+	<li><a href="../README.html">README</a></li>
+	<ul>
+	</ul>
+	<li><a href="../Installation.html">Installation</a></li>
+	<ul>
+	</ul>
+</ul>
+            </div>
+        </div>
+
+            </div>
+			<div class="col-md-9">
+				<ul class="pager">
+	<li class="previous"><a href="../LiterateCS.Theme/Theme.html">Previous: Theme Base Class</a></li>
+	<li class="next"><a href="../FrontMatter.html">Next: Front Matter</a></li>
+</ul>
+				<div id="static-content" class="markdown">
+					<h1 id="reporting-errors">Reporting Errors</h1>
+<p>There are several cases when an exception might be thrown because of invalid input
+data or some user-related error. For these cases, we define a custom Exception class.
+When thrown, it will be reported differently than the other &quot;unexpected&quot; exceptions
+caught in the main program. We try to give as much information as possible about the
+error, so that user knows how to fix the problem.</p>
+<pre class="csharp"><code class="csharp"><span class="keyword" id="LiterateCS.Theme">namespace</span> LiterateCS<span class="punctuation">.</span>Theme
+<span class="punctuation">{</span>
+	<span class="keyword">using</span> System<span class="punctuation">;</span>
+	<span class="keyword">using</span> System<span class="punctuation">.</span>Text<span class="punctuation">;</span>
+
+	<span class="keyword" id="LiterateCS.Theme.LiterateException">public</span> <span class="keyword">class</span> <span class="typename">LiterateException</span> <span class="punctuation">:</span> <span class="typename" data-toggle="tooltip" title="System.Exception">Exception</span>
+    <span class="punctuation">{</span>
+</code></pre>
+<p>The errors always refer to some file we are processing, so we can define it
+as a mandatory field of the exception.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span id="LiterateCS.Theme.LiterateException.FileName">FileName</span><span class="punctuation">;</span>
+</code></pre>
+<p>The other fields that we require are the actual error message, the link to
+the documentation that helps the user to understand what the application
+expects, and the inner exception which can be null. Inner exception explains
+the actual problem; the outer exception gives the context what the application
+was doing when it encountered the error.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.LiterateException.LiterateException(string, string, string, System.Exception)" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.LiterateException(string, string, string, System.Exception)">public</span> <span data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.LiterateException(string, string, string, System.Exception)">LiterateException</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> message<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> file<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> helpLink<span class="punctuation">,</span> 
+			<span class="typename" data-toggle="tooltip" title="System.Exception">Exception</span> innerException<span class="punctuation">)</span> <span class="punctuation" data-toggle="tooltip" title="void">:</span> <span class="keyword" data-toggle="tooltip" title="void">base</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">message</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="System.Exception">innerException</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/LiterateException.html#LiterateCS.Theme.LiterateException.FileName">FileName</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">file</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="string">HelpLink</span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span data-toggle="tooltip" title="string">helpLink</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+
+		<span class="keyword" id="LiterateCS.Theme.LiterateException.LiterateException(string, string, string)" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.LiterateException(string, string, string)">public</span> <span data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.LiterateException(string, string, string)">LiterateException</span> <span class="punctuation">(</span><span class="keyword" data-toggle="tooltip" title="string">string</span> message<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> file<span class="punctuation">,</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> helpLink<span class="punctuation">)</span>
+			<span class="punctuation" data-toggle="tooltip" title="void">:</span> <span class="keyword" data-toggle="tooltip" title="void">this</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">message</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">file</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">helpLink</span><span class="punctuation">,</span> <span class="keyword">null</span><span class="punctuation">)</span> <span class="punctuation">{</span> <span class="punctuation">}</span>
+</code></pre>
+<p>We format the fields of the exception to a readable layout by overriding the
+ToString method.</p>
+<pre class="csharp"><code class="csharp">		<span class="keyword" id="LiterateCS.Theme.LiterateException.ToString()" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.ToString()">public</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.ToString()">override</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> <span data-toggle="tooltip" title="LiterateCS.Theme.LiterateException.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span>
+		<span class="punctuation">{</span>
+			<span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">var</span> <span id="res">res</span> <span class="punctuation">=</span> <span class="keyword" data-toggle="tooltip" title="System.Text.StringBuilder">new</span> <span class="typename">StringBuilder</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">AppendFormat</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Error occurred while accessing file: {0}\n\n&quot;</span><span class="punctuation">,</span> 
+				<span data-toggle="tooltip" title="string"><a href="../LiterateCS.Theme/LiterateException.html#LiterateCS.Theme.LiterateException.FileName">FileName</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Description:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;------------&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">if</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">InnerException</span> <span class="punctuation" data-toggle="tooltip" title="bool">!=</span> <span class="keyword">null</span><span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine()">AppendLine</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Detailed Description:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;---------------------&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine(string)">AppendLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendLine()">AppendLine</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.AppendFormat(string, object)">AppendFormat</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;For more information see: {0}&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="string">HelpLink</span><span class="punctuation">)</span><span class="punctuation">;</span>
+			<span class="keyword">return</span> <span data-toggle="tooltip" title="System.Text.StringBuilder">res</span><span class="punctuation" data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">.</span><span data-toggle="tooltip" title="System.Text.StringBuilder.ToString()">ToString</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+		<span class="punctuation">}</span>
+	<span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+				</div>
+				<ul class="pager">
+	<li class="previous"><a href="../LiterateCS.Theme/Theme.html">Previous: Theme Base Class</a></li>
+	<li class="next"><a href="../FrontMatter.html">Next: Front Matter</a></li>
+</ul>
+			</div>
+        </div>
+    </div>
+    
+    <footer class="panel-footer text-center">
+        <div align="center">Copyright © 2018 Tommi Johtela</div>
+		<div align="right">
+			<small>
+				Documentation created with <a href="https://johtela.github.io/LiterateCS/">LiterateCS</a>.
+			</small>
+		</div>
+    </footer>
+
+
+    
+    <script src="../bootstrap/js/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../sidebar/sidebar.js"></script>
+    <script src="../syntax-highlight/syntax.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        extensions: ["jsMath2jax.js"]
+        });
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+	<script src="../mermaid/mermaid.min.js"></script>
+	<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>

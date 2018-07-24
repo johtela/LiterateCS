@@ -91,6 +91,7 @@ namespace LiterateCS
 		as usual.
 		*/
 		protected Options _options;
+		protected string _currentFile;
 
 		public BlockBuilder (Options options)
 			: base (SyntaxWalkerDepth.StructuredTrivia)
@@ -107,12 +108,14 @@ namespace LiterateCS
 		*/
 		public virtual BlockList FromCodeFile (string codeFile)
 		{
+			_currentFile = codeFile;
 			var tree = CSharpSyntaxTree.ParseText (File.ReadAllText (codeFile));
 			return CreateForTree (tree);
 		}
 
 		public virtual BlockList FromDocument (Document document)
 		{
+			_currentFile = document.FilePath;
 			var tree = document.GetSyntaxTreeAsync ().Result;
 			return CreateForTree (tree);
 		}
@@ -124,12 +127,14 @@ namespace LiterateCS
 		*/
 		public virtual BlockList FromMdFile (string mdFile)
 		{
+			_currentFile = mdFile;
 			var parts = _macroLine.Split (File.ReadAllText (mdFile));
 			foreach (var part in parts)
 			{
 				if (part.StartsWith ("<<") && part.EndsWith (">>"))
 				{
-					var macro = Macro.Get (part.Substring (2, part.Length - 4));
+					var macro = Macro.Get (
+						part.Substring (2, part.Length - 4), _currentFile);
 					foreach (var block in macro)
 						AddBlock (new BlockList (block));
 				}
@@ -386,7 +391,7 @@ namespace LiterateCS
 		{
 			_macros.Push (Macro.Add (
 				node.EndOfDirectiveToken.LeadingTrivia.First ().ToString (),
-				_newBlock, null));
+				_newBlock, null, _currentFile));
 		}
 		/*
 		When a region is closed, we close the macro as well by popping it off the stack. 

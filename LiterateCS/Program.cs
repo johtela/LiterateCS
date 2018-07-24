@@ -8,9 +8,11 @@ namespace LiterateCS
 {
 	using System;
 	using CommandLine;
+	using LiterateCS.Theme;
+
 	/* 
-	The main class is imaginatively named as `Program`. 
-	*/
+The main class is imaginatively named as `Program`. 
+*/
 	class Program
 	{
 		static int Main (string[] args)
@@ -40,16 +42,28 @@ namespace LiterateCS
 					.WithParsed (GenerateDocumentation);
 				return 0;
 			}
+			catch (LiterateException le)
+			{
+				/*
+				If some parameters are wrong, we get a LiterateException for those errors.
+				The exception can output itself cleanly by overriding the ToString method.
+				We exit with error code 1.
+				*/
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine (le);
+				Console.ResetColor ();
+				return 1;
+			}
 			catch (Exception e)
 			{
 				/*
-				If an exception is thrown during the process, its error message is 
-				outputted and the program is terminated with an error code.
+				If an unexpected exception is thrown during the process, its error message 
+				is outputted and the program is terminated with an error code 2.
 				*/
 				#region Main Error Handler
 
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine ("Fatal error in document generation:");
+				Console.WriteLine ("Unexpected error in document generation:");
 				Console.WriteLine (e.Message);
 				Console.ResetColor ();
 				Console.WriteLine (e.StackTrace);
@@ -59,7 +73,7 @@ namespace LiterateCS
 					Console.WriteLine (e.InnerException.Message);
 					Console.WriteLine (e.InnerException.StackTrace);
 				}
-				return 1;
+				return 2;
 				/*
 				_This code block is used as an example on how to embed code into
 				markdown files._

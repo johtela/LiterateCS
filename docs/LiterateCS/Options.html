@@ -123,6 +123,9 @@
 	<li><a href="../LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
 	<ul>
 	</ul>
+	<li><a href="../LiterateCS.Theme/LiterateException.html">Reporting Errors</a></li>
+	<ul>
+	</ul>
 </ul>
 	</ul>
 	<li><a href="../FrontMatter.html">Front Matter</a></li>
@@ -173,6 +176,7 @@ properties to the Option class.</p>
 	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>Core<span class="punctuation">;</span>
 	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>Core<span class="punctuation">.</span>Events<span class="punctuation">;</span>
 	<span class="keyword">using</span> YamlDotNet<span class="punctuation">.</span>Serialization<span class="punctuation">;</span>
+	<span class="keyword">using</span> LiterateCS<span class="punctuation">.</span>Theme<span class="punctuation">;</span>
 </code></pre>
 <h2 id="output-format">Output Format</h2>
 <p>The output format is either HTML or Markdown. The following enumeration is used to define
@@ -442,10 +446,12 @@ with application-level defaults.</p>
 <pre class="csharp"><code class="csharp">					<span class="keyword">return</span> <span data-toggle="tooltip" title="LiterateCS.Options">result</span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options">??</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options">new</span> <span class="typename"><a href="../LiterateCS/Options.html#LiterateCS.Options">Options</a></span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="punctuation">}</span>
 			<span class="punctuation">}</span>
-			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">SyntaxErrorException</span> e<span class="punctuation">)</span>
+			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Core.YamlException">YamlException</span> e<span class="punctuation">)</span>
 			<span class="punctuation">{</span>
-				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="System.InvalidOperationException">new</span> <span class="typename">InvalidOperationException</span> <span class="punctuation">(</span>
-					<span class="string" data-toggle="tooltip" title="string">&quot;Error parsing options from: &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> <span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.DefaultsFile">DefaultsFile</a></span><span class="punctuation">,</span> <span data-toggle="tooltip" title="YamlDotNet.Core.SyntaxErrorException">e</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">throw</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException">new</span> <span class="typename"><a href="../LiterateCS.Theme/LiterateException.html#LiterateCS.Theme.LiterateException">LiterateException</a></span> <span class="punctuation">(</span>
+					<span class="string" data-toggle="tooltip" title="string">&quot;Invalid syntax in the &#39;defaults.yml&#39; file. Make sure that the YAML data &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span>
+					<span class="string" data-toggle="tooltip" title="string">&quot;is defined according to the specification.&quot;</span><span class="punctuation">,</span>
+					<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.DefaultsFile">DefaultsFile</a></span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;http://yaml.org/&quot;</span><span class="punctuation">,</span> <span data-toggle="tooltip" title="YamlDotNet.Core.YamlException">e</span><span class="punctuation">)</span><span class="punctuation">;</span>
 			<span class="punctuation">}</span>
 		<span class="punctuation">}</span>
 </code></pre>

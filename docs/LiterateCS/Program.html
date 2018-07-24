@@ -123,6 +123,9 @@
 	<li><a href="../LiterateCS.Theme/Theme.html">Theme Base Class</a></li>
 	<ul>
 	</ul>
+	<li><a href="../LiterateCS.Theme/LiterateException.html">Reporting Errors</a></li>
+	<ul>
+	</ul>
 </ul>
 	</ul>
 	<li><a href="../FrontMatter.html">Front Matter</a></li>
@@ -161,6 +164,7 @@
 <span class="punctuation">{</span>
 	<span class="keyword">using</span> System<span class="punctuation">;</span>
 	<span class="keyword">using</span> CommandLine<span class="punctuation">;</span>
+	<span class="keyword">using</span> LiterateCS<span class="punctuation">.</span>Theme<span class="punctuation">;</span>
 </code></pre>
 <p>The main class is imaginatively named as <code>Program</code>.</p>
 <pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateCS.Program">class</span> <span class="typename">Program</span>
@@ -189,13 +193,24 @@ automatically after which we terminate the program with exit code 0.</p>
 					<span class="punctuation" data-toggle="tooltip" title="CommandLine.ParserResult<LiterateCS.Options>.WithParsed<LiterateCS.Options>(System.Action<LiterateCS.Options>)">.</span><span data-toggle="tooltip" title="CommandLine.ParserResult<LiterateCS.Options>.WithParsed<LiterateCS.Options>(System.Action<LiterateCS.Options>)">WithParsed</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)"><a href="../LiterateCS/Program.html#LiterateCS.Program.GenerateDocumentation(LiterateCS.Options)">GenerateDocumentation</a></span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="keyword">return</span> <span class="number" data-toggle="tooltip" title="int">0</span><span class="punctuation">;</span>
 			<span class="punctuation">}</span>
+			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="LiterateCS.Theme.LiterateException"><a href="../LiterateCS.Theme/LiterateException.html#LiterateCS.Theme.LiterateException">LiterateException</a></span> le<span class="punctuation">)</span>
+			<span class="punctuation">{</span>
+</code></pre>
+<p>If some parameters are wrong, we get a LiterateException for those errors.
+The exception can output itself cleanly by overriding the ToString method.
+We exit with error code 1.</p>
+<pre class="csharp"><code class="csharp">				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">ForegroundColor</span> <span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">=</span> <span class="typename" data-toggle="tooltip" title="System.ConsoleColor">ConsoleColor</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">Red</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(object)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(object)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="LiterateCS.Theme.LiterateException">le</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.ResetColor()">.</span><span data-toggle="tooltip" title="System.Console.ResetColor()">ResetColor</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="keyword">return</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">;</span>
+			<span class="punctuation">}</span>
 			<span class="keyword">catch</span> <span class="punctuation">(</span><span class="typename" data-toggle="tooltip" title="System.Exception">Exception</span> e<span class="punctuation">)</span>
 			<span class="punctuation">{</span>
 </code></pre>
-<p>If an exception is thrown during the process, its error message is
-outputted and the program is terminated with an error code.</p>
+<p>If an unexpected exception is thrown during the process, its error message
+is outputted and the program is terminated with an error code 2.</p>
 <pre class="csharp"><code class="csharp">				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">ForegroundColor</span> <span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">=</span> <span class="typename" data-toggle="tooltip" title="System.ConsoleColor">ConsoleColor</span><span class="punctuation" data-toggle="tooltip" title="System.ConsoleColor">.</span><span data-toggle="tooltip" title="System.ConsoleColor">Red</span><span class="punctuation">;</span>
-				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Fatal error in document generation:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
+				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Unexpected error in document generation:&quot;</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.ResetColor()">.</span><span data-toggle="tooltip" title="System.Console.ResetColor()">ResetColor</span> <span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">StackTrace</span><span class="punctuation">)</span><span class="punctuation">;</span>
@@ -205,7 +220,7 @@ outputted and the program is terminated with an error code.</p>
 					<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">Message</span><span class="punctuation">)</span><span class="punctuation">;</span>
 					<span class="typename" data-toggle="tooltip" title="System.Console">Console</span><span class="punctuation" data-toggle="tooltip" title="System.Console.WriteLine(string)">.</span><span data-toggle="tooltip" title="System.Console.WriteLine(string)">WriteLine</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="System.Exception">e</span><span class="punctuation" data-toggle="tooltip" title="System.Exception">.</span><span data-toggle="tooltip" title="System.Exception">InnerException</span><span class="punctuation" data-toggle="tooltip" title="string">.</span><span data-toggle="tooltip" title="string">StackTrace</span><span class="punctuation">)</span><span class="punctuation">;</span>
 				<span class="punctuation">}</span>
-				<span class="keyword">return</span> <span class="number" data-toggle="tooltip" title="int">1</span><span class="punctuation">;</span>
+				<span class="keyword">return</span> <span class="number" data-toggle="tooltip" title="int">2</span><span class="punctuation">;</span>
 </code></pre>
 <p><em>This code block is used as an example on how to embed code into
 markdown files.</em></p>

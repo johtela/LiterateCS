@@ -13,6 +13,7 @@ the blocks belonging to a macro.
 */
 namespace LiterateCS
 {
+	using LiterateCS.Theme;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace LiterateCS
 		public string Name { get; private set; }
 		public BlockList Start { get; set; }
 		public BlockList End { get; set; }
+		public string DefinedInFile { get; set; }
 		/*
 		Macros are stored in a static dictionary, whose keys are macro names.
 		*/
@@ -40,11 +42,13 @@ namespace LiterateCS
 		The constructor is private. Macros should be created with the static 
 		`Add` method.
 		*/
-		private Macro (string name, BlockList start, BlockList end)
+		private Macro (string name, BlockList start, BlockList end, 
+			string definedInFile)
 		{
 			Name = name;
 			Start = start;
 			End = end;
+			DefinedInFile = definedInFile;
 		}
 		/* 
 		## IEnumerable Implementation
@@ -67,13 +71,17 @@ namespace LiterateCS
 		The `Add` method is used to create a new macro. The method throws an
 		exception if a macro with the given name is already registered.
 		*/
-		public static Macro Add (string name, BlockList start, BlockList end)
+		public static Macro Add (string name, BlockList start, BlockList end,
+			string definedInFile)
 		{
 			name = name.Trim ();
-			if (_macros.ContainsKey (name))
-				throw new ArgumentException (string.Format (
-					"Macro '{0}' already exists.", name));
-			var result = new Macro (name, start, end);
+			if (_macros.TryGetValue (name, out var macro))
+				throw new LiterateException (
+					string.Format ("Macro '{0}' is already defined in file: {1}\n" + 
+					"You cannot have two macros/regions with the same name.", name, 
+					macro.DefinedInFile), definedInFile, 
+					"https://johtela.github.io/LiterateCS/LiterateCS/Macro.html");
+			var result = new Macro (name, start, end, definedInFile);
 			_macros.Add (name, result);
 			return result;
 		}
@@ -82,12 +90,15 @@ namespace LiterateCS
 		The `Get` method is used to find and return a macro. It throws
 		an exception, if a macro with the given name is not found.
 		*/
-		public static Macro Get (string name)
+		public static Macro Get (string name, string usedInFile)
 		{
 			name = name.Trim ();
 			if (!_macros.ContainsKey (name))
-				throw new ArgumentException (string.Format (
-					"Macro '{0}' not found.", name));
+				throw new LiterateException (string.Format (
+					"Macro '{0}' is not defined. " +
+					"Make sure you have a region with that name defined in your source\n" +
+					"file and that you have included it in the input filters.", name), 
+					usedInFile, "https://johtela.github.io/LiterateCS/LiterateCS/Macro.html");
 			return _macros[name];
 		}
 	}

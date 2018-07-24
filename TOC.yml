@@ -76,6 +76,10 @@
         file: LiterateCS.Theme\Theme.cs
         desc: Base class for themes to inherit from.
 
+      - page: Reporting Errors
+        file: LiterateCS.Theme\LiterateException.cs
+        desc: Exception class for "expected" user errors.
+
   - page: Front Matter
     file: FrontMatter.md
     desc: Defining document metadata.

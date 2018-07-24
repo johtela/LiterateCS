@@ -50,9 +50,7 @@ namespace LiterateCS
 		*/
 		public TocManager (Toc toc, string filename)
 		{
-			if (toc == null)
-				throw new ArgumentNullException (nameof (toc));
-			_toc = toc;
+			_toc = toc ?? throw new ArgumentNullException (nameof (toc));
 			_filename = filename;
 			_addedSections = new List<Section> ();
 		}
@@ -91,14 +89,9 @@ namespace LiterateCS
 			*/
 			catch (Exception e)
 			{
-				var errorMsg = new StringBuilder ();
-				errorMsg.AppendFormat ("Error while loading TOC file '{0}'\n", 
-					yamlFile);
-				errorMsg.AppendLine ("Error detail:");
-				errorMsg.AppendLine (e.Message);
-				if (e.InnerException != null)
-					errorMsg.AppendLine (e.InnerException.Message);
-				throw new InvalidOperationException (errorMsg.ToString ());
+				throw new LiterateException ("Could not load TOC file. " +
+					"Make sure that its format is correct", yamlFile,
+					"https://johtela.github.io/LiterateCS/TableOfContents.html", e);
 			}
 		}
 		/*
