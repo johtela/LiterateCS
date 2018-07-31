@@ -186,8 +186,9 @@ the possible options.</p>
 <h2 id="available-options">Available Options</h2>
 <p>The Option class defines the available command line options as properties. These properties
 are decorated by attributes that specify the short and long format of the option, whether
-the option is mandatory or not, its default value, and the associated help text. The type
-of the option (boolean, string, enumeration, etc.) is inferred from the type of the property.</p>
+the option is mandatory or not, and the associated help text. Also, the name of the option
+in a YAML file is specified. The type of an option (boolean, string, enumeration, etc.)
+is inferred from the type of the associated property.</p>
 <pre class="csharp"><code class="csharp">	<span class="keyword" id="LiterateCS.Options">public</span> <span class="keyword">class</span> <span class="typename">Options</span>
 	<span class="punctuation">{</span>
 </code></pre>
@@ -296,18 +297,6 @@ specified, <code>.md</code> is assumed to be the extension.</p>
 		<span class="string" data-toggle="tooltip" title="string">&quot;in the input folder. The default is &#39;.md&#39;&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
 		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Serialization.YamlMemberAttribute">YamlMember</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">Alias</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;mdext&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
 		<span class="keyword" id="LiterateCS.Options.MarkdownExt">public</span> <span class="keyword" data-toggle="tooltip" title="string">string</span> MarkdownExt <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options.MarkdownExt.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.MarkdownExt.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options.MarkdownExt.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.MarkdownExt.set">;</span> <span class="punctuation">}</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;.md&quot;</span><span class="punctuation">;</span>
-</code></pre>
-<h3 id="include-subfolders">Include Subfolders</h3>
-<p>If you want the tool to scan also the subfolder of the input folder, you can give
-the <code>-r</code> option. When given, LiterateCS will traverse the input folder recursively
-and process all the files matching the filters, regardless of how deep in the folder
-hierarchy they reside. When using a solution as an input, this option applies only
-to markdown files.</p>
-<pre class="csharp"><code class="csharp">		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="CommandLine.OptionAttribute">Option</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="char">&#39;r&#39;</span><span class="punctuation">,</span> <span class="string" data-toggle="tooltip" title="string">&quot;recursive&quot;</span><span class="punctuation">,</span> 
-		<span data-toggle="tooltip" title="string">HelpText</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;Searches also the subfolders of the input folder for the files to &quot;</span> <span class="punctuation" data-toggle="tooltip" title="string">+</span> 
-		<span class="string" data-toggle="tooltip" title="string">&quot;be processed.&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
-		<span class="punctuation">[</span><span class="typename" data-toggle="tooltip" title="YamlDotNet.Serialization.YamlMemberAttribute">YamlMember</span> <span class="punctuation">(</span><span data-toggle="tooltip" title="string">Alias</span> <span class="punctuation">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;recursive&quot;</span><span class="punctuation">)</span><span class="punctuation">]</span>
-		<span class="keyword" id="LiterateCS.Options.Recursive">public</span> <span class="keyword" data-toggle="tooltip" title="bool">bool</span> Recursive <span class="punctuation">{</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options.Recursive.get">get</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.Recursive.get">;</span> <span class="keyword" data-toggle="tooltip" title="LiterateCS.Options.Recursive.set">set</span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.Options.Recursive.set">;</span> <span class="punctuation">}</span>
 </code></pre>
 <h3 id="output-format">Output Format</h3>
 <p>Output format is specified by the <code>-f</code> option. Only valid values are <code>md</code> for markdown
@@ -504,15 +493,12 @@ outputted whenever there are errors in the command line, or when the
 <p>The example below scans the subfolder &quot;src&quot; for C# files, and the root folder
 for markdown files. It produces HTML and outputs information to console for
 each processed file (verbose option).</p>
-<p><strong>Note 1:</strong> If you use the <code>-i</code> switch to specify the input folder, and you want
-to process any subfolders under it, you must include the <code>-r</code> option to recursively
-scan them. Specifying the subfolder in the filters is not enough.</p>
-<p><strong>Note 2:</strong> Since we are just reading individual files C# files inside a directory
+<p><strong>Note:</strong> Since we are just reading individual files C# files inside a directory
 and do not provide a solution file, LiterateCS cannot use Roslyn to compile the
 code and produce semantic information. So, the syntax highlighting is limited
 to basic tokens, and the links and type information is not available in the
 produced HTML files.</p>
-<pre><code>literatecs src\*.cs *.md -i &lt;root&gt; -o docs -f html -rtv
+<pre><code>literatecs src\*.cs *.md -i &lt;root&gt; -o docs -f html -tv
 </code></pre>
 <pre class="csharp"><code class="csharp">				<span class="keyword" data-toggle="tooltip" title="CommandLine.Text.Example">new</span> <span class="typename">Example</span> <span class="punctuation">(</span><span class="string" data-toggle="tooltip" title="string">&quot;Create HTML documentation from files in a directory&quot;</span><span class="punctuation">,</span>
 					<span class="keyword" data-toggle="tooltip" title="CommandLine.UnParserSettings">new</span> <span class="typename">UnParserSettings</span>
@@ -526,7 +512,6 @@ produced HTML files.</p>
 						<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.InputFolder">InputFolder</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;&lt;root&gt;&quot;</span><span class="punctuation">,</span>
 						<span data-toggle="tooltip" title="string"><a href="../LiterateCS/Options.html#LiterateCS.Options.OutputFolder">OutputFolder</a></span> <span class="punctuation" data-toggle="tooltip" title="string">=</span> <span class="string" data-toggle="tooltip" title="string">&quot;docs&quot;</span><span class="punctuation">,</span>
 						<span data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.Options.Format">Format</a></span> <span class="punctuation" data-toggle="tooltip" title="LiterateCS.OutputFormat">=</span> <span class="typename" data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.OutputFormat">OutputFormat</a></span><span class="punctuation" data-toggle="tooltip" title="LiterateCS.OutputFormat">.</span><span data-toggle="tooltip" title="LiterateCS.OutputFormat"><a href="../LiterateCS/Options.html#LiterateCS.OutputFormat.html">html</a></span><span class="punctuation">,</span>
-						<span data-toggle="tooltip" title="bool"><a href="../LiterateCS/Options.html#LiterateCS.Options.Recursive">Recursive</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">=</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">,</span>
 						<span data-toggle="tooltip" title="bool"><a href="../LiterateCS/Options.html#LiterateCS.Options.Trim">Trim</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">=</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span><span class="punctuation">,</span>
 						<span data-toggle="tooltip" title="bool"><a href="../LiterateCS/Options.html#LiterateCS.Options.Verbose">Verbose</a></span> <span class="punctuation" data-toggle="tooltip" title="bool">=</span> <span class="keyword" data-toggle="tooltip" title="bool">true</span>
 					<span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">,</span>

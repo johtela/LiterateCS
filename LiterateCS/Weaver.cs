@@ -147,8 +147,7 @@ namespace LiterateCS
 		protected IEnumerable<SplitPath> InputFiles ()
 		{
 			var filtRegexes = FilterRegexes ();
-			return from file in DirHelpers.Dir (_options.InputPath.BasePath, "*",
-						_options.Recursive)
+			return from file in DirHelpers.Dir (_options.InputPath.BasePath, "*", true)
 				   let relPath = SplitPath.Split (_options.InputPath.BasePath, file)
 				   where filtRegexes.Any (re => re.IsMatch (relPath.FilePath))
 				   select relPath;

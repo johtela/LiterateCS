@@ -34,8 +34,9 @@ namespace LiterateCS
 	## Available Options
 	The Option class defines the available command line options as properties. These properties 
 	are decorated by attributes that specify the short and long format of the option, whether 
-	the option is mandatory or not, its default value, and the associated help text. The type 
-	of the option (boolean, string, enumeration, etc.) is inferred from the type of the property.
+	the option is mandatory or not, and the associated help text. Also, the name of the option
+	in a YAML file is specified. The type of an option (boolean, string, enumeration, etc.) 
+	is inferred from the type of the associated property.
 	*/
 	public class Options
 	{
@@ -160,20 +161,6 @@ namespace LiterateCS
 		"in the input folder. The default is '.md'")]
 		[YamlMember (Alias = "mdext")]
 		public string MarkdownExt { get; set; } = ".md";
-
-		/*
-		### Include Subfolders
-		If you want the tool to scan also the subfolder of the input folder, you can give 
-		the `-r` option. When given, LiterateCS will traverse the input folder recursively 
-		and process all the files matching the filters, regardless of how deep in the folder 
-		hierarchy they reside. When using a solution as an input, this option applies only
-		to markdown files.
-		*/
-		[Option ('r', "recursive", 
-		HelpText = "Searches also the subfolders of the input folder for the files to " + 
-		"be processed.")]
-		[YamlMember (Alias = "recursive")]
-		public bool Recursive { get; set; }
 
 		/*
 		### Output Format
@@ -398,17 +385,13 @@ namespace LiterateCS
 				for markdown files. It produces HTML and outputs information to console for
 				each processed file (verbose option).
 
-				**Note 1:** If you use the `-i` switch to specify the input folder, and you want 
-				to process any subfolders under it, you must include the `-r` option to recursively 
-				scan them. Specifying the subfolder in the filters is not enough.
-
-				**Note 2:** Since we are just reading individual files C# files inside a directory
+				**Note:** Since we are just reading individual files C# files inside a directory
 				and do not provide a solution file, LiterateCS cannot use Roslyn to compile the
 				code and produce semantic information. So, the syntax highlighting is limited
 				to basic tokens, and the links and type information is not available in the 
 				produced HTML files.
 				```
-				literatecs src\*.cs *.md -i <root> -o docs -f html -rtv
+				literatecs src\*.cs *.md -i <root> -o docs -f html -tv
 				```
 				*/
 				new Example ("Create HTML documentation from files in a directory",
@@ -423,7 +406,6 @@ namespace LiterateCS
 						InputFolder = "<root>",
 						OutputFolder = "docs",
 						Format = OutputFormat.html,
-						Recursive = true,
 						Trim = true,
 						Verbose = true
 					}),
