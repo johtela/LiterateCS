@@ -39,6 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{FF4955
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultTheme", "DefaultTheme\DefaultTheme.csproj", "{001FF036-7669-44BB-BB78-40B62D937916}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{71C3B716-355A-42D7-A547-F9FAAE78FE18}"
+	ProjectSection(SolutionItems) = preProject
+		Templates\LiterateCS.Templates.LiterateLib.CSharp.nuspec = Templates\LiterateCS.Templates.LiterateLib.CSharp.nuspec
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiterateLib", "Templates\content\LiterateLib.csproj", "{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,12 +64,17 @@ Global
 		{001FF036-7669-44BB-BB78-40B62D937916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{001FF036-7669-44BB-BB78-40B62D937916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{001FF036-7669-44BB-BB78-40B62D937916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FF495549-4370-4B02-8DDE-E427229E7E74} = {6BE0685D-E844-4BDF-82C8-8A276D753D50}
+		{BA3A71F2-5E7C-4911-9C1F-3E088401A2EF} = {71C3B716-355A-42D7-A547-F9FAAE78FE18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BCDA963-6159-43CD-BCFF-FF24FDA22064}
