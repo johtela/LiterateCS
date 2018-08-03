@@ -203,11 +203,15 @@ namespace LiterateCS
 					{
 						LogWriter = logwriter
 					});
-				ConsoleOut ("Building solution...");
-				var solution = amanager.GetWorkspace ().CurrentSolution;
+				foreach (var proj in amanager.Projects)
+				{
+					proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
+					ConsoleOut ("Building project {0}", proj.Key);
+					proj.Value.Build ();
+				}
 				if (_options.BuildLog != null)
 					ConsoleOut ("Build log written to {0}", _options.BuildLog);
-				return solution;
+				return amanager.GetWorkspace ().CurrentSolution;
 			}
 		}
 		/*
