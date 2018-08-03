@@ -61,7 +61,7 @@ below. The columns indicate if a parameter is supported by a specific template.
 | License               |     *     |     *    |
 | Footer                |     *     |     *    |
 | MarkdownStyle         |     *     |          |
-| ShowDescriptionInToc  |     *     |          |
+| ShowDescriptionsInToc |     *     |          |
 | SyntaxHighlight       |     *     |          |
 | UseDiagrams           |     *     |          |
 | DiagramStyle          |     *     |          |
@@ -127,7 +127,7 @@ The available styles in the default theme are:
 * **modern** - Uses the Lucida font family.
 * **plain** - Simplistic style with sans serif fonts.
 
-### `ShowDescriptionInToc` (true/false)
+### `ShowDescriptionsInToc` (true/false)
 
 Control whether the description of a page is shown along with the page 
 title in the table of contents shown in the side bar. Off by default.
