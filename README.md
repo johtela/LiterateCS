@@ -29,6 +29,46 @@ Other examples of documentation created with LiterateCS can be found at:
 * <https://johtela.github.io/ExtensionCord/>
 * <https://johtela.github.io/LinqCheck/>
 
+## Quickstart
+
+To create your first literate program install first the `literatecs` tool
+with command line:
+
+    > dotnet tool install -g literatecs
+
+Then install the project template.
+
+    > dotnet new -i LiterateCS.Templates.LiterateLib.CSharp
+
+After that create a new directory and the project skeleton.
+
+    > mkdir MyLiteratePony
+    > cd MyLiteratePony
+    > dotnet new literatelib
+
+You should now have files for your class library created. You can
+build the project with.
+
+    > dotnet build
+
+To check what you got, you can open your project in [Visual Studio Code]
+(this step is optional).
+
+    > code .
+
+You should see the following project structure.
+
+![...VSCode screenshot...](docs/images/LiterateLibInVSCode.png)
+
+Finally you can create the documentation from your project with:
+
+    > literatecs
+
+To see the generated documentation open the `docs/index.html` page in a web browser.
+
+![...Generated docs in browser...](docs/images/DocsForLiterateLib.png)
+
+
 ## Download and Installation
 
 The project was initially written for .NET Framework, but I recently
@@ -49,6 +89,7 @@ If you want to contribute to the development, let me know. All help is appreciat
 [wiki]: https://help.github.com/articles/about-github-wikis/
 [xmldoc comments]: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/xml-documentation-comments
 [GitHub Pages]: https://pages.github.com/
+[Visual Studio Code]: https://code.visualstudio.com/
 [.NET Core 2.1]: https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300
 [.NET Core global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 [installation instructions]: https://johtela.github.io/LiterateCS/Installation.html

@@ -183,6 +183,34 @@ documentation created from this project. It can be found at:</p>
 <li><a href="https://johtela.github.io/ExtensionCord/">https://johtela.github.io/ExtensionCord/</a></li>
 <li><a href="https://johtela.github.io/LinqCheck/">https://johtela.github.io/LinqCheck/</a></li>
 </ul>
+<h2 id="quickstart">Quickstart</h2>
+<p>To create your first literate program install first the <code>literatecs</code> tool
+with command line:</p>
+<pre><code>&gt; dotnet tool install -g literatecs
+</code></pre>
+<p>Then install the project template.</p>
+<pre><code>&gt; dotnet new -i LiterateCS.Templates.LiterateLib.CSharp
+</code></pre>
+<p>After that create a new directory and the project skeleton.</p>
+<pre><code>&gt; mkdir MyLiteratePony
+&gt; cd MyLiteratePony
+&gt; dotnet new literatelib
+</code></pre>
+<p>You should now have files for your class library created. You can
+build the project with.</p>
+<pre><code>&gt; dotnet build
+</code></pre>
+<p>To check what you got, you can open your project in <a href="https://code.visualstudio.com/">Visual Studio Code</a>
+(this step is optional).</p>
+<pre><code>&gt; code .
+</code></pre>
+<p>You should see the following project structure.</p>
+<p><img src="docs/images/LiterateLibInVSCode.png" alt="...VSCode screenshot..." /></p>
+<p>Finally you can create the documentation from your project with:</p>
+<pre><code>&gt; literatecs
+</code></pre>
+<p>To see the generated documentation open the <code>docs/index.html</code> page in a web browser.</p>
+<p><img src="docs/images/DocsForLiterateLib.png" alt="...Generated docs in browser..." /></p>
 <h2 id="download-and-installation">Download and Installation</h2>
 <p>The project was initially written for .NET Framework, but I recently
 modified it to target <a href="https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300">.NET Core 2.1</a>. It is available in <a href="https://nuget.org">https://nuget.org</a>

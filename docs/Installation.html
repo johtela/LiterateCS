@@ -169,18 +169,18 @@ newer</strong> installed. If you don't have it already, you can dowload it from
 <h2 id="installing">Installing</h2>
 <p>To install LiterateCS, open a command prompt (PowerShell or classic version) and
 type:</p>
-<pre><code>dotnet tool install -g literatecs
+<pre><code>&gt; dotnet tool install -g literatecs
 </code></pre>
 <p>This downloads the tool from <a href="https://nuget.org">nuget.org</a> and installs it in the folder
 <code>$HOME/.dotnet/tools/.store/literatecs</code> by default. It also creates an executable
 into <code>$HOME/.dotnet/tools</code> that should be already in your search path.</p>
 <p>To verify that LiterateCS is correctly installed you can type:</p>
-<pre><code>literatecs
+<pre><code>&gt; literatecs
 </code></pre>
 <p>without any arguments. This should print the help screen showing the available
 command line options.</p>
 <p>To see what other global tools you have installed, you can run:</p>
-<pre><code>dotnet tool list -g
+<pre><code>&gt; dotnet tool list -g
 </code></pre>
 <p>This shows you all the currently installed .NET core global tools.</p>
 <p><strong>Note</strong>: Contrary to what the name &quot;global tools&quot; suggests, they are actually
@@ -188,12 +188,12 @@ user-specific. They are not visible to other users of the computer. This is
 obvious when you know that the installation directory is under the home directory.</p>
 <h2 id="uninstalling">Uninstalling</h2>
 <p>Uninstallation is easy. Just type:</p>
-<pre><code>dotnet tool uninstall -g literatecs
+<pre><code>&gt; dotnet tool uninstall -g literatecs
 </code></pre>
 <p>This removes all the files previously installed.</p>
 <h2 id="updating">Updating</h2>
 <p>Updating to a new version is also a simple matter:</p>
-<pre><code>dotnet tool update -g literatecs
+<pre><code>&gt; dotnet tool update -g literatecs
 </code></pre>
 <p>This checks for the newer version of the tool in <a href="https://nuget.org">Nuget</a> repository and if one is
 found, downloads and installs it.</p>

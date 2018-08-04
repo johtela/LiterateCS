@@ -33,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{FF4955
 		docs\images\FrontMatter.png = docs\images\FrontMatter.png
 		docs\images\GitHubPages.png = docs\images\GitHubPages.png
 		docs\images\jumbotron.jpg = docs\images\jumbotron.jpg
+		docs\images\LiterateLibInVSCode.png = docs\images\LiterateLibInVSCode.png
 		docs\images\LPFlow.png = docs\images\LPFlow.png
 		docs\images\Navigation.png = docs\images\Navigation.png
 	EndProjectSection
