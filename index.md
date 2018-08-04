@@ -101,7 +101,7 @@ It is distributed as a [NuGet] package and is installed as a [global tool]. Inst
 instructions can be found [here](Installation.html). You can also clone the [source repository] 
 and build the tool from the sources.
 
-<a class="btn btn-default" href="https://github.com/johtela/LiterateProgramming/releases" role="button">Download &raquo;</a>
+<a class="btn btn-default" href="https://www.nuget.org/packages/LiterateCS/" role="button">Download &raquo;</a>
 </div>
 </div>
 
@@ -114,4 +114,4 @@ and build the tool from the sources.
 [.NET Core]: https://www.microsoft.com/net/learn/get-started/
 [global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 [Nuget]: https://www.nuget.org/
-[source repository]: https://github.com/johtela/LiterateProgramming
+[source repository]: https://github.com/johtela/LiterateCS
