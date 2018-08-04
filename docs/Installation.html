@@ -175,10 +175,9 @@ type:</p>
 <code>$HOME/.dotnet/tools/.store/literatecs</code> by default. It also creates an executable
 into <code>$HOME/.dotnet/tools</code> that should be already in your search path.</p>
 <p>To verify that LiterateCS is correctly installed you can type:</p>
-<pre><code>&gt; literatecs
+<pre><code>&gt; literatecs --help
 </code></pre>
-<p>without any arguments. This should print the help screen showing the available
-command line options.</p>
+<p>This should print the help screen showing the available command line options.</p>
 <p>To see what other global tools you have installed, you can run:</p>
 <pre><code>&gt; dotnet tool list -g
 </code></pre>
@@ -197,6 +196,18 @@ obvious when you know that the installation directory is under the home director
 </code></pre>
 <p>This checks for the newer version of the tool in <a href="https://nuget.org">Nuget</a> repository and if one is
 found, downloads and installs it.</p>
+<h2 id="installing-project-template">Installing Project Template</h2>
+<p>Optionally, you can also install the <a href="https://github.com/johtela/LiterateCS.Templates">project template</a> for creating C# projects that
+readily contain the metadata used by LiterateCS. To install the project template
+use the following command:</p>
+<pre><code>&gt; dotnet new -i LiterateCS.Templates.LiterateLib.CSharp
+</code></pre>
+<p>After that you can create a new literate project with:</p>
+<pre><code>&gt; dotnet new literatelib
+</code></pre>
+<p>If you don't like the project template, you can uninstall with the <code>-u</code> option.</p>
+<pre><code>&gt; dotnet new -u LiterateCS.Templates.LiterateLib.CSharp
+</code></pre>
 
 				</div>
 				<ul class="pager">

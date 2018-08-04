@@ -98,8 +98,8 @@ a single option in the project settings. Just generate your documentation under 
 
 The tool targets the [.NET Core] framework, so it works on Windows, Mac, and Linux.
 It is distributed as a [NuGet] package and is installed as a [global tool]. Installation
-instructions can be found in... . You can also clone the [source repository] and build the 
-tool from the sources.
+instructions can be found [here](Installation.html). You can also clone the [source repository] 
+and build the tool from the sources.
 
 <a class="btn btn-default" href="https://github.com/johtela/LiterateProgramming/releases" role="button">Download &raquo;</a>
 </div>

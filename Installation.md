@@ -24,10 +24,9 @@ into `$HOME/.dotnet/tools` that should be already in your search path.
 
 To verify that LiterateCS is correctly installed you can type:
 
-    > literatecs
+    > literatecs --help
 
-without any arguments. This should print the help screen showing the available 
-command line options.
+This should print the help screen showing the available command line options.
 
 To see what other global tools you have installed, you can run:
 
@@ -56,6 +55,23 @@ Updating to a new version is also a simple matter:
 This checks for the newer version of the tool in [Nuget] repository and if one is 
 found, downloads and installs it.
 
+## Installing Project Template
+
+Optionally, you can also install the [project template] for creating C# projects that
+readily contain the metadata used by LiterateCS. To install the project template
+use the following command:
+
+    > dotnet new -i LiterateCS.Templates.LiterateLib.CSharp
+
+After that you can create a new literate project with:
+
+    > dotnet new literatelib
+
+If you don't like the project template, you can uninstall with the `-u` option.
+
+    > dotnet new -u LiterateCS.Templates.LiterateLib.CSharp
+
 [.NET Core 2.1]: https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300
 [Nuget]: https://nuget.org
 [.NET Core global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+[project template]: https://github.com/johtela/LiterateCS.Templates
