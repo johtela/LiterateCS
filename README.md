@@ -5,7 +5,7 @@
 
 LiterateCS is a [Literate Programming] tool that produces clear, 
 professional-looking documentation automatically from your C# projects. 
-It parses your C# code files and extracts [markdown] documentation from
+It parses C# code files and extracts [markdown] documentation from
 comments. Alternatively you can write your documentation in separate 
 markdown files and interleave pieces of code in them by referring to 
 C# regions. LiterateCS can then create either a simple markdown output 
