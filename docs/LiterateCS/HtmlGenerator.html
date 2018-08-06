@@ -11,11 +11,7 @@
     <title>HtmlGenerator - LiterateCS</title>
 
 	<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    
-
-
-
-<link rel="stylesheet" href="../bootstrap/css/readable/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bootstrap/css/readable/bootstrap.min.css" />
 <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../sidebar/sidebar.min.css" />
 <link rel="stylesheet" href="../css/book.min.css" />
@@ -24,10 +20,10 @@
 
 </head>
 
-<body>
+<body style="padding-top: 80px;">
     
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -35,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../index.html">LiterateCS</a>
+                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle"><i id="sidebar-toggle-icon" class="fa fa-book" aria-hidden="true"></i> LiterateCS</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -50,7 +46,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3 hidden-xs hidden-sm">
+            <div id="sidebar" class="col-md-3 hidden-sm hidden-xs" style="transition: all 0.5s ease;">
                 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -151,7 +147,7 @@
         </div>
 
             </div>
-			<div class="col-md-9">
+			<div id="contentarea" class="col-md-9">
 				<ul class="pager">
 	<li class="previous"><a href="../LiterateCS/HtmlBlockBuilder.html">Previous: HTML Block Builder</a></li>
 	<li class="next"><a href="../LiterateCS.Theme/DirHelpers.html">Next: Directory Utilities</a></li>
@@ -474,5 +470,29 @@ to other classes.</p>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
 	<script src="../mermaid/mermaid.min.js"></script>
 	<script>mermaid.initialize({startOnLoad:true});</script>
+
+	<!-- Sidebar Toggle Script -->
+    <script>
+    $("#sidebar-toggle").click(function(e) {
+        e.preventDefault();
+		var sidebarVisible = "col-sm-4 col-xs-5";
+		var sidebarHidden = "hidden-sm hidden-xs";
+		var contentWithSidebar = "col-sm-8 col-xs-7";
+		if ($("#sidebar").hasClass("col-sm-4")) {
+			$("#contentarea").removeClass (contentWithSidebar);
+			$("#sidebar").removeClass (sidebarVisible)
+				.addClass (sidebarHidden);
+			$("#sidebar-toggle-icon").removeClass ("fa-angle-double-left")
+				.addClass ("fa-book");
+		}
+		else {
+			$("#contentarea").addClass (contentWithSidebar);
+			$("#sidebar").removeClass (sidebarHidden)
+				.addClass (sidebarVisible);
+			$("#sidebar-toggle-icon").removeClass ("fa-book")
+				.addClass ("fa-angle-double-left");
+		}
+    });
+    </script>
 </body>
 </html>

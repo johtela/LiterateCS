@@ -3,8 +3,8 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -17,13 +17,13 @@ var lg = "logo";
 if (Params[lg] != lg)
 {
 #>
-                <a class="navbar-brand" href="<#= Params.Root #>index.html"><span><img src="<#= Params.Root #><#= Params[lg] #>" height="24" />  <#= Params["projectname"] #></span></a>
+                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle"><span><img src="<#= Params.Root #><#= Params[lg] #>" height="24" />  <#= Params["projectname"] #></span></a>
 <#
 }
 else
 {
 #>
-                <a class="navbar-brand" href="<#= Params.Root #>index.html"><#= Params["projectname"] #></a>
+                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle"><i id="sidebar-toggle-icon" class="fa fa-book" aria-hidden="true"></i> <#= Params["projectname"] #></a>
 <#
 }
 #>
