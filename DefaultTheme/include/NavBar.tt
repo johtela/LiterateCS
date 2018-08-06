@@ -17,13 +17,22 @@ var lg = "logo";
 if (Params[lg] != lg)
 {
 #>
-                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle"><span><img src="<#= Params.Root #><#= Params[lg] #>" height="24" />  <#= Params["projectname"] #></span></a>
+                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle">
+					<span>
+						<img src="<#= Params.Root #><#= Params[lg] #>" height="24" class="hidden-sm hidden-xs" />
+						<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-book" aria-hidden="true"></i>
+						<#= Params["projectname"] #>
+					</span>
+				</a>
 <#
 }
 else
 {
 #>
-                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle"><i id="sidebar-toggle-icon" class="fa fa-book" aria-hidden="true"></i> <#= Params["projectname"] #></a>
+                <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle">
+					<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-book" aria-hidden="true"></i>
+					<#= Params["projectname"] #>
+				</a>
 <#
 }
 #>

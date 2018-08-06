@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="row">
-            <div id="sidebar" class="col-md-3 hidden-sm hidden-xs" style="transition: all 0.5s ease;">
+            <div id="sidebar" class="col-md-3 hidden-sm hidden-xs">
                 <#@ include file="include/SideBar.tt" #>
             </div>
 			<div id="contentarea" class="col-md-9">
@@ -32,28 +32,5 @@
 
     <#@ include file="include/Scripts.tt" #>
 
-	<!-- Sidebar Toggle Script -->
-    <script>
-    $("#sidebar-toggle").click(function(e) {
-        e.preventDefault();
-		var sidebarVisible = "col-sm-4 col-xs-5";
-		var sidebarHidden = "hidden-sm hidden-xs";
-		var contentWithSidebar = "col-sm-8 col-xs-7";
-		if ($("#sidebar").hasClass("col-sm-4")) {
-			$("#contentarea").removeClass (contentWithSidebar);
-			$("#sidebar").removeClass (sidebarVisible)
-				.addClass (sidebarHidden);
-			$("#sidebar-toggle-icon").removeClass ("fa-angle-double-left")
-				.addClass ("fa-book");
-		}
-		else {
-			$("#contentarea").addClass (contentWithSidebar);
-			$("#sidebar").removeClass (sidebarHidden)
-				.addClass (sidebarVisible);
-			$("#sidebar-toggle-icon").removeClass ("fa-book")
-				.addClass ("fa-angle-double-left");
-		}
-    });
-    </script>
 </body>
 </html>

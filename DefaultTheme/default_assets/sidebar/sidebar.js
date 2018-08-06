@@ -21,4 +21,26 @@ $(document).ready(function () {
                 .attr('id') + '-menu"><a href="#' + $(this).attr('id') + '">' + $(this).html() + '</li>');
         });
     }
+
+    // Sidebar toggling
+    $("#sidebar-toggle").click(function(e) {
+        e.preventDefault();
+        var sidebarVisible = "col-sm-4 col-xs-5";
+        var sidebarHidden = "hidden-sm hidden-xs";
+        var contentWithSidebar = "col-sm-8 col-xs-7";
+		if ($("#sidebar").hasClass("col-sm-4")) {
+            $("#contentarea").removeClass(contentWithSidebar);
+            $("#sidebar").removeClass (sidebarVisible)
+				.addClass (sidebarHidden);
+			$("#sidebar-toggle-icon").removeClass ("fa-angle-double-left")
+				.addClass ("fa-book");
+		}
+		else {
+            $("#contentarea").addClass(contentWithSidebar);
+            $("#sidebar").removeClass (sidebarHidden)
+				.addClass (sidebarVisible);
+			$("#sidebar-toggle-icon").removeClass ("fa-book")
+				.addClass ("fa-angle-double-left");
+		}
+    });
 });
