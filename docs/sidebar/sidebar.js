@@ -25,22 +25,25 @@ $(document).ready(function () {
     // Sidebar toggling
     $("#sidebar-toggle").click(function(e) {
         e.preventDefault();
-        var sidebarVisible = "col-sm-4 col-xs-5";
+        if ($("#sidebar").is(":visible") && !$("#sidebar").hasClass("col-sm-4"))
+            return;
+        var sidebarVisible = "col-sm-4 col-xs-5 sidebar-popup";
         var sidebarHidden = "hidden-sm hidden-xs";
-        var contentWithSidebar = "col-sm-8 col-xs-7";
+        var closeArrow = "fa-angle-double-left";
+        var openArrow = "fa-angle-double-right";
+
 		if ($("#sidebar").hasClass("col-sm-4")) {
-            $("#contentarea").removeClass(contentWithSidebar);
             $("#sidebar").removeClass (sidebarVisible)
-				.addClass (sidebarHidden);
-			$("#sidebar-toggle-icon").removeClass ("fa-angle-double-left")
-				.addClass ("fa-book");
+                .addClass(sidebarHidden);
+            $("#sidebar-toggle-icon").removeClass(closeArrow)
+                .addClass(openArrow);
 		}
 		else {
-            $("#contentarea").addClass(contentWithSidebar);
             $("#sidebar").removeClass (sidebarHidden)
-				.addClass (sidebarVisible);
-			$("#sidebar-toggle-icon").removeClass ("fa-book")
-				.addClass ("fa-angle-double-left");
+                .addClass(sidebarVisible);
+            $("#sidebar-toggle-icon").removeClass(openArrow)
+                .addClass(closeArrow);
+            window.scrollTo(0, 0);
 		}
     });
 });

@@ -20,7 +20,7 @@ if (Params[lg] != lg)
                 <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle">
 					<span>
 						<img src="<#= Params.Root #><#= Params[lg] #>" height="24" class="hidden-sm hidden-xs" />
-						<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-book" aria-hidden="true"></i>
+						<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-angle-double-right" aria-hidden="true"></i>
 						<#= Params["projectname"] #>
 					</span>
 				</a>
@@ -30,7 +30,7 @@ else
 {
 #>
                 <a class="navbar-brand" href="#sidebar-toggle" id="sidebar-toggle">
-					<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-book" aria-hidden="true"></i>
+					<i id="sidebar-toggle-icon" class="hidden-md hidden-lg hidden-xl fa fa-angle-double-right" aria-hidden="true"></i>
 					<#= Params["projectname"] #>
 				</a>
 <#

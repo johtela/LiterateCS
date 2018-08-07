@@ -24,3 +24,14 @@
   background-color: #000;
   color: #fff;
 }
+#sidebar {
+  padding-top: 1em;
+  border-radius: 3px;
+}
+@media (max-width: 991px) {
+  .sidebar-popup {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+}
