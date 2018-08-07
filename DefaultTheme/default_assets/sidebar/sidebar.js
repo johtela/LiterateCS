@@ -63,4 +63,8 @@ $(document).ready(function () {
         if (isSidebarOpen ())
             closeSidebar();
     });
+
+    $(window).bind('hashchange', function (e) {
+        window.scrollBy(0, -68);
+    });
 });
