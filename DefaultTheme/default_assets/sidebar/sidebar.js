@@ -51,9 +51,10 @@ $(document).ready(function () {
 
     $("#sidebar-toggle").click(function(e) {
         e.preventDefault();
-        if ($("#sidebar").is(":visible") && !isSidebarOpen ())
-            return;
-        if (isSidebarOpen()) {
+        if ($("#sidebar").is(":visible") && !isSidebarOpen()) {
+            window.scrollTo(0, 0);
+        }
+        else if (isSidebarOpen()) {
             closeSidebar();
 		}
         else {
