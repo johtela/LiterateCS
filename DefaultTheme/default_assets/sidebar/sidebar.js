@@ -27,7 +27,7 @@ $(document).ready(function () {
         e.preventDefault();
         if ($("#sidebar").is(":visible") && !$("#sidebar").hasClass("col-sm-4"))
             return;
-        var sidebarVisible = "col-sm-4 col-xs-5 sidebar-popup";
+        var sidebarVisible = "col-sm-4 col-xs-6 sidebar-popup";
         var sidebarHidden = "hidden-sm hidden-xs";
         var closeArrow = "fa-angle-double-left";
         var openArrow = "fa-angle-double-right";
