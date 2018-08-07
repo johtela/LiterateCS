@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    var navbarHeight = $(".navbar").height();
+    $("body").css({ "padding-top": navbarHeight + "px" });
+
     var sidebarMainMenu = $('#header-menu ul:first');
     var staticContent = $('#static-content');
     staticContent.find('h1').each(function () {
@@ -60,11 +63,11 @@ $(document).ready(function () {
     });
 
     $(".page-link").click(function (e) {
+        $(window).bind('hashchange', function (e) {
+            window.scrollBy(0, -navbarHeight - 8);
+            $(window).unbind('hashchange');
+        });
         if (isSidebarOpen ())
             closeSidebar();
-    });
-
-    $(window).bind('hashchange', function (e) {
-        window.scrollBy(0, -68);
     });
 });

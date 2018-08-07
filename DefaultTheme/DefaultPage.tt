@@ -11,7 +11,7 @@
 
 <#@ include file="include/Head.tt" #>
 
-<body style="padding-top: 68px;">
+<body>
     <#@ include file="include/navbar.tt" #>
 
     <div class="container">

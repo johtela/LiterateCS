@@ -12,6 +12,7 @@ SyntaxHighlight: solarized-light
 UseDiagrams: true
 DiagramStyle: mermaid
 UseMath: true
+Logo: images/favicon.ico
 
 # Command line arguments
 ---

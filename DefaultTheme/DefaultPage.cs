@@ -121,7 +121,7 @@ namespace DefaultTheme
             #line hidden
             this.Write(".css\" />\r\n");
             this.Write("\r\n</head>");
-            this.Write("\r\n\r\n<body style=\"padding-top: 68px;\">\r\n    ");
+            this.Write("\r\n\r\n<body>\r\n    ");
             this.Write(@"
     <nav class=""navbar navbar-inverse navbar-fixed-top"">
         <div class=""container"">
