@@ -198,20 +198,16 @@ namespace LiterateCS
 				TextWriter.Null;
 			using (logwriter)
 			{
-				var amanager = new AnalyzerManager (_options.Solution,
+				var amanager = new AnalyzerManager (Path.GetFullPath (_options.Solution),
 					new AnalyzerManagerOptions ()
 					{
 						LogWriter = logwriter
 					});
-				foreach (var proj in amanager.Projects)
-				{
-					proj.Value.SetGlobalProperty ("OutputPath", Path.GetTempPath ());
-					ConsoleOut ("Building project {0}", proj.Key);
-					proj.Value.Build ();
-				}
+				ConsoleOut ("Building solution...");
+				var solution = amanager.GetWorkspace ().CurrentSolution;
 				if (_options.BuildLog != null)
 					ConsoleOut ("Build log written to {0}", _options.BuildLog);
-				return amanager.GetWorkspace ().CurrentSolution;
+				return solution;
 			}
 		}
 		/*
