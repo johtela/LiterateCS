@@ -106,7 +106,7 @@ code from [Program.cs](LiterateCS/Program.html):
 
 <<Main Error Handler>>
 
-Note that if you hace defined comment blocks inside the region those will be expanded also.
+Note that if you have defined comment blocks inside the region those will be expanded also.
 Since we use the names of the regions as macro identifiers, the names must be unique. Otherwise 
 LiterateCS complains that you have defined ambiguous macros.
 
