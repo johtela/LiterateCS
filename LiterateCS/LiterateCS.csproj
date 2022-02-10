@@ -1,39 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>literatecs</ToolCommandName>
     <PackageId>LiterateCS</PackageId>
     <Authors>Tommi Johtela</Authors>
     <Product />
-    <Copyright>Copyright © 2018 Tommi Johtela</Copyright>
+    <Copyright>Copyright © 2022 Tommi Johtela</Copyright>
     <Description>Literate programming tool for C#.</Description>
     <PackageProjectUrl>https://johtela.github.io/LiterateCS/</PackageProjectUrl>
-    <PackageLicenseUrl>https://johtela.github.io/LiterateCS/License.html</PackageLicenseUrl>
-    <PackageIconUrl>https://johtela.github.io/LiterateCS/images/favicon.ico</PackageIconUrl>
+    <License>https://johtela.github.io/LiterateCS/License.html</License>
+    <PackageIcon>favicon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/johtela/LiterateCS</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>.net csharp literate-programming</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.9.0</AssemblyVersion>
-    <FileVersion>1.0.9.0</FileVersion>
-    <Version>1.0.9</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <PackageReference Include="Buildalyzer.Workspaces" Version="2.2.0" />
-    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="Buildalyzer.Workspaces" Version="3.2.8" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="ExtensionCord" Version="1.1.3" />
-    <PackageReference Include="Markdig" Version="0.15.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.9.0" />
-    <PackageReference Include="YamlDotNet" Version="5.2.1" />
+    <PackageReference Include="Markdig" Version="0.27.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DefaultTheme\DefaultTheme.csproj" />
     <ProjectReference Include="..\LiterateCS.Theme\LiterateCS.Theme.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\docs\images\favicon.jpg" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+
 
 </Project>

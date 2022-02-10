@@ -75,7 +75,7 @@ namespace LiterateCS
 		public static TocManager Load (string yamlFile)
 		{
 			var deserializer = new DeserializerBuilder ()
-				.WithNamingConvention (new CamelCaseNamingConvention ())
+				.WithNamingConvention (CamelCaseNamingConvention.Instance)
 				.Build ();
 			try
 			{

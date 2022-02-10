@@ -4,7 +4,7 @@ ProjectName: LiterateCS
 GitHub: https://github.com/johtela/LiterateCS
 Download: https://www.nuget.org/packages/LiterateCS/
 License: License.html
-Footer: "Copyright © 2018 Tommi Johtela"
+Footer: "Copyright © 2022 Tommi Johtela"
 ShowDescriptionsInToc: false
 BootstrapStyle: readable
 MarkdownStyle: book

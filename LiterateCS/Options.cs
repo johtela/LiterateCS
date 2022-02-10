@@ -308,7 +308,7 @@ namespace LiterateCS
 					/*
 					We skip the first document, which contains the front matter defaults.
 					*/
-					parser.Expect<StreamStart> ();
+					parser.Consume<StreamStart> ();
 					deserializer.Deserialize<Dictionary<string, string>> (parser);
 					/*
 					Then we can deserialize the default command line options.
