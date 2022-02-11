@@ -71,9 +71,8 @@ To see the generated documentation open the `docs/index.html` page in a web brow
 
 ## Download and Installation
 
-The project was initially written for .NET Framework, but I recently
-modified it to target [.NET Core 2.1]. It is available in <https://nuget.org>
-as an [.NET Core global tool].
+The project was initially written for .NET Framework. Now it targets [.NET 6.0][].
+It is available in <https://nuget.org> as an [.NET Core global tool].
 
 See the [installation instructions] for more details. Documentation of the
 command line options and usage examples can be found [here][options].
@@ -90,7 +89,7 @@ If you want to contribute to the development, let me know. All help is appreciat
 [xmldoc comments]: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/xml-documentation-comments
 [GitHub Pages]: https://pages.github.com/
 [Visual Studio Code]: https://code.visualstudio.com/
-[.NET Core 2.1]: https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300
+[.NET 6.0]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [.NET Core global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 [installation instructions]: https://johtela.github.io/LiterateCS/Installation.html
 [options]: https://johtela.github.io/LiterateCS/LiterateCS/Options.html
