@@ -1,15 +1,14 @@
 # Installation
 
-LiterateCS runs on top of the [.NET Core 2.1]. It is distributed as a [Nuget] package
-and deployed as [.NET Core global tool]. This makes it easy to install, uninstall, and
-update. The technology for distributing command line tools as Nuget packages is quite
-new (it was introduced in .NET Core 2.1.3) but seems to work well in practice. 
+LiterateCS runs on top of the [.NET 6]. It is distributed as a [Nuget] package
+and deployed as [.NET global tool]. This makes it easy to install, uninstall, and
+update. 
 
 ## Prerequisites
 
-Before installing LiterateCS, make sure that you have **.NET Core SDK version 2.1.3 or 
+Before installing LiterateCS, make sure that you have **.NET SDK version 6.0 or 
 newer** installed. If you don't have it already, you can dowload it from 
-[here][.NET Core 2.1].
+[here][.NET 6].
 
 ## Installing
 
@@ -71,7 +70,7 @@ If you don't like the project template, you can uninstall with the `-u` option.
 
     > dotnet new -u LiterateCS.Templates.LiterateLib.CSharp
 
-[.NET Core 2.1]: https://www.microsoft.com/net/download/dotnet-core/2.1#sdk-2.1.300
+[.NET 6]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [Nuget]: https://nuget.org
-[.NET Core global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+[.NET global tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 [project template]: https://github.com/johtela/LiterateCS.Templates
