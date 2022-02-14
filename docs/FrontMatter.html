@@ -390,12 +390,8 @@ that start with underscore <code>_</code> will be translated to HTML automatical
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="sidebar/sidebar.js"></script>
     <script src="syntax-highlight/syntax.js"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-        extensions: ["jsMath2jax.js"]
-        });
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML'></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 	<script src="mermaid/mermaid.min.js"></script>
 	<script>mermaid.initialize({startOnLoad:true});</script>
 
